@@ -957,7 +957,7 @@ export default function LandingPage() {
       {/* Recordings Section */}
       <section className="section">
         <h2 className="section-title">שמעו את הבוט שלנו בפעולה</h2>
-        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#64748b', marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
+        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'black', marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
           הקלטות אמיתיות של השיחות שהבוט שלנו מבצע. שימו לב לטבעיות, המקצועיות והיכולת להתמודד עם מצבים שונים
         </p>
         <div className="recordings-grid">
