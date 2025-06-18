@@ -1,7 +1,11 @@
 
-import React, { useState, useRef } from 'react';
-import { Phone, Upload, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Globe, Users, BarChart3, Clock } from 'lucide-react';
-
+import React, { useState, useRef, useEffect } from 'react';
+import { Phone, Upload, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Globe, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket } from 'lucide-react'; // Add new icons
+import gefenUrl from './gefen_record.mp3?url';
+import law_office from './law_office.mp3?url';
+import pizza from './pizza_miami.mp3?url';
+import jobRecruit from './Job_Recruit.mp3?url';
+import course_agent from './course_agent.mp3?url';
 // Custom styles component
 const CustomStyles = () => (
   <style jsx>{`
@@ -13,6 +17,10 @@ const CustomStyles = () => (
       box-sizing: border-box;
     }
     
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Assistant', sans-serif;
       direction: rtl;
@@ -58,6 +66,78 @@ const CustomStyles = () => (
       100% { background-position: 0% 50%; }
     }
     
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      direction: ltr; /* Header direction is LTR for correct flex layout */
+    }
+
+    .main-header.scrolled {
+      background-color: rgba(26, 35, 51, 0.8);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    
+    .header-logo {
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+    .header-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      direction: rtl; /* Set direction for links content within LTR container */
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #10b981;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #10b981;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
     .hero-section {
       background: linear-gradient(135deg, #667eea, #764ba2, #8A2BE2, #4B0082); /* Darker, more vibrant purple wave */
       background-size: 300% 300%; /* Increased size for smoother wave */
@@ -92,16 +172,22 @@ const CustomStyles = () => (
       opacity: 0; /* Initial state for animation */
       animation: fadeInUp 0.8s ease-out forwards;
     }
+
+    .logo-image {
+      max-height: 120px;
+      margin-bottom: 24px;
+      animation-delay: 0.2s !important;
+    }
     
     .main-title {
       font-size: clamp(3rem, 8vw, 5rem);
       font-weight: 800;
       margin-bottom: 24px;
-      background: linear-gradient(45deg, #ffffff, #f0f2ff); /* Slightly brighter gradient for title */
+      background: linear-gradient(45deg, #ffffff, #f0f2ff); 
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Subtle shadow for readability on animated bg */
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2); 
       line-height: 1.2;
       animation-delay: 0.2s !important; 
     }
@@ -113,7 +199,7 @@ const CustomStyles = () => (
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
-      text-shadow: 0 1px 5px rgba(0,0,0,0.15); /* Subtle shadow */
+      text-shadow: 0 1px 5px rgba(0,0,0,0.15); 
       animation-delay: 0.4s !important;
     }
 
@@ -124,7 +210,7 @@ const CustomStyles = () => (
       gap: 20px; /* Space between buttons */
       margin-top: 40px;
       opacity: 0;
-      animation: fadeInUp 0.8s ease-out 0.6s forwards;
+      animation: fadeInUp 0.8s ease-out 0.6s forwards; 
     }
 
     @media (min-width: 768px) {
@@ -265,6 +351,17 @@ const CustomStyles = () => (
       max-width: 1200px;
       margin: 0 auto;
     }
+
+    .section-full-width {
+      padding: 80px 0; /* No horizontal padding for full width */
+      width: 100%;
+    }
+
+    .section-full-width .section-content {
+      max-width: 1400px; /* Wider container for pricing */
+      margin: 0 auto;
+      padding: 0 20px;
+    }
     
     .section-title {
       font-size: clamp(2.5rem, 6vw, 3.5rem);
@@ -332,26 +429,31 @@ const CustomStyles = () => (
     
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* Wider cards */
+      gap: 40px; /* More space between cards */
       margin-bottom: 60px;
+      align-items: stretch; /* Make cards same height */
     }
     
     .pricing-card {
       background: white;
       border-radius: 24px;
-      padding: 40px;
-      text-align: center;
+      padding: 50px; /* More padding */
       position: relative;
       transition: all 0.3s ease;
       border: 2px solid transparent;
       opacity: 0; 
       animation: fadeInUp 0.7s ease-out forwards; 
+      text-align: right; /* Align text to the right */
+      display: flex;
+      flex-direction: column; /* Align content vertically */
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
     }
     
     .pricing-card.featured {
       border: 2px solid #667eea;
       transform: scale(1.05); 
+      box-shadow: 0 30px 80px rgba(102, 126, 234, 0.2); /* Enhanced shadow for featured */
     }
      .pricing-card.featured:hover { 
       transform: translateY(-5px) scale(1.07); 
@@ -359,49 +461,48 @@ const CustomStyles = () => (
     
     .pricing-card:hover {
       transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
     }
     
     .pricing-badge {
       background: linear-gradient(45deg, #667eea, #764ba2);
       color: white;
-      padding: 8px 24px;
+      padding: 10px 28px; /* Slightly larger */
       border-radius: 50px;
-      font-size: 0.9rem;
+      font-size: 1rem; /* Slightly larger font */
       font-weight: 600;
       margin-bottom: 24px;
       display: inline-block;
+      align-self: flex-start;
     }
     
     .pricing-title {
-      font-size: 1.5rem;
+      font-size: 1.8rem; /* Larger title */
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 20px; /* More spacing */
       color: #1e293b;
     }
     
     .pricing-price {
-      font-size: 3rem;
+      font-size: 3.2rem; /* Larger price */
       font-weight: 800;
-      color: #667eea;
-      margin-bottom: 24px;
+      color: #3b82f6; /* Blue price */
+      margin-bottom: 30px; /* More spacing */
     }
     
-    .pricing-features {
+    .pricing-features, .pricing-sub-features {
       list-style: none;
-      margin-bottom: 30px;
+      padding: 0;
+      margin-bottom: 25px; /* More spacing */
     }
     
-    .pricing-features li {
-      padding: 8px 0;
+    .pricing-features li, .pricing-sub-features li {
+      padding: 10px 0; /* More vertical padding */
       display: flex;
       align-items: center;
-      gap: 12px;
-      color: #64748b;
-      transition: color 0.2s ease-in-out; 
-    }
-    .pricing-card:hover .pricing-features li {
-        color: #334155; 
+      gap: 15px; /* More space between icon and text */
+      color: #334155;
+      font-size: 1.05rem; /* Slightly larger text */
     }
     
     .recordings-grid {
@@ -411,6 +512,35 @@ const CustomStyles = () => (
       margin-bottom: 60px;
     }
     
+    .pricing-section-title {
+      font-size: 1.3rem; /* Slightly larger */
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 30px; /* More spacing */
+      margin-bottom: 15px; /* More spacing */
+    }
+
+    .pricing-suitable-for {
+      color: #64748b;
+      margin-bottom: 20px; /* More spacing */
+      font-size: 1.05rem; /* Slightly larger text */
+      line-height: 1.6;
+    }
+    
+    /* Green button for pricing cards */
+    .pricing-card .cta-button {
+        background: linear-gradient(45deg, #10b981, #059669);
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        margin-top: auto; /* Push button to the bottom */
+        padding: 18px 32px; /* Larger button */
+        font-size: 1.2rem; /* Larger text */
+    }
+
+    .pricing-card .cta-button:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
+    }
+
     .recording-card {
       background: white;
       border-radius: 20px;
@@ -553,19 +683,167 @@ const CustomStyles = () => (
       transform: scale(1.1) rotate(2deg); 
       background: linear-gradient(45deg, #764ba2, #667eea); 
     }
+
+    .footer-logo {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+
+    .who-is-it-for-section {
+        background-color: #ffffff;
+        text-align: center;
+    }
+
+    .who-is-it-for-section .content-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .who-is-it-for-section .section-icon {
+        width: 100px;
+        height: 100px;
+        color: #667eea;
+    }
+
+    .who-is-it-for-section .description {
+        font-size: 1.3rem;
+        line-height: 1.7;
+        color: #334155;
+    }
+
+    /* How It Works Section */
+    .how-it-works-section {
+        background-color: #f8fafc; /* Light gray background */
+    }
     
+    .how-it-works-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .how-it-works-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease-out;
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .how-it-works-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    }
+    
+    .how-it-works-icon-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 25px;
+    }
+
+    .how-it-works-icon {
+        width: 80px;
+        height: 80px;
+        padding: 20px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .how-it-works-step-number {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: #10b981;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        border: 2px solid white;
+    }
+
+    .how-it-works-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 15px;
+    }
+
+    .how-it-works-description {
+        font-size: 1.05rem;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 992px) { /* Changed breakpoint for menu */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 280px;
+            background-color: #1a2333;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateX(100%);
+            transition: transform 0.4s ease-in-out;
+            padding-top: 60px; /* Space for close button */
+        }
+        
+        .nav-links.open {
+            transform: translateX(0);
+        }
+        
+        .nav-links li {
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .menu-toggle {
+            display: block;
+            z-index: 1001; /* Above nav links */
+        }
+    }
+
     @media (max-width: 768px) {
       .hero-section {
         padding: 80px 20px 60px;
+      }
+
+      .logo-image {
+        max-height: 90px;
       }
       
       .section {
         padding: 60px 20px;
       }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
+
+      .section-full-width {
+        padding: 60px 0;
+      }
+
+      .section-full-width .section-content {
+        max-width: none;
+        padding: 0 20px;
       }
        .clients-section {
         padding: 60px 0; /* Adjust padding for mobile */
@@ -584,6 +862,11 @@ const CustomStyles = () => (
       
       .pricing-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .pricing-card {
+        padding: 30px; /* Less padding on mobile */
       }
       
       .pricing-card.featured {
@@ -730,38 +1013,71 @@ const ContactForm = () => {
 
 export default function LandingPage() {
   const [activeRecording, setActiveRecording] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const features = [
     {
-      icon: Phone,
-      title: "שיחות יוצאות ונכנסות",
-      description: "הבוט שלנו מטפל בשיחות יוצאות לחיפוש לידים חדשים ובשיחות נכנסות לשירות לקוחות מקצועי ומותאם אישית"
+      icon: Clock,
+      title: "זמינות 24/7 ומענה מיידי",
+      description: "הלקוחות שלכם יקבלו שירות בכל שעה, ללא זמני המתנה כלל, באמצעות מענה קולי אנושי וזורם"
     },
     {
-      icon: Upload,
-      title: "העלאת קבצי אקסל",
-      description: "העלו רשימות לקוחות בקובץ אקסל והבוט יתחיל לעבוד מיד. תהליך פשוט ומהיר שחוסך זמן יקר"
-    },
-    {
-      icon: Database,
-      title: "חיבור למערכות CRM",
-      description: "אינטגרציה מלאה עם מערכות CRM מובילות וגוגל שיטס לניהול מתקדם של המידע והנתונים"
+      icon: Users,
+      title: "סינון לידים אוטומטי וחסכון בעלויות",
+      description: "המערכת תסנן עבורכם לידים נכנסים באופן אוטומטי, ובכך תחסכו זמן יקר לנציגים אנושיים ותצמצמו משמעותית את עלויות מוקד השירות"
     },
     {
       icon: Zap,
-      title: "טכנולוגיה מתקדמת",
-      description: "בינה מלאכותית מתקדמת שמבינה הקשר, רגשות וכוונות, ומספקת חוויה טבעית ואנושית לחלוטין"
+      title: "האצת תהליכי מכירה וקיצור זמני טיפול",
+      description: "תהליכי המכירה יואצו באופן ניכר, וזמן הטיפול בלקוח יתקצר מ-20 דקות ל-3 דקות בלבד, מה שיוביל ליעילות מוגברת וסיפוק לקוחות מהיר יותר"
     },
     {
-      icon: Clock,
-      title: "זמינות 24/7",
-      description: "הבוט שלנו עובד ללא הפסקה, 24 שעות ביממה, 7 ימים בשבוע, ומטפל בכל שיחה במקצועיות מלאה"
+      icon: MessageSquare,
+      title: "בוט AI חכם שמתמודד עם כל אתגר",
+      description: "הפתרון שלנו הוא בוט AI מתקדם שמבין דיבור חופשי ומתמודד ביעילות גם עם תשובות לא צפויות מהלקוח, בניגוד לבוטים 'טיפשים'"
     },
     {
-      icon: BarChart3,
-      title: "דוחות ואנליטיקה",
-      description: "קבלו דוחות מפורטים על ביצועי הבוט, רמת ההצלחה בשיחות ותובנות חשובות לשיפור המכירות"
+      icon: Star,
+      title: "יכולות שירות ומכירה גבוהות מאוד",
+      description: "הבוט שלנו כבר מוכשר ביכולות שירות ומכירה מתקדמות, ופועל ללא לאות או עייפות, מה שמבטיח שירות אחיד ואיכותי לכל לקוח"
+    },
+    { 
+      icon: BarChart3, 
+      title: "דוחות ואנליטיקה", 
+      description: "קבלו דוחות מפורטים על ביצועי הבוט, רמת ההצלחה בשיחות ותובנות חשובות לשיפור המכירות" 
     }
+  ];
+
+  const howItWorksSteps = [
+      {
+          icon: ClipboardCheck,
+          title: "אפיון והבנה",
+          description: "התהליך מתחיל באפיון מעמיק על ידי צוות מקצועי עם רקע טכני והנדסי ב-AI, שיגיע אליכם להבנת כל הצרכים העסקיים שלכם."
+      },
+      {
+          icon: DraftingCompass,
+          title: "תכנון וסקיצה",
+          description: "לאחר מכן, תקבלו סקיצה מפורטת של תסריט השיחה והתהליכים המתוכננים לאישורכם."
+      },
+      {
+          icon: FlaskConical,
+          title: "בדיקות והטמעה",
+          description: "עם קבלת האישור, נעבור לסביבת טסטים איכותית כדי להבטיח שהפתרון יעלה לאוויר באופן מושלם."
+      },
+      {
+          icon: Rocket,
+          title: "ליווי וצמיחה",
+          description: "לאחר ההטמעה, תיהנו מליווי מלא ומתמשך, הכולל לא רק מענה טכני אלא גם ייעוץ אסטרטגי לצמיחה."
+      }
   ];
 
   // Placeholder logos. Replace with actual image URLs or SVGs if available.
@@ -783,14 +1099,20 @@ export default function LandingPage() {
       name: "חבילת התחלה",
       price: "₪499",
       period: "/חודש",
-      badge: "מתאים לעסקים קטנים",
+      badge: "מומלץ לעסקים קטנים",
       features: [
         "עד 500 שיחות חודשיות",
-        "חיבור לגוגל שיטס",
-        "תמיכה בווטסאפ",
         "דוחות בסיסיים",
         "תמיכה טכנית"
-      ]
+      ],
+      suitableFor: "מתאים לעסקים קטנים ולפיילוטים.",
+      serviceOptionsTitle: "באיזה אופן? (בחירת שירות אחד)",
+      serviceOptions: [
+        "הצעת מכירה / סינון לידים",
+        "מזכירה קולית",
+        "טיפול בהזמנות",
+        "איסוף מידע בסיסי"
+      ],
     },
     {
       name: "חבילה מקצועית",
@@ -800,12 +1122,20 @@ export default function LandingPage() {
       featured: true,
       features: [
         "עד 1,500 שיחות חודשיות",
-        "חיבור לכל מערכות CRM",
+        "חיבור לכלל מערכות CRM",
         "בוט מותאם אישית",
         "דוחות מתקדמים",
         "תמיכה מלאה 24/7",
         "אינטגרציות נוספות"
-      ]
+      ],
+      suitableFor: "לעסקים שרוצים אוטומציה מלאה וצמיחה מהירה.",
+      serviceOptionsTitle: "באיזה אופן? (כל השירותים כלולים)",
+      serviceOptions: [
+        "הצעת מכירה / סינון לידים",
+        "מזכירה קולית",
+        "טיפול בהזמנות",
+        "איסוף מידע מורחב"
+      ],
     },
     {
       name: "Pay as you go",
@@ -813,40 +1143,45 @@ export default function LandingPage() {
       period: "/שיחה",
       badge: "גמישות מקסימלית",
       features: [
-        "תשלום לפי שימוש",
-        "ללא התחייבות חודשית",
+        "תשלום לפי שימוש (ללא התחייבות)",
         "כל התכונות כלולות",
-        "מתאים לעסקים עונתיים",
         "ניתן לעצור בכל עת"
-      ]
+      ],
+      suitableFor: "לקמפיינים ממוקדים, בדיקות ועסקים עונתיים.",
+      serviceOptionsTitle: "באיזה אופן? (כל השירותים כלולים)",
+      serviceOptions: [
+        "הצעת מכירה / סינון לידים",
+        "מזכירה קולית",
+        "טיפול בהזמנות"
+      ],
     }
   ];
 
   const recordings = [
     {
-      title: "שיחת מכירה - ביטוח רכב",
-      description: "הדגמה של שיחת מכירה יוצאת לחידוש ביטוח רכב עם גישה אישית ומקצועית",
-      audioSrc: "/recordings/insurance-call.mp3"
+      title: "סוכנות ביטוח-גפן ביטוחים",
+      description: "בירור בדיקת תיק ביטוחים",
+      audioSrc: gefenUrl
     },
     {
-      title: "שירות לקוחות - תמיכה טכנית",
+      title: 'תיאום פגישת ייעוץ עו"ד',
       description: "טיפול בפנייה של לקוח עם בעיה טכנית, כולל פתרון המקרה בסבלנות ומקצועיות",
-      audioSrc: "/recordings/support-call.mp3"
+      audioSrc: law_office
     },
     {
-      title: "קביעת פגישה - נדלן",
-      description: "שיחת יוצאת לקביעת פגישת ייעוץ נדלן עם לקוח פוטנציאלי מתוך רשימת לידים",
-      audioSrc: "/recordings/real-estate-call.mp3"
+      title: "הזמנת פיצה",
+      description: "הזמנת פיצה ללקוח וקביעת מועד לפיצה נוספת במידת הצורך",
+      audioSrc: pizza
     },
     {
-      title: "מכירה - שירותי רפואה",
-      description: "הצגת שירותי רפואה פרטית ותיאום מועד לבדיקות עם התאמה לצרכי הלקוח",
-      audioSrc: "/recordings/medical-call.mp3"
+      title: "גיוס עובדים",
+      description: "גיוס עובדים וקביעת מועד לגיוס נוסף במידת הצורך",
+      audioSrc: jobRecruit
     },
     {
-      title: "שיחת המשך - תחזוקת מחשבים",
-      description: "מעקב אחר שירות שניתן ללקוח וקביעת מועד לתחזוקה נוספת במידת הצורך",
-      audioSrc: "/recordings/followup-call.mp3"
+      title: "מכירת קורס ",
+      description: "מכירת קורס וקביעת מועד למכירה נוספת במידת הצורך",
+      audioSrc: course_agent
     }
   ];
 
@@ -862,10 +1197,30 @@ export default function LandingPage() {
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl' }}>
       <CustomStyles />
       
+      <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
+        <a href="#hero">
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/4793081b2_WhatsAppImage2025-06-17at135344.jpg" alt="Bot 10 Logo" className="header-logo" />
+        </a>
+        <nav>
+          <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}>
+            <li><a href="#features">תכונות</a></li>
+            <li><a href="#who-is-it-for">למי זה מתאים?</a></li>
+            <li><a href="#how-it-works">איך זה עובד?</a></li>
+            <li><a href="#clients">לקוחות</a></li>
+            <li><a href="#pricing">מחירים</a></li>
+            <li><a href="#recordings">הקלטות</a></li>
+            <li><a href="#contact">צור קשר</a></li>
+          </ul>
+        </nav>
+        <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+        </button>
+      </header>
+
       {/* Hero Section */}
-      <section className="hero-section">
+      <section id="hero" className="hero-section">
         <div className="hero-content">
-          <h1 className="main-title">דיבור חכם</h1>
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/4793081b2_WhatsAppImage2025-06-17at135344.jpg" alt="Bot 10 Logo" className="logo-image" />
           <p className="subtitle">
             הסוכן הקולי הראשון בישראל שמדבר בעברית טבעית ומטפל בשיחות המכירות והשירות שלכם 
             24 שעות ביממה ברמה של סוכן אנושי מקצועי
@@ -884,8 +1239,8 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="section">
-        <h2 className="section-title">למה דיבור חכם?</h2>
+      <section id="features" className="section">
+        <h2 className="section-title">למה Bot 10?</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
             <div 
@@ -903,8 +1258,36 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Who is it for Section - NEW */}
+      <section id="who-is-it-for" className="section who-is-it-for-section">
+        <div className="content-wrapper">
+            <h2 className="section-title" style={{marginBottom: '30px'}}>למי זה מתאים?</h2>
+            <Users size={80} className="section-icon" />
+            <p className="description">
+                הפתרון שלנו מתאים לכל עסק המקבל פניות רבות, מעסקים קטנים כמו משרדי נדל"ן ונותני שירות מקצועי ועד לחברות ענק עם אלפי לידים. הוא מייעל את תהליכי המכירה והשירות, חוסך משאבים ומבטיח שאף לקוח פוטנציאלי לא ילך לאיבוד, בזכות מענה מיידי וחכם בכל עת.
+            </p>
+        </div>
+      </section>
+
+      {/* How it works Section - NEW */}
+      <section id="how-it-works" className="section how-it-works-section">
+          <h2 className="section-title">איך זה עובד? שותפות להצלחה</h2>
+          <div className="how-it-works-grid">
+              {howItWorksSteps.map((step, index) => (
+                  <div className="how-it-works-card" key={index} style={{ animationDelay: `${index * 0.1 + 0.3}s` }}>
+                      <div className="how-it-works-icon-wrapper">
+                          <step.icon size={30} className="how-it-works-icon" />
+                          <span className="how-it-works-step-number">{index + 1}</span>
+                      </div>
+                      <h3 className="how-it-works-title">{step.title}</h3>
+                      <p className="how-it-works-description">{step.description}</p>
+                  </div>
+              ))}
+          </div>
+      </section>
+
       {/* Clients/Partners Section - NEW */}
-      <section className="clients-section">
+      <section id="clients" className="clients-section">
         <h2 className="section-title">שותפים לדרך ולקוחות מובילים</h2>
         <div className="logo-slider-container">
           <div className="logo-slider-track">
@@ -920,44 +1303,174 @@ export default function LandingPage() {
       </section>
 
 
-      {/* Pricing Section */}
-      <section className="section" style={{ background: '#f8fafc' }}>
-        <h2 className="section-title">החבילות שלנו</h2>
-        <div className="pricing-grid">
-          {pricingPlans.map((plan, index) => (
-            <div 
-              key={index} 
-              className={`pricing-card ${plan.featured ? 'featured' : ''}`}
-              style={{ animationDelay: `${index * 0.1 + 0.3}s` }} /* Staggered animation */
-            >
-              <div className="pricing-badge">{plan.badge}</div>
-              <h3 className="pricing-title">{plan.name}</h3>
-              <div className="pricing-price">
-                {plan.price}
-                <span style={{ fontSize: '1rem', fontWeight: '400', color: '#64748b' }}>
-                  {plan.period}
-                </span>
+      {/* Pricing Section - Full Width */}
+      <section id="pricing" className="section-full-width" style={{ background: '#f8fafc' }}>
+        <div className="section-content">
+          <h2 className="section-title">החבילות שלנו</h2>
+          <div className="pricing-grid">
+            {pricingPlans.map((plan, index) => (
+              <div 
+                key={index} 
+                className={`pricing-card ${plan.featured ? 'featured' : ''}`}
+                style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
+              >
+                <div className="pricing-badge">{plan.badge}</div>
+                <h3 className="pricing-title">{plan.name}</h3>
+                <div className="pricing-price">
+                  {plan.price}
+                  <span style={{ fontSize: '1.1rem', fontWeight: '400', color: '#64748b' }}>
+                    {plan.period}
+                  </span>
+                </div>
+                <ul className="pricing-features">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx}>
+                      <CheckCircle size={22} style={{ color: '#10b981', flexShrink: 0 }} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <h4 className="pricing-section-title">למי זה מתאים?</h4>
+                <p className="pricing-suitable-for">{plan.suitableFor}</p>
+
+                <h4 className="pricing-section-title">{plan.serviceOptionsTitle}</h4>
+                <ul className="pricing-sub-features">
+                   {plan.serviceOptions.map((option, idx) => (
+                    <li key={idx}>
+                      <CheckCircle size={22} style={{ color: '#10b981', flexShrink: 0 }} />
+                      <span>{option}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <button className="cta-button" style={{ width: '100%' }}>
+                  בחר חבילה זו
+                </button>
               </div>
-              <ul className="pricing-features">
-                {plan.features.map((feature, idx) => (
-                  <li key={idx}>
-                    <CheckCircle size={20} style={{ color: '#10b981' }} />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className="cta-button" style={{ width: '100%' }}>
-                בחר חבילה זו
-              </button>
+            ))}
+          </div>
+          
+          {/* Services explanation section */}
+          <div style={{ 
+            background: 'white', 
+            borderRadius: '24px', 
+            padding: '50px', /* More padding */
+            margin: '40px 0', 
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
+            opacity: 0,
+            animation: 'fadeInUp 0.8s ease-out 0.6s forwards'
+          }}>
+            <h3 style={{ 
+              fontSize: '2.2rem', /* Larger title */
+              fontWeight: '700', 
+              textAlign: 'center', 
+              marginBottom: '40px', /* More spacing */
+              color: '#1e293b' 
+            }}>
+              השירותים שלנו
+            </h3>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', /* Wider cards */
+              gap: '40px' /* More space */
+            }}>
+              <div style={{ textAlign: 'center', padding: '25px' }}>
+                <div style={{ 
+                  width: '70px', /* Larger icon container */
+                  height: '70px', 
+                  background: 'linear-gradient(45deg, #667eea, #764ba2)', 
+                  borderRadius: '18px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  margin: '0 auto 20px', /* More spacing */
+                  color: 'white' 
+                }}>
+                  <Star size={35} />
+                </div>
+                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1e293b' }}>
+                  הצעת מכירה / סינון לידים
+                </h4>
+                <p style={{ color: '#64748b', lineHeight: '1.6', fontSize: '1.05rem' }}>
+                  הבוט יבצע שיחות מכירה מקצועיות ויסנן לידים באיכות גבוהה עבורכם
+                </p>
+              </div>
+              
+              <div style={{ textAlign: 'center', padding: '25px' }}>
+                <div style={{ 
+                  width: '70px', 
+                  height: '70px', 
+                  background: 'linear-gradient(45deg, #667eea, #764ba2)', 
+                  borderRadius: '18px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  margin: '0 auto 20px', 
+                  color: 'white' 
+                }}>
+                  <Phone size={35} />
+                </div>
+                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1e293b' }}>
+                  מזכירה קולית
+                </h4>
+                <p style={{ color: '#64748b', lineHeight: '1.6', fontSize: '1.05rem' }}>
+                  קביעת פגישות, העברת הודעות וטיפול בפניות בסיסיות של לקוחות
+                </p>
+              </div>
+              
+              <div style={{ textAlign: 'center', padding: '25px' }}>
+                <div style={{ 
+                  width: '70px', 
+                  height: '70px', 
+                  background: 'linear-gradient(45deg, #667eea, #764ba2)', 
+                  borderRadius: '18px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  margin: '0 auto 20px', 
+                  color: 'white' 
+                }}>
+                  <MessageSquare size={35} />
+                </div>
+                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1e293b' }}>
+                  טיפול בהזמנות
+                </h4>
+                <p style={{ color: '#64748b', lineHeight: '1.6', fontSize: '1.05rem' }}>
+                  קבלת הזמנות מלקוחות, רישום פרטים והעברה למערכות הרלוונטיות
+                </p>
+              </div>
+              
+              <div style={{ textAlign: 'center', padding: '25px' }}>
+                <div style={{ 
+                  width: '70px', 
+                  height: '70px', 
+                  background: 'linear-gradient(45deg, #667eea, #764ba2)', 
+                  borderRadius: '18px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  margin: '0 auto 20px', 
+                  color: 'white' 
+                }}>
+                  <Database size={35} />
+                </div>
+                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1e293b' }}>
+                  איסוף מידע בסיסי/מורחב
+                </h4>
+                <p style={{ color: '#64748b', lineHeight: '1.6', fontSize: '1.05rem' }}>
+                  איסוף נתונים מלקוחות לפי הצרכים שלכם - מבסיסי ועד מפורט
+                </p>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
       {/* Recordings Section */}
-      <section className="section">
+      <section id="recordings" className="section">
         <h2 className="section-title">שמעו את הבוט שלנו בפעולה</h2>
-        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'black', marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
+        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#64748b', marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
           הקלטות אמיתיות של השיחות שהבוט שלנו מבצע. שימו לב לטבעיות, המקצועיות והיכולת להתמודד עם מצבים שונים
         </p>
         <div className="recordings-grid">
@@ -1012,9 +1525,7 @@ export default function LandingPage() {
         animation: 'fadeIn 1s ease-out 0.5s forwards' /* Fade in footer */
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '20px' }}>
-            דיבור חכם
-          </h3>
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/4793081b2_WhatsAppImage2025-06-17at135344.jpg" alt="Bot 10 Logo" className="footer-logo" />
           <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
             המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
           </p>
@@ -1027,7 +1538,7 @@ export default function LandingPage() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Mail size={20} />
-              <span>info@diburhacham.co.il</span>
+              <span>info@bot10.co.il</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Phone size={20} />
@@ -1039,7 +1550,7 @@ export default function LandingPage() {
             paddingTop: '30px',
             opacity: '0.6'
           }}>
-            <p>© 2024 דיבור חכם. כל הזכויות שמורות.</p>
+            <p>© 2024 Bot 10. כל הזכויות שמורות.</p>
           </div>
         </div>
       </footer>
