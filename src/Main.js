@@ -1576,7 +1576,7 @@ export default function LandingPage() {
 
   const pricingPlans = [
     {
-      name: "Basic – כולל 1,000 דקות מתנה בחודש הראשון",
+      name: "Basic – כולל 1,000 דקות מתנה לחודש הראשון",
       price: "₪3,000",
       period: " (חד פעמי בחודש הראשון)",
       features: [
