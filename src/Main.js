@@ -1737,7 +1737,7 @@ export default function LandingPage() {
         >
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-            alt="WhatsApp"
+            alt="Bot 10 - סוכן קולי AI חכם"
             className="whatsapp-icon"
           />
         </a>
@@ -1762,7 +1762,7 @@ export default function LandingPage() {
       <section id="hero" className="hero-section">
         <div className="hero-content">
           <div className="hero-text-content">
-            <img src={updatedLogo} alt="Bot 10 Logo" className="logo-image" />
+            <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
             <h1 className="main-title">הכירו את Bot 10 </h1>
             <p className="subtitle">
               כמה לידים הלכו לאיבוד כי לא הספקת לענות?
@@ -1796,7 +1796,7 @@ export default function LandingPage() {
           <div className="hero-mascot">
             <img
               src={other_logo}
-              alt="Bot 10 Mascot"
+              alt="Bot 10 - סוכן קולי AI חכם"
               className="mascot-image"
             />
           </div>
@@ -1805,7 +1805,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section id="features" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">למה Bot 10?</h2>
-        <img src={power} alt="Bot 10 Logo" className='logo-image' />
+        <img src={power} alt="Bot 10 - סוכן קולי AI חכם" className='logo-image' />
 
         <div className="features-grid">
           {features.map((feature, index) => (
@@ -1843,7 +1843,7 @@ export default function LandingPage() {
       {/* How it works Section */}
       <section id="how-it-works" className="section how-it-works-section">
         <h2 className="section-title">איך זה עובד? שותפות להצלחה</h2>
-        <img src={how_it} alt="How its works" className="logo-image" />
+        <img src={how_it} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
         <div className="how-it-works-grid">
           {howItWorksSteps.map((step, index) => (
             <div className="how-it-works-card" key={index} style={{ animationDelay: `${index * 0.1 + 0.3}s` }}>
@@ -1876,7 +1876,7 @@ export default function LandingPage() {
       <section id="pricing" className="section-full-width" style={{ background: '#ffffff' }}>
         <div className="section-content">
           <h2 className="section-title">החבילות שלנו </h2>
-          <img src={prices_logo} alt="prices logo image" className="logo-image" />
+          <img src={prices_logo} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
           <div className="pricing-grid">
             {pricingPlans.map((plan, index) => (
               <div
@@ -2054,7 +2054,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <a href='#contact' >
-                  <img src={leaveDetailes} alt="השארת פרטים" className="leave-details-img" />
+                  <img src={leaveDetailes} alt="Bot 10 - סוכן קולי AI חכם" className="leave-details-img" />
                 </a>
               </div>
             </div>
@@ -2065,7 +2065,7 @@ export default function LandingPage() {
       {/* Recordings Section */}
       <section id="recordings" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">שמעו את הבוט שלנו בפעולה</h2>
-        <img src={record_image} alt="record image" className="logo-image" />
+        <img src={record_image} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
         <p style={{ textAlign: 'center', fontSize: '1.19rem', color: '#1c7895', opacity: 0.8, marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
           הקלטות אמיתיות במגוון קולות שהבוט שלנו מבצע. שימו לב לטבעיות, המקצועיות והיכולת להתמודד עם מצבים שונים
         </p>
@@ -2085,7 +2085,7 @@ export default function LandingPage() {
       {/* FAQ Section */}
       <section id="faq" className="section faq-section">
         <h2 className="section-title"> שאלות ותשובות </h2>
-        <img src={qa_logo} alt="qa image" className="logo-image" />
+        <img src={qa_logo} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
         <div className="faq-container">
           {faqData.map((item, index) => (
             <Accordion key={index}>
@@ -2187,7 +2187,7 @@ export default function LandingPage() {
 
 
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <img src={updatedLogo} alt="Bot 10 Logo" className="footer-logo" />
+          <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם" className="footer-logo" />
           <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
             המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
           </p>
@@ -2198,14 +2198,26 @@ export default function LandingPage() {
             marginBottom: '40px',
             flexWrap: 'wrap'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Mail size={20} />
-              <span>bot10.info@gmail.com</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Phone size={20} />
-              <span>052-6134734</span>
-            </div>
+            <div style={{
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '40px',
+  marginBottom: '40px',
+  flexWrap: 'wrap'
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <Mail size={20} />
+    <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
+      bot10.info@gmail.com
+    </a>
+  </div>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <Phone size={20} />
+    <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
+      052-6134734
+    </a>
+  </div>
+</div>
           </div>
           <div style={{
             borderTop: '1px solid rgba(254, 254, 249, 0.1)',

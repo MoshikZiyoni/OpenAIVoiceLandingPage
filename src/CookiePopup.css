@@ -1,34 +1,92 @@
+:root {
+  --primary-color: #c62828;
+  --text-color: #333;
+  --background-color: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s;
+}
+
 .cookie-popup {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background: #fff;
-  border-top: 2px solid #c62828;
-  padding: 12px 20px;
-  font-size: 14px;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  z-index: 1000;
+  transform: translateY(200%);
+  transition: transform var(--transition-speed) ease-in-out;
+  max-width: 600px; /* Prevents the popup from being too wide on large screens */
+  margin: 0 auto;
+}
+
+.cookie-popup.visible {
+  transform: translateY(0);
+}
+
+.cookie-popup__content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  z-index: 999;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
 }
 
-.cookie-buttons {
+.cookie-popup__content p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-color);
+  flex-grow: 1; /* Allows the text to take up available space */
+}
+
+.cookie-popup__actions {
   display: flex;
-  gap: 10px;
+  gap: 0.75rem;
+  flex-shrink: 0; /* Prevents buttons from shrinking */
 }
 
-.cookie-buttons button {
-  background: #c62828;
-  color: white;
+.cookie-popup__button {
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
   cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
 }
 
-.cookie-buttons .outline {
-  background: white;
-  color: #c62828;
-  border: 1px solid #c62828;
+.cookie-popup__button:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+
+.cookie-popup__button--primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.cookie-popup__button--primary:hover {
+  background-color: #a02020; /* A darker shade for hover */
+}
+
+.cookie-popup__button--secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.cookie-popup__button--secondary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .cookie-popup__content {
+    flex-direction: column;
+    text-align: center;
+  }
 }
