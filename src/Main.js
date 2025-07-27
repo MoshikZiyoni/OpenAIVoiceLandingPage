@@ -1301,7 +1301,10 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
   };
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
-
+  useEffect(() => {
+  document.title =
+    "Bot 10 - סוכן קולי AI בעברית | בוט טלפוני למכירות, שירות וסינון לידים 24/7";
+}, []);
   return (
     <div className="recording-card" style={style}>
       <h3 className="recording-title">{title}</h3>
@@ -1476,7 +1479,7 @@ const ContactForm = () => {
       <div style={{ justifySelf: 'center' }}>
         <img
           src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/528e0dac3_WhatsAppImage2025-06-19at175252.jpeg"
-          alt="צור קשר - Bot 10"
+          alt="צור קשר עם צוות Bot 10 להטמעת עוזר קולי AI בעסק שלך"
           style={{
             maxWidth: '300px',
             height: 'auto',
@@ -1720,6 +1723,10 @@ export default function LandingPage() {
 
   return (
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl' }}>
+      <div style={{display:'none'}}>
+  Bot 10 הוא סוכן קולי AI בעברית המסנן לידים, מתאם פגישות ומעניק שירות לקוחות 24/7
+  למשרדי נדל״ן, קליניקות, חברות SaaS וכל עסק שמקבל שיחות.
+</div>
       <CustomStyles />
       <AccessibilityButton />
       <CookiePopup />
@@ -1762,7 +1769,7 @@ export default function LandingPage() {
       <section id="hero" className="hero-section">
         <div className="hero-content">
           <div className="hero-text-content">
-            <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
+            <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם בעברית למכירות ושירות 24/7" className="logo-image" />
             <h1 className="main-title">הכירו את Bot 10 </h1>
             <p className="subtitle">
               כמה לידים הלכו לאיבוד כי לא הספקת לענות?
@@ -1796,7 +1803,7 @@ export default function LandingPage() {
           <div className="hero-mascot">
             <img
               src={other_logo}
-              alt="Bot 10 - סוכן קולי AI חכם"
+              alt="Bot 10 – בוט טלפוני בעברית שמנהל שיחות עסקיות אוטומטיות"
               className="mascot-image"
             />
           </div>
@@ -1805,7 +1812,7 @@ export default function LandingPage() {
       {/* Features Section */}
       <section id="features" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">למה Bot 10?</h2>
-        <img src={power} alt="Bot 10 - סוכן קולי AI חכם" className='logo-image' />
+        <img src={power} alt="למה לבחור ב-Bot 10? יתרונות העוזר הקולי שלנו" className='logo-image' />
 
         <div className="features-grid">
           {features.map((feature, index) => (
@@ -1829,13 +1836,13 @@ export default function LandingPage() {
         <div className="content-wrapper">
           <h2 className="section-title" style={{ marginBottom: '30px' }}>למי זה מתאים?</h2>
           <Users size={80} className="section-icon" />
-          <p class="description">
-            הפתרון שלנו מתאים לכל עסק המקבל <span class="highlight">פניות רבות</span>,
-            מעסקים קטנים כמו משרדי נדל"ן ו<span class="highlight">נותני שירות </span> מקצועי
-            ועד לחברות ענק עם <span class="highlight">אלפי לידים</span>.
+          <p className="description">
+            הפתרון שלנו מתאים לכל עסק המקבל <span className="highlight">פניות רבות</span>,
+            מעסקים קטנים כמו משרדי נדל"ן ו<span className="highlight">נותני שירות </span> מקצועי
+            ועד לחברות ענק עם <span className="highlight">אלפי לידים</span>.
             הוא מייעל את תהליכי המכירה והשירות,
-            <span class="highlight"> חוסך משאבים</span> ומבטיח שאף<span class="highlight"> לקוח פוטנציאלי </span>לא ילך לאיבוד,
-            בזכות <span class="highlight">מענה מיידי וחכם בכל עת</span>.
+            <span className="highlight"> חוסך משאבים</span> ומבטיח שאף<span className="highlight"> לקוח פוטנציאלי </span>לא ילך לאיבוד,
+            בזכות <span className="highlight">מענה מיידי וחכם בכל עת</span>.
           </p>
         </div>
       </section>
@@ -1843,7 +1850,7 @@ export default function LandingPage() {
       {/* How it works Section */}
       <section id="how-it-works" className="section how-it-works-section">
         <h2 className="section-title">איך זה עובד? שותפות להצלחה</h2>
-        <img src={how_it} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
+        <img src={how_it} alt="ארבעה שלבים להטמעת סוכן קולי AI בעסק שלכם" className="logo-image" />
         <div className="how-it-works-grid">
           {howItWorksSteps.map((step, index) => (
             <div className="how-it-works-card" key={index} style={{ animationDelay: `${index * 0.1 + 0.3}s` }}>
@@ -1876,7 +1883,7 @@ export default function LandingPage() {
       <section id="pricing" className="section-full-width" style={{ background: '#ffffff' }}>
         <div className="section-content">
           <h2 className="section-title">החבילות שלנו </h2>
-          <img src={prices_logo} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
+          <img src={prices_logo} alt="חבילות מחיר לבוט קולי AI – Basic, Pro ו-Enterprise" className="logo-image" />
           <div className="pricing-grid">
             {pricingPlans.map((plan, index) => (
               <div
@@ -2054,7 +2061,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <a href='#contact' >
-                  <img src={leaveDetailes} alt="Bot 10 - סוכן קולי AI חכם" className="leave-details-img" />
+                  <img src={leaveDetailes} alt="השאר פרטים לייעוץ חינם על בוט קולי AI בעברית" className="leave-details-img" />
                 </a>
               </div>
             </div>
@@ -2065,7 +2072,7 @@ export default function LandingPage() {
       {/* Recordings Section */}
       <section id="recordings" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">שמעו את הבוט שלנו בפעולה</h2>
-        <img src={record_image} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
+        <img src={record_image} alt="דוגמאות הקלטות של בוט קולי AI מדבר עברית – גפן ביטוחים, עורך דין, פיצה ועוד" className="logo-image" />
         <p style={{ textAlign: 'center', fontSize: '1.19rem', color: '#1c7895', opacity: 0.8, marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
           הקלטות אמיתיות במגוון קולות שהבוט שלנו מבצע. שימו לב לטבעיות, המקצועיות והיכולת להתמודד עם מצבים שונים
         </p>
@@ -2085,7 +2092,7 @@ export default function LandingPage() {
       {/* FAQ Section */}
       <section id="faq" className="section faq-section">
         <h2 className="section-title"> שאלות ותשובות </h2>
-        <img src={qa_logo} alt="Bot 10 - סוכן קולי AI חכם" className="logo-image" />
+        <img src={qa_logo} alt="שאלות נפוצות על בוט טלפוני בעברית – Bot 10" className="logo-image" />
         <div className="faq-container">
           {faqData.map((item, index) => (
             <Accordion key={index}>
@@ -2142,6 +2149,7 @@ export default function LandingPage() {
               <h3 className="founder-name">ערן</h3>
               <p className="founder-description">
                 מהנדס תעשייה וניהול עם ניסיון חוצה ארגונים בשיפור תהליכים והובלת פרויקטים, מנהל חברת שיווק שמלווה וחושפת עסקים בדיגיטל.
+                ניסיון של 8 שנים בליווי 400+ עסקים
               </p>
             </div>
 
@@ -2149,6 +2157,7 @@ export default function LandingPage() {
               <h3 className="founder-name">מושיק</h3>
               <p className="founder-description">
                 מפתח תוכנה ומומחה לאוטומציות ששם לו למטרה לחסוך לבעלי עסקים עד 80% מהזמן והעלויות בעזרת פתרונות חכמים מותאמים אישית.
+                מפתח Full-Stack ומומחה NLP שבנה מערכות AI לחברות Fortune-500.
               </p>
             </div>
           </div>
@@ -2187,7 +2196,7 @@ export default function LandingPage() {
 
 
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם" className="footer-logo" />
+          <img src={updatedLogo} alt="לוגו Bot 10 – סוכן קולי AI חכם לעסקים בעברית" className="footer-logo" />
           <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
             המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
           </p>
