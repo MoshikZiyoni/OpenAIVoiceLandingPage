@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Phone, Upload, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Globe, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket } from 'lucide-react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
@@ -1677,13 +1677,14 @@ export default function LandingPage() {
     }
   ];
 
-  const keywords = [
+   const keywords = [
     "בוט קולי", "עוזר קולי",
     "מוקדן וירטואלי", "שירות לקוחות דיגיטלי", "שיחות יוצאות אוטומטי",
     "שיחות נכנסות", "סיכום פגישות", "סינון לידים", "מזכירה קולית",
     "מענה טלפוני 24/7", "צ'אטבוט קולי", "מענה אוטומטי לשיחות",
     "עוזר טלפוני", "רובוט טלפוני", "AI", "בינה מלאכותית",
-    "עיבוד שפה טבעית", "למידת מכונה", "קריינות", "דיבור בעברית", "חיסכון בזמן", "אוטומציה", "פיתרון דיגיטלי", "סוכן AI"
+    "עיבוד שפה טבעית", "למידת מכונה", "קריינות", "דיבור בעברית", "חיסכון בזמן", "אוטומציה", "פיתרון דיגיטלי", "סוכן AI",
+    "AI-Voice-Bot-Israel", "AI voice"
   ];
 
   const faqData = [
@@ -1726,6 +1727,7 @@ export default function LandingPage() {
       <div style={{display:'none'}}>
   Bot 10 הוא סוכן קולי AI בעברית המסנן לידים, מתאם פגישות ומעניק שירות לקוחות 24/7
   למשרדי נדל״ן, קליניקות, חברות SaaS וכל עסק שמקבל שיחות.
+  AI-Voice-Bot-Israel, AI voice
 </div>
       <CustomStyles />
       <AccessibilityButton />
@@ -1758,6 +1760,7 @@ export default function LandingPage() {
             <li><a href="#faq">שאלות ותשובות</a></li>
             <li><a href="#about">מי אנחנו</a></li>
             <li><a href="#contact">צור קשר <Mail size={18} /></a></li>
+            <li><a href="/blog" target="_blank">בלוג</a></li>
           </ul>
         </nav>
         <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -1865,7 +1868,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Clients/Partners Section
+      {/* Clients/Partners Section */}
       <section id="clients" className="clients-section">
         <h2 className="section-title">שותפים לדרך ולקוחות מובילים</h2>
         <div className="logo-slider-container">
@@ -1877,7 +1880,7 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Pricing Section */}
       <section id="pricing" className="section-full-width" style={{ background: '#ffffff' }}>

@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // רכיב דף הבלוג החדש והמשופר עם CSS רגיל
 const BlogPage = () => {
   return (
     <div className="blog-container">
+      <div style={{ display: 'none' }}>AI-Voice-Bot-Israel, AI voice</div>
+
       {/* הגדרות סגנון CSS */}
       <style>
         {`
@@ -278,7 +281,22 @@ const BlogPage = () => {
             ככל שסוכני קול AI הופכים לחלק אינטגרלי מהעסק, כך גוברת החשיבות של <span className="semibold">אבטחת מידע ופרטיות</span>. מגמה בולטת היא <span className="semibold">עיבוד קולי על המכשיר (On-device voice processing)</span>, המאפשר עיבוד נתונים מקומי ומפחית את הצורך לשלוח מידע רגיש לענן. בנוסף, חברות מתמקדות ב<span className="semibold">אבטחה ברמת אנטרפרייז</span>, <span className="semibold">ממשל נתונים</span> ו<span className="semibold">הצפנת מידע אישי מזהה (PII)</span> כדי להבטיח עמידה בתקנים כמו GDPR ו-HIPAA.
           </p>
         </section>
-
+        {/* Embedded video section */}
+        <div style={{ textAlign: 'center', margin: '40px 0' }}>
+          <p style={{ fontSize: '1.1rem', marginBottom: '16px', color: '#4c51bf', fontWeight: 600 }}>
+            צפו בדוגמה לסוכן קול AI מתקדם בפעולה:
+          </p>
+          <iframe
+            width="360"
+            height="640"
+            src="https://www.youtube.com/embed/Z4ZL7rmwUCA"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            style={{ maxWidth: '100%', borderRadius: '16px', boxShadow: '0 10px 24px rgba(76,81,191,0.12)' }}
+          ></iframe>
+        </div>
         <p className="call-to-action-text">
           ב-Bot-10.com אנו מובילים את המהפכה הזו, ומספקים <span className="text-gradient-bold">סוכני קול AI מתקדמים</span> המשלבים את כל המגמות והיכולות הללו. אנו מזמינים אתכם לגלות כיצד הפתרונות שלנו יכולים להפוך את ניהול השיחות בעסק שלכם לקל, חכם, מאובטח ויעיל יותר.
         </p>
@@ -286,7 +304,9 @@ const BlogPage = () => {
           למידע נוסף ולקביעת פגישת ייעוץ, בקרו באתר שלנו: <a href="http://Bot-10.com">Bot-10.com</a>
         </p>
       </article>
+      <Link to="/" className="footer-link">חזרה לדף הבית</Link>
     </div>
+
   );
 };
 
