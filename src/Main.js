@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 import AccessibilityButton from './AccessibilityButton';
 import CookiePopup from './Cookies';
 // Import audio files
-import gefenUrl from './gefen_record.mp3?url';
+import gefenUrl from './gefen_record2.mp3?url';
 import law_office from './law_office.mp3?url';
 import pizza from './pizza_miami.mp3?url';
 import jobRecruit from './Job_Recruit.mp3?url';
 import course_agent from './course_agent.mp3?url';
 import politic from './politic_survey.mp3?url';
+import doritgilad from './dorit_gilad.mp3?url';
 
 //Import Images
 import updatedLogo from './updated_logo.png?url';
@@ -1302,9 +1303,9 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
   useEffect(() => {
-  document.title =
-    "Bot 10 - סוכן קולי AI בעברית | בוט טלפוני למכירות, שירות וסינון לידים 24/7";
-}, []);
+    document.title =
+      "Bot 10 - סוכן קולי AI בעברית | בוט טלפוני למכירות, שירות וסינון לידים 24/7";
+  }, []);
   return (
     <div className="recording-card" style={style}>
       <h3 className="recording-title">{title}</h3>
@@ -1656,6 +1657,11 @@ export default function LandingPage() {
       audioSrc: law_office
     },
     {
+      title: "רואת חשבון",
+      description: "הצעת שירותי ראיית חשבון",
+      audioSrc: doritgilad
+    },
+    {
       title: "הזמנת פיצה",
       description: "קבלת הזמנה מלקוח, פירוט התפריט והצעת מכירה",
       audioSrc: pizza
@@ -1675,9 +1681,10 @@ export default function LandingPage() {
       description: "סקר פוליטי שבודק שביעות רצון",
       audioSrc: politic
     }
+
   ];
 
-   const keywords = [
+  const keywords = [
     "בוט קולי", "עוזר קולי",
     "מוקדן וירטואלי", "שירות לקוחות דיגיטלי", "שיחות יוצאות אוטומטי",
     "שיחות נכנסות", "סיכום פגישות", "סינון לידים", "מזכירה קולית",
@@ -1724,11 +1731,11 @@ export default function LandingPage() {
 
   return (
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl' }}>
-      <div style={{display:'none'}}>
-  Bot 10 הוא סוכן קולי AI בעברית המסנן לידים, מתאם פגישות ומעניק שירות לקוחות 24/7
-  למשרדי נדל״ן, קליניקות, חברות SaaS וכל עסק שמקבל שיחות.
-  AI-Voice-Bot-Israel, AI voice
-</div>
+      <div style={{ display: 'none' }}>
+        Bot 10 הוא סוכן קולי AI בעברית המסנן לידים, מתאם פגישות ומעניק שירות לקוחות 24/7
+        למשרדי נדל״ן, קליניקות, חברות SaaS וכל עסק שמקבל שיחות.
+        AI-Voice-Bot-Israel, AI voice
+      </div>
       <CustomStyles />
       <AccessibilityButton />
       <CookiePopup />
@@ -1738,59 +1745,59 @@ export default function LandingPage() {
 
       <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
         <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px', // Controls the space between icons
-  }}>
-        <a
-          href="https://wa.me/972526134734?text=%D7%A9%D7%9C%D7%95%D7%9D%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%93%D7%A3%20%D7%94%D7%A0%D7%97%D7%99%D7%AA%D7%94%20%D7%A9%D7%9C%20BOT%2010%20%D7%95%D7%A8%D7%A6%D7%99%D7%AA%D7%99%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%0A%D7%90%D7%99%D7%9A%20%D7%94%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%A2%D7%95%D7%91%D7%93%D7%AA%3F%20%D7%95%D7%90%D7%99%D7%96%D7%95%20%D7%97%D7%91%D7%99%D7%9C%D7%94%20%D7%94%D7%9B%D7%99%20%D7%9E%D7%AA%D7%90%D7%99%D7%9E%D7%94%20%D7%9C%D7%99%3F"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="whatsapp-float"
-          aria-label="Chat on WhatsApp"
-        >
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-            alt="Bot 10 - סוכן קולי AI חכם"
-            className="whatsapp-icon"
-          />
-        </a>
-        <a
-    href="https://www.instagram.com/bot10.agent/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Follow us on Instagram"
-    style={{
-      backgroundColor: '#E1306C',
-      borderRadius: '50%',
-      padding: '12px',
-      boxShadow: '0 2px 8px rgba(0,0,0,.25)',
-      pointerEvents: 'auto',
-    }}
-  >
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85c.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.359 2.618 6.78 6.98 6.98 1.28.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-    </svg>
-  </a>
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px', // Controls the space between icons
+        }}>
+          <a
+            href="https://wa.me/972526134734?text=%D7%A9%D7%9C%D7%95%D7%9D%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%93%D7%A3%20%D7%94%D7%A0%D7%97%D7%99%D7%AA%D7%94%20%D7%A9%D7%9C%20BOT%2010%20%D7%95%D7%A8%D7%A6%D7%99%D7%AA%D7%99%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%0A%D7%90%D7%99%D7%9A%20%D7%94%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%A2%D7%95%D7%91%D7%93%D7%AA%3F%20%D7%95%D7%90%D7%99%D7%96%D7%95%20%D7%97%D7%91%D7%99%D7%9C%D7%94%20%D7%94%D7%9B%D7%99%20%D7%9E%D7%AA%D7%90%D7%99%D7%9E%D7%94%20%D7%9C%D7%99%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whatsapp-float"
+            aria-label="Chat on WhatsApp"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+              alt="Bot 10 - סוכן קולי AI חכם"
+              className="whatsapp-icon"
+            />
+          </a>
+          <a
+            href="https://www.instagram.com/bot10.agent/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Instagram"
+            style={{
+              backgroundColor: '#E1306C',
+              borderRadius: '50%',
+              padding: '12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,.25)',
+              pointerEvents: 'auto',
+            }}
+          >
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85c.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.359 2.618 6.78 6.98 6.98 1.28.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+          </a>
 
-  <a
-    href="https://www.facebook.com/profile.php?id=61579199033129"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Follow us on Facebook"
-    style={{
-      backgroundColor: '#1877F2',
-      borderRadius: '50%',
-      padding: '12px',
-      boxShadow: '0 2px 8px rgba(0,0,0,.25)',
-      pointerEvents: 'auto',
-    }}
-  >
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-    </svg>
-  </a>
-  </div>
+          <a
+            href="https://www.facebook.com/profile.php?id=61579199033129"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Facebook"
+            style={{
+              backgroundColor: '#1877F2',
+              borderRadius: '50%',
+              padding: '12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,.25)',
+              pointerEvents: 'auto',
+            }}
+          >
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+          </a>
+        </div>
         <nav>
           <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}>
             <li><a href="#features">הבוט שלנו</a></li>
@@ -1802,7 +1809,7 @@ export default function LandingPage() {
             <li><a href="#about">מי אנחנו</a></li>
             <li><a href="/blog" target="_blank">בלוג</a></li>
             <li><a href="#contact">צור קשר <Mail size={18} /></a></li>
-            
+
           </ul>
         </nav>
         <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -1873,6 +1880,27 @@ export default function LandingPage() {
               <p className="feature-description">{feature.description}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="who-is-it-for" className="section who-is-it-for-section">
+        <div className="content-wrapper">
+          <h2 className="section-title" style={{ marginBottom: '30px' }}>סרטון לדוגמא</h2>
+          <div style={{ textAlign: 'center', margin: '40px 0' }}>
+            <p style={{ fontSize: '1.1rem', marginBottom: '16px', color: '#4c51bf', fontWeight: 600 }}>
+              צפו בדוגמה לסוכן קול AI מתקדם בפעולה:
+            </p>
+            <iframe
+              width="360"
+              height="640"
+              src="https://youtube.com/embed/_G0T0kF9NOA"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ maxWidth: '100%', borderRadius: '16px', boxShadow: '0 10px 24px rgba(76,81,191,0.12)' }}
+            ></iframe>
+          </div>
         </div>
       </section>
 
@@ -2253,25 +2281,25 @@ export default function LandingPage() {
             flexWrap: 'wrap'
           }}>
             <div style={{
-  display: 'flex',
-  justifyContent: 'center',
-  gap: '40px',
-  marginBottom: '40px',
-  flexWrap: 'wrap'
-}}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    <Mail size={20} />
-    <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
-      bot10.info@gmail.com
-    </a>
-  </div>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    <Phone size={20} />
-    <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
-      052-6134734
-    </a>
-  </div>
-</div>
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '40px',
+              marginBottom: '40px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Mail size={20} />
+                <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                  bot10.info@gmail.com
+                </a>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Phone size={20} />
+                <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                  052-6134734
+                </a>
+              </div>
+            </div>
           </div>
           <div style={{
             borderTop: '1px solid rgba(254, 254, 249, 0.1)',
