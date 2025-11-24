@@ -1808,6 +1808,8 @@ export default function LandingPage() {
             <li><a href="#faq">שאלות ותשובות</a></li>
             <li><a href="#about">מי אנחנו</a></li>
             <li><a href="/blog" target="_blank">בלוג</a></li>
+            <li><Link to="/roi-calculator">מחשבון המרה</Link></li>
+            <li><Link to="/cost-calculator"> מחשבון הוצאות</Link></li>
             <li><a href="#contact">צור קשר <Mail size={18} /></a></li>
 
           </ul>
