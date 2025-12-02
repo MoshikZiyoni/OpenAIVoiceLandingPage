@@ -135,6 +135,12 @@ const EnterpriseCostCalculator = () => {
             boxShadow: '0 15px 35px rgba(16, 185, 129, 0.3)',
             position: 'relative',
             overflow: 'hidden'
+        },
+        calculationNote: {
+            fontSize: '0.75rem',
+            color: '#718096',
+            marginTop: '4px',
+            fontWeight: '400'
         }
     };
 
@@ -274,9 +280,13 @@ const EnterpriseCostCalculator = () => {
                             transition={{ delay: 0.4 }}
                             whileHover={{ y: -5, boxShadow: '0 10px 25px rgba(229, 62, 62, 0.1)' }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+                            <div style={{ marginBottom: '15px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#C53030', fontWeight: 'bold' }}>
                                     {Icons.user} צוות אנושי ({numAgents})
+                                </div>
+                                {/* --- תוספת הסבר חישוב אנושי --- */}
+                                <div style={styles.calculationNote}>
+                                    (לפי 9 שעות ביום, 22 ימי עבודה בחודש)
                                 </div>
                             </div>
 
@@ -306,8 +316,14 @@ const EnterpriseCostCalculator = () => {
                                 הבחירה המומלצת
                             </div>
 
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#276749', fontWeight: 'bold', marginBottom: '15px' }}>
-                                {Icons.robot} סוכן Bot-10
+                            <div style={{ marginBottom: '15px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#276749', fontWeight: 'bold' }}>
+                                    {Icons.robot} סוכן Bot-10
+                                </div>
+                                {/* --- תוספת הסבר חישוב בוט --- */}
+                                <div style={styles.calculationNote}>
+                                    (לפי {aiPricePerMinute} ש"ח לדקה, ללא דמי הקמה)
+                                </div>
                             </div>
 
                             <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#2F855A', lineHeight: 1 }}>

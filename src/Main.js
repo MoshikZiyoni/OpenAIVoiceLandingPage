@@ -1971,6 +1971,7 @@ export default function LandingPage() {
                   {plan.price}
 
                 </div>
+
                 <span style={{ fontSize: '1.1rem', fontWeight: '400', color: '#1c7895', opacity: 0.8 }}>
                   {plan.period}
                 </span>
@@ -1999,7 +2000,22 @@ export default function LandingPage() {
                 <a href='#contact' className="cta-button" style={{ width: '100%' }} >
                   בחר חבילה זו
                 </a>
+                <div style={{ marginBottom: '20px', marginTop: '40px' }}>
+                  <Link
+                    to="/cost-calculator"
+                    style={{
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      color: '#1c7895',
+                      textDecoration: 'underline',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🤔 חושב שזה יקר? בוא למחשבון: בוט מול מזכירה
+                  </Link>
+                </div>
               </div>
+
             ))}
           </div>
 
