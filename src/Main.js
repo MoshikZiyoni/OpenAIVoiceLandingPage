@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket } from 'lucide-react';
+import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, Activity } from 'lucide-react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
 import AccessibilityButton from './AccessibilityButton';
 import CookiePopup from './Cookies';
+
 // Import audio files
 import gefenUrl from './gefen_record2.mp3?url';
 import law_office from './law_office.mp3?url';
@@ -29,6 +30,13 @@ const CustomStyles = () => (
   <style jsx>{`
     @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap');
     
+    :root {
+      --primary: #1c7895;
+      --primary-dark: #16627a;
+      --accent: #f9bb2b;
+      --light: #fefef9;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -42,20 +50,29 @@ const CustomStyles = () => (
     body {
       font-family: 'Assistant', sans-serif;
       direction: rtl;
-      background: #1c7895;
+      background: var(--primary);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* SEO Keywords - Hidden but crawlable */
-    .seo-keywords {
-      position: absolute;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      color: transparent;
-      font-size: 1px;
+    /* Shimmer Effect for Buttons */
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .btn-shimmer {
+      background: linear-gradient(110deg, #f9bb2b 8%, #ffeeba 18%, #f9bb2b 33%);
+      background-size: 200% 100%;
+      animation: 3.5s shimmer linear infinite;
+    }
+
+    /* Glassmorphism Card */
+    .glass-card {
+      background: rgba(254, 254, 249, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     }
 
     @keyframes fadeInUp {
@@ -70,12 +87,8 @@ const CustomStyles = () => (
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     @keyframes scaleIn {
@@ -115,6 +128,12 @@ const CustomStyles = () => (
       50% { transform: scale(1.05); }
     }
 
+    @keyframes pulse-green {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
     @keyframes slideInFromLeft {
       from {
         opacity: 0;
@@ -138,12 +157,8 @@ const CustomStyles = () => (
     }
 
     @keyframes logoSlide {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
     
     .main-header {
@@ -161,7 +176,7 @@ const CustomStyles = () => (
     }
 
     .main-header.scrolled {
-      background-color: rgba(7, 69, 92, 0.8);
+      background-color: rgba(7, 69, 92, 0.9);
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
@@ -219,11 +234,11 @@ const CustomStyles = () => (
     }
     
     .hero-section {
-      background: linear-gradient(135deg, #1c7895, #1c7d95);
+      background: linear-gradient(135deg, #1c7895, #155e75);
       background-size: 200% 200%;
       animation: waveAnimation 15s ease infinite;
       color: #fefef9;
-      padding: 120px 20px 80px;
+      padding: 140px 20px 80px;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -250,13 +265,28 @@ const CustomStyles = () => (
       opacity: 0;
       animation: slideInFromLeft 1s ease-out 0.5s forwards;
       justify-self: center;
+      position: relative;
+    }
+    
+    /* Glow effect behind mascot */
+    .hero-mascot::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(249, 187, 43, 0.4) 0%, rgba(255,255,255,0) 70%);
+        z-index: -1;
+        animation: pulse 3s infinite ease-in-out;
     }
 
     .mascot-image {
-      max-width: 300px;
+      max-width: 320px;
       height: auto;
-      animation: float 3s ease-in-out infinite;
-      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.4));
     }
 
     .mascot-image:hover {
@@ -267,8 +297,9 @@ const CustomStyles = () => (
       max-height: 180px;
       margin-bottom: 4px;
       animation-delay: 0.2s !important;
-      
     }
+    
+    
     
     .main-title {
       font-size: clamp(3rem, 8vw, 5rem);
@@ -278,16 +309,17 @@ const CustomStyles = () => (
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2); 
-      line-height: 1.2;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.15); 
+      line-height: 1.1;
     }
     
     .subtitle {
-      font-size: clamp(1.25rem, 4vw, 1.5rem);
-      margin-bottom: 30px;
+      font-size: clamp(1.2rem, 4vw, 1.4rem);
+      margin-bottom: 35px;
       max-width: 750px;
-      line-height: 1.1;
-      text-shadow: 0 1px 5px rgba(0,0,0,0.15);
+      line-height: 1.6;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+      color: rgba(254, 254, 249, 0.9);
     }
 
     .hero-buttons-container {
@@ -299,10 +331,11 @@ const CustomStyles = () => (
     }
     @media (min-width: 768px) {
       .hero-buttons-container {
-        flex-direction: row; /* Side-by-side on larger screens */
-        justify-content: center;
+        flex-direction: row; 
+        justify-content: flex-start; /* Aligned right (start in RTL) */
       }
     }
+    
     .cta-button, .cta-button-secondary {
       padding: 16px 32px;
       border-radius: 50px;
@@ -318,7 +351,7 @@ const CustomStyles = () => (
     }
     
     .cta-button {
-      background: #f9bb2b;
+      /* Uses shimmer class animation */
       color: #1c7895;
       box-shadow: 0 10px 30px rgba(249, 187, 43, 0.3);
     }
@@ -329,7 +362,8 @@ const CustomStyles = () => (
     }
 
     .cta-button-secondary {
-      background: transparent;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
       color: #fefef9;
       border: 2px solid #f9bb2b;
     }
@@ -341,13 +375,13 @@ const CustomStyles = () => (
     }
     
     .section {
-      padding: 80px 20px;
+      padding: 100px 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
 
     .section-full-width {
-      padding: 80px 0;
+      padding: 100px 0;
       width: 100%;
     }
 
@@ -361,7 +395,7 @@ const CustomStyles = () => (
       font-size: clamp(2.5rem, 6vw, 3.5rem);
       font-weight: 700;
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       color: #1c7895;
       line-height: 1.2;
       opacity: 0;
@@ -370,43 +404,43 @@ const CustomStyles = () => (
     
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 40px;
       margin-bottom: 60px;
     }
     
     .feature-card {
-      background: #fefef9;
+      /* Glassmorphism applied via class */
       padding: 40px;
       border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
-      border: 1px solid rgba(0,0,0, 0.05);
       opacity: 0; 
       animation: scaleIn 0.7s ease-out forwards; 
     }
     
     .feature-card:hover {
-      transform: translateY(-10px) scale(1.02); 
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+      transform: translateY(-10px); 
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+      border-color: #f9bb2b;
     }
     
     .feature-icon {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       background: #f9bb2b;
       color: #1c7895;
-      border-radius: 20px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 24px;
-      transition: transform 0.3s ease-out; 
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     }
 
     .feature-card:hover .feature-icon {
-      transform: rotate(-15deg) scale(1.1); 
+      transform: rotate(-10deg) scale(1.1); 
     }
+    
     .service-icon-hover {
       transition: transform 0.3s;
     }
@@ -415,44 +449,46 @@ const CustomStyles = () => (
     }
     .feature-title {
       font-size: 1.5rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 16px;
       color: #1c7895;
     }
     
     .feature-description {
-      color: #1c7895;
-      opacity: 0.8;
+      color: #4a5568;
       line-height: 1.6;
       font-size: 1.1rem;
     }
+
     .whatsapp-float {
-      bottom: 20px;
-      right: 20px;
+      bottom: 25px;
+      right: 25px;
       background-color: #25d366;
       border-radius: 50%;
-      padding: 12px;
+      padding: 14px;
       z-index: 9999;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
       transition: transform 0.3s ease;
-      animation: whatsappPulse 1.5s infinite;
+      animation: whatsappPulse 2s infinite;
     }
     @keyframes whatsappPulse {
-      0%, 100% { transform: scale(1);}
-      50% { transform: scale(1.18);}
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
     }
     .whatsapp-float:hover {
-      transform: scale(1.1);
+      transform: scale(1.1) rotate(10deg);
     }
 
     .whatsapp-icon {
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       display: block;
     }
+
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 40px;
       margin-bottom: 60px;
       align-items: stretch;
@@ -473,75 +509,66 @@ const CustomStyles = () => (
     }
     
     .pricing-card {
-      background: #fefef9;
-      border-radius: 24px;
+      background: #ffffff;
+      border-radius: 30px;
       padding: 50px;
       position: relative;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
+      transition: all 0.4s ease;
+      border: 1px solid #e2e8f0;
       opacity: 0; 
       animation: fadeInUp 0.7s ease-out forwards; 
       text-align: right;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     }
     
     .pricing-card.featured {
       border: 2px solid #f9bb2b;
       transform: scale(1.05); 
-      box-shadow: 0 30px 80px rgba(249, 187, 43, 0.2);
-      position: relative;
+      box-shadow: 0 30px 60px rgba(249, 187, 43, 0.15);
+      z-index: 10;
     }
+    
     .pricing-card.featured::before {
-      content: '🏆';
+      content: 'הכי משתלם 🏆';
       position: absolute;
-      top: -15px;
+      top: -18px;
       left: 50%;
       transform: translateX(-50%);
       background: #f9bb2b;
       color: #1c7895;
-      padding: 10px 15px;
+      padding: 8px 20px;
       border-radius: 50px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      box-shadow: 0 5px 20px rgba(249, 187, 43, 0.3);
+      font-size: 1rem;
+      font-weight: 800;
+      box-shadow: 0 5px 15px rgba(249, 187, 43, 0.4);
     }
     .pricing-card.featured:hover { 
       transform: translateY(-5px) scale(1.07); 
     }
     
     .pricing-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.15);
-    }
-    
-    .pricing-badge {
-      background: linear-gradient(45deg, #1c7895, #1c7d95);
-      color: #fefef9;
-      padding: 10px 28px;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 24px;
-      display: inline-block;
-      align-self: flex-start;
+      transform: translateY(-10px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      border-color: #f9bb2b;
     }
     
     .pricing-title {
       font-size: 1.8rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 20px;
       color: #1c7895;
     }
     
     .pricing-price {
-      font-size: 3.8rem;
+      font-size: 3.5rem;
       font-weight: 900;
       color: #f9bb2b;
       margin-bottom: 30px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
       position: relative;
+      line-height: 1;
     }
     
     .pricing-features, .pricing-sub-features {
@@ -551,23 +578,25 @@ const CustomStyles = () => (
     }
     
     .pricing-features li, .pricing-sub-features li {
-      padding: 10px 0;
+      padding: 12px 0;
       display: flex;
       align-items: center;
-      gap: 15px;
-      color: #1c7895;
+      gap: 12px;
+      color: #4a5568;
       font-size: 1.05rem;
+      border-bottom: 1px dashed #f0f0f0;
     }
+    .pricing-features li:last-child { border-bottom: none; }
     
     .recordings-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
       margin-bottom: 60px;
     }
     
     .pricing-section-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #1c7895;
       margin-top: 30px;
@@ -575,72 +604,71 @@ const CustomStyles = () => (
     }
 
     .pricing-suitable-for {
-      color: #1c7895;
-      opacity: 0.8;
+      color: #64748b;
       margin-bottom: 20px;
-      font-size: 1.05rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 12px;
     }
     
     .pricing-card .cta-button {
-        background: #f9bb2b;
-        color: #1c7895;
-        box-shadow: 0 10px 30px rgba(249, 187, 43, 0.3);
+        /* Shimmer here too */
         margin-top: auto;
         padding: 18px 32px;
         font-size: 1.2rem;
-    }
-
-    .pricing-card .cta-button:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 20px 40px rgba(249, 187, 43, 0.4);
+        justify-content: center;
+        width: 100%;
     }
 
     .recording-card {
-      background: #fefef9;
+      background: #fff;
       border-radius: 20px;
       padding: 30px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
       opacity: 0; 
       animation: scaleIn 0.7s ease-out forwards; 
+      border: 1px solid #f0f0f0;
     }
     
     .recording-card:hover {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+      border-color: #f9bb2b;
     }
     
     .recording-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 16px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
       color: #1c7895;
     }
     
     .recording-description {
-      color: #1c7895;
-      opacity: 0.8;
+      color: #64748b;
+      font-size: 0.95rem;
       margin-bottom: 20px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
     
     .audio-player-container {
       display: flex;
       align-items: center;
       gap: 15px;
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.05);
-      border-radius: 12px;
-      padding: 15px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
       margin-top: 20px;
     }
     
     .play-button {
       background: #f9bb2b;
       border: none;
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       color: #1c7895;
       cursor: pointer;
@@ -649,11 +677,12 @@ const CustomStyles = () => (
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(249, 187, 43, 0.3);
     }
     
     .play-button:hover {
       transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(249, 187, 43, 0.4);
+      box-shadow: 0 6px 18px rgba(249, 187, 43, 0.5);
     }
     
     .audio-controls {
@@ -666,59 +695,60 @@ const CustomStyles = () => (
     .audio-progress-container {
       position: relative;
       height: 6px;
-      background: #e2e8f0;
-      border-radius: 3px;
+      background: #cbd5e1;
+      border-radius: 10px;
       cursor: pointer;
+      overflow: hidden;
     }
     
     .audio-progress-bar {
       height: 100%;
       background: #1c7d95;
-      border-radius: 3px;
-      transition: width 0.1s ease;
+      border-radius: 10px;
+      transition: width 0.1s linear;
     }
     
     .audio-time-info {
       display: flex;
       justify-content: space-between;
-      font-size: 0.85rem;
-      color: #1c7895;
-      opacity: 0.7;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 500;
     }
     
     .audio-wave-visualization {
       display: flex;
       align-items: center;
-      gap: 2px;
-      height: 30px;
+      gap: 1px;
+      height: 25px;
       flex: 1;
     }
     
     .wave-bar {
-      width: 3px;
-      background: #cbd5e1;
-      border-radius: 2px;
-      transition: all 0.3s ease;
+      width: 4px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      transition: all 0.2s ease;
     }
     
     .wave-bar.active {
-      background: #1c7d95;
+      background: #f9bb2b;
     }
     
     .contact-form-container {
         display: grid;
         grid-template-columns: 2fr 1fr;
-        gap: 40px;
+        gap: 60px;
         align-items: center;
         max-width: 1200px;
         margin: 0 auto;
     }
 
     .contact-form {
-      background: #fefef9;
-      border-radius: 24px;
+      background: #fff;
+      border-radius: 30px;
       padding: 50px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
       opacity: 0; 
       animation: fadeIn 1s ease-out 0.5s forwards; 
     }
@@ -730,8 +760,9 @@ const CustomStyles = () => (
     .form-label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 600;
+      font-weight: 700;
       color: #1c7895;
+      font-size: 0.95rem;
     }
     
     .form-input {
@@ -742,14 +773,15 @@ const CustomStyles = () => (
       font-size: 1rem;
       transition: all 0.3s ease;
       font-family: 'Assistant', sans-serif;
-      background-color: #ffffff;
-      color: #1c7895;
+      background-color: #f8fafc;
+      color: #1e293b;
     }
     
     .form-input:focus {
       border-color: #f9bb2b;
+      background-color: #fff;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(249, 187, 43, 0.2); 
+      box-shadow: 0 0 0 4px rgba(249, 187, 43, 0.15); 
     }
     
     .form-textarea {
@@ -758,62 +790,67 @@ const CustomStyles = () => (
     }
     
     .submit-button {
-      background: #f9bb2b;
+      /* shimmer effect */
       border: none;
       padding: 16px 32px;
       border-radius: 12px;
       color: #1c7895;
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 800;
       cursor: pointer;
       transition: all 0.3s ease;
       width: 100%;
+      box-shadow: 0 10px 25px rgba(249, 187, 43, 0.25);
     }
     
     .submit-button:hover {
-      transform: translateY(-2px) scale(1.01); 
-      box-shadow: 0 15px 40px rgba(249, 187, 43, 0.3);
+      transform: translateY(-3px); 
+      box-shadow: 0 15px 35px rgba(249, 187, 43, 0.35);
     }
     
     .keywords-section {
-      background: #fefef9;
-      border-radius: 24px;
-      padding: 50px;
+      background: #fff;
+      border-radius: 30px;
+      padding: 60px;
       text-align: center;
       margin-bottom: 60px;
       opacity: 0; 
       animation: fadeIn 1s ease-out forwards; 
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
     }
     
     .keywords-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 15px;
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 35px;
     }
     
     .keyword-tag {
-      background: #1c7d95;
-      color: #fefef9;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      background: #f1f5f9;
+      color: #1c7895;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
       opacity: 0; 
       animation: scaleIn 0.6s ease-out forwards; 
-      transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
     }
 
     .keyword-tag:hover {
-      transform: scale(1.1) rotate(2deg); 
-      background: #f9bb2b;
+      transform: translateY(-3px); 
+      background: #fff;
+      border-color: #f9bb2b;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       color: #1c7895;
     }
 
     .footer-logo {
-      height: 60px;
-      margin-bottom: 20px;
+      height: 70px;
+      margin-bottom: 25px;
     }
 
     .who-is-it-for-section {
@@ -837,9 +874,10 @@ const CustomStyles = () => (
     }
 
     .who-is-it-for-section .description {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         line-height: 1.7;
-        color: #1c7895;
+        color: #334155;
+        font-weight: 500;
     }
 
     .how-it-works-section {
@@ -849,25 +887,27 @@ const CustomStyles = () => (
     .how-it-works-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr); 
-        gap: 40px;
-        max-width: 980px;
+        gap: 50px;
+        max-width: 1000px;
         margin: 0 auto;
     }
 
     .how-it-works-card {
-        background: #fefef9;
-        padding: 40px 30px;
-        border-radius: 20px;
+        background: #f8fafc;
+        padding: 45px 35px;
+        border-radius: 25px;
         text-align: center;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
         transition: all 0.3s ease-out;
         opacity: 0;
         animation: fadeInUp 0.8s ease-out forwards;
+        border: 1px solid #e2e8f0;
     }
 
     .how-it-works-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        border-color: #f9bb2b;
     }
     
     .how-it-works-icon-wrapper {
@@ -886,23 +926,24 @@ const CustomStyles = () => (
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 10px 20px rgba(249, 187, 43, 0.3);
     }
 
     .how-it-works-step-number {
         position: absolute;
-        top: -10px;
-        right: -10px;
+        top: -5px;
+        right: -5px;
         background-color: #1c7895;
         color: #fefef9;
-        width: 32px;
-        height: 32px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 700;
-        font-size: 1rem;
-        border: 2px solid #fefef9;
+        font-weight: 800;
+        font-size: 1.1rem;
+        border: 3px solid #fefef9;
     }
 
     .how-it-works-title {
@@ -913,9 +954,8 @@ const CustomStyles = () => (
     }
 
     .how-it-works-description {
-        font-size: 1.05rem;
-        color: #1c7895;
-        opacity: 0.8;
+        font-size: 1.1rem;
+        color: #64748b;
         line-height: 1.6;
     }
 
@@ -930,52 +970,59 @@ const CustomStyles = () => (
       animation: fadeInUp 0.8s ease-out 0.4s forwards;
     }
       .highlight {
-      font-weight: bold;
+      font-weight: 800;
+      color: #1c7895;
     }
 
     /* MUI Accordion RTL styling */
     .MuiAccordion-root {
-      margin-bottom: 16px !important;
-      border-radius: 12px !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+      margin-bottom: 20px !important;
+      border-radius: 16px !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03) !important;
       direction: rtl;
       background-color: #ffffff !important;
+      border: 1px solid #f1f5f9;
+    }
+    .MuiAccordion-root:before {
+        display: none !important;
     }
 
     .MuiAccordionSummary-root {
-      padding: 20px 24px !important;
+      padding: 16px 24px !important;
       background-color: #ffffff !important;
-      border-radius: 12px !important;
+      border-radius: 16px !important;
     }
     
     .MuiAccordion-root.Mui-expanded .MuiAccordionSummary-root {
       border-bottom-left-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .MuiAccordionSummary-content {
       font-family: 'Assistant', sans-serif !important;
-      font-size: 1.1rem !important;
-      font-weight: 600 !important;
+      font-size: 1.15rem !important;
+      font-weight: 700 !important;
       color: #1c7895 !important;
     }
 
     .MuiAccordionDetails-root {
-      padding: 20px 24px !important;
+      padding: 24px !important;
       font-family: 'Assistant', sans-serif !important;
-      font-size: 1rem !important;
-      line-height: 1.6 !important;
-      color: #1c7895 !important;
-      opacity: 0.9;
+      font-size: 1.05rem !important;
+      line-height: 1.7 !important;
+      color: #4a5568 !important;
+      opacity: 1;
       text-align: right;
     }
 
     .MuiSvgIcon-root {
-      color: #1c7d95 !important;
+      color: #f9bb2b !important;
+      font-size: 1.8rem !important;
     }
 
     .footer {
-        background: #1c7895;
+        background: #104252; /* Darker shade */
         color: #fefef9;
         padding: 80px 20px 40px;
         text-align: center;
@@ -994,11 +1041,10 @@ const CustomStyles = () => (
     }
 
     .footer .about-story {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       line-height: 1.8;
-      color: #fefef9;
-      opacity: 0.9;
-      margin-bottom: 30px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
     }
     
     .footer .founders-section {
@@ -1009,7 +1055,8 @@ const CustomStyles = () => (
     }
 
     .footer .founder-card {
-      background: #1c7d95;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 30px;
       text-align: right;
@@ -1020,10 +1067,11 @@ const CustomStyles = () => (
 
     .footer .founder-card:hover {
       transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .footer .founder-name {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: #f9bb2b;
       margin-bottom: 10px;
@@ -1032,20 +1080,19 @@ const CustomStyles = () => (
     .footer .founder-description {
       font-size: 1.05rem;
       line-height: 1.6;
-      color: #fefef9;
-      opacity: 0.9;
+      color: #e2e8f0;
     }
 
     .footer .mission-text {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 600;
       color: #fefef9;
       line-height: 1.7;
-      margin: 30px 0;
-      padding: 30px;
-      background: #1c7d95;
+      margin: 50px 0;
+      padding: 40px;
+      background: linear-gradient(to left, rgba(28, 120, 149, 0.5), transparent);
       border-radius: 20px;
-      border-right: 4px solid #f9bb2b;
+      border-right: 5px solid #f9bb2b;
       animation: none;
       opacity: 1;
     }
@@ -1068,7 +1115,7 @@ const CustomStyles = () => (
       content: '';
       position: absolute;
       top: 0;
-      width: 100px;
+      width: 150px;
       height: 100%;
       z-index: 2;
       pointer-events: none;
@@ -1086,36 +1133,41 @@ const CustomStyles = () => (
 
     .logo-slider-track {
       display: flex;
-      animation: logoSlide 20s linear infinite;
+      animation: logoSlide 25s linear infinite;
       width: calc(200% + 40px);
     }
 
     .logo-item {
       flex-shrink: 0;
-      height: 80px;
+      height: 100px;
       margin: 0 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      padding: 20px 30px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      min-width: 200px;
+      border-radius: 20px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+      padding: 20px 40px;
+      transition: transform 0.3s ease;
+      min-width: 220px;
+      border: 1px solid #f1f5f9;
     }
 
     .logo-item:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .logo-item-text {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #1c7895;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #94a3b8;
       text-align: center;
       white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .logo-item:hover .logo-item-text {
+        color: #1c7895;
     }
     
     @media (max-width: 992px) {
@@ -1130,8 +1182,9 @@ const CustomStyles = () => (
             justify-content: center;
             align-items: center;
             transform: translateX(100%);
-            transition: transform 0.4s ease-in-out;
+            transition: transform 0.4s cubic-bezier(0.77,0,0.175,1);
             padding-top: 60px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.2);
         }
         
         .nav-links.open {
@@ -1151,8 +1204,16 @@ const CustomStyles = () => (
     }
 
     @media (max-width: 768px) {
+    .main-header {
+        padding: 10px 15px; /* Mobile Padding Fix */
+      }
+      
+    .nav-links {
+      gap:1px;
+    }
+    
       .hero-section {
-        padding: 80px 20px 60px;
+        padding: 100px 20px 60px;
       }
       .how-it-works-grid {
           grid-template-columns: 1fr; /* 1 per row on mobile */
@@ -1161,7 +1222,7 @@ const CustomStyles = () => (
       .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 20px;
+        gap: 30px;
       }
 
       .hero-text-content {
@@ -1171,14 +1232,25 @@ const CustomStyles = () => (
       .hero-mascot {
         order: 1;
       }
+      
+      .hero-mascot::before {
+        width: 200px;
+        height: 200px;
+      }
 
       .mascot-image {
-        max-width: 200px;
+        max-width: 240px;
       }
 
       .hero-buttons-container {
         align-items: center;
         justify-content: center;
+        flex-direction: column;
+        width: 100%;
+      }
+      .cta-button, .cta-button-secondary {
+          width: 100%;
+          justify-content: center;
       }
       
       .logo-image {
@@ -1217,6 +1289,7 @@ const CustomStyles = () => (
       .contact-form-container {
         grid-template-columns: 1fr !important;
         text-align: center;
+        gap: 30px;
       }
       
       .contact-form-container img {
@@ -1316,9 +1389,9 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
           {isLoading ? (
             <div style={{ width: '20px', height: '20px', border: '2px solid #1c7895', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
           ) : isPlaying ? (
-            <Pause size={20} />
+            <Pause size={22} />
           ) : (
-            <Play size={20} />
+            <Play size={22} style={{ marginLeft: '4px' }} />
           )}
         </button>
 
@@ -1410,9 +1483,10 @@ const ContactForm = () => {
   return (
     <div className="contact-form-container">
       <form className="contact-form" onSubmit={handleSubmit}>
-        <h3 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '30px', textAlign: 'center', color: '#1c7895' }}>
+        <h3 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '10px', textAlign: 'center', color: '#1c7895' }}>
           בואו נתחיל לעבוד יחד
         </h3>
+        <p style={{textAlign: 'center', marginBottom: '30px', color: '#64748b'}}>מלאו את הפרטים ונציג (אנושי!) יחזור אליכם</p>
 
         <div className="form-group">
           <label className="form-label">שם מלא</label>
@@ -1423,6 +1497,7 @@ const ContactForm = () => {
             value={formData.name}
             onChange={handleChange}
             required
+            placeholder="ישראל ישראלי"
           />
         </div>
 
@@ -1435,6 +1510,7 @@ const ContactForm = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            placeholder="israel@gmail.com"
           />
         </div>
 
@@ -1447,6 +1523,7 @@ const ContactForm = () => {
             value={formData.phone}
             onChange={handleChange}
             required
+            placeholder="050-0000000"
           />
         </div>
 
@@ -1458,6 +1535,7 @@ const ContactForm = () => {
             className="form-input"
             value={formData.company}
             onChange={handleChange}
+            placeholder="שם העסק (אופציונלי)"
           />
         </div>
 
@@ -1472,7 +1550,7 @@ const ContactForm = () => {
           />
         </div>
 
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-button btn-shimmer">
           שלח פנייה
         </button>
       </form>
@@ -1482,11 +1560,11 @@ const ContactForm = () => {
           src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/528e0dac3_WhatsAppImage2025-06-19at175252.jpeg"
           alt="צור קשר עם צוות Bot 10 להטמעת עוזר קולי AI בעסק שלך"
           style={{
-            maxWidth: '300px',
+            maxWidth: '100%',
             height: 'auto',
             borderRadius: '20px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
-            animation: 'float 3s ease-in-out infinite'
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)',
+            animation: 'float 4s ease-in-out infinite'
           }}
         />
       </div>
@@ -1519,13 +1597,13 @@ export default function LandingPage() {
     },
     {
       icon: Users,
-      title: "סינון לידים אוטומטי וחסכון בעלויות",
-      description: "המערכת תסנן עבורכם לידים נכנסים באופן אוטומטי, ובכך תחסכו זמן יקר לנציגים אנושיים ותצמצמו משמעותית את עלויות מוקד השירות"
+      title: "סינון לידים אוטומטי וחסכון",
+      description: "המערכת תסנן עבורכם לידים נכנסים באופן אוטומטי, ובכך תחסכו זמן יקר לנציגים אנושיים ותצמצמו עלויות"
     },
     {
       icon: Zap,
-      title: "השעיר לעזאזל שאתם צריכים כדי להשאר עם לידים חמים",
-      description: "העוזר הקולי עושה בשבילכם את העבודה הקשה – מתקשר ללידים קרים, סופג ניתוקים ומסנן את הלא מתעניינים. אתם מקבלים רק את הלידים החמים, בלי בזבוז זמן ובלי לחץ על הצוות."
+      title: "השעיר לעזאזל ללידים קרים",
+      description: "העוזר הקולי עושה בשבילכם את העבודה הקשה – מתקשר ללידים קרים וסופג ניתוקים. אתם מקבלים רק את הלידים החמים."
     },
     {
       icon: MessageSquare,
@@ -1535,7 +1613,7 @@ export default function LandingPage() {
     {
       icon: Star,
       title: "יכולות שירות ומכירה ברמה גבוהה",
-      description: "הבוט מסוגל לנהל שיחות שירות ומכירה מתקדמות ביעילות של 1:10 לעומת נציג אנושי הוא לא מתעייף וזמן הטיפול מתקצר משמעותית!"
+      description: "הבוט מסוגל לנהל שיחות שירות ומכירה מתקדמות ביעילות של 1:10 לעומת נציג אנושי הוא לא מתעייף וזמן הטיפול מתקצר!"
     },
     {
       icon: BarChart3,
@@ -1548,7 +1626,7 @@ export default function LandingPage() {
     {
       icon: ClipboardCheck,
       title: "אפיון והבנה",
-      description: "התהליך מתחיל באפיון מעמיק על ידי צוות מקצועי עם רקע טכני והנדסי ב-AI, שיגיע אליכם להבנת כל הצרכים העסקיים שלכם."
+      description: "התהליך מתחיל באפיון מעמיק על ידי צוות מקצועי עם רקע טכני והנדסי ב-AI, להבנת הצרכים העסקיים."
     },
     {
       icon: DraftingCompass,
@@ -1739,18 +1817,15 @@ export default function LandingPage() {
       <CustomStyles />
       <AccessibilityButton />
       <CookiePopup />
-      {/* <div className="seo-keywords">
-        BOT10 בוט10 בוט 10 BOT10 עוזר קולי עוזר קולי BOT10 בוט שירות BOT10 שיחות יוצאות שיחות נכנסות תיאום פגישות קביעת פגישות סינון לידים טיפול אוטומטי בשיחות מענה אוטומטי לשיחות חזרה ללידים פספוס לידים לידים מפוספסים אין זמן לחזור לפניות לא מספיקים לענות שיחות שלא נענו אובדן לקוחות פוטנציאליים עלות מוקדנים גבוהה עומס שיחות במוקד מחסור בכוח אדם במוקד שחיקת נציגי שירות אין מענה אחרי שעות העבודה זמני המתנה ארוכים בוט קולי בוט טלפוני עוזר קולי עוזר טלפוני נציג וירטואלי מוקדן וירטואלי עוזר וירטואלי צאטבוט קולי צאט בוט קולי רובוט טלפוני מענה קולי אוטומטי מענה טלפוני אוטומטי נתב שיחות אוטומטי מוקד טלפוני אוטומטי שירות לקוחות אוטומטי מענה טלפוני 24/7 מזכירה וירטואלית מזכירה אוטומטית עוזרת קולית סוכן וירטואלי נציג אוטומטי עוזר קולי חכם בינה מלאכותית AI עיבוד שפה טבעית NLP זיהוי דיבור אוטומטי זיהוי קולי המרת טקסט לדיבור TTS למידת מכונה
-      </div> */}
 
       <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '10px', // Controls the space between icons
+          gap: '12px',
         }}>
           <a
-            href="https://wa.me/972526134734?text=%D7%A9%D7%9C%D7%95%D7%9D%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%93%D7%A3%20%D7%94%D7%A0%D7%97%D7%99%D7%AA%D7%94%20%D7%A9%D7%9C%20BOT%2010%20%D7%95%D7%A8%D7%A6%D7%99%D7%AA%D7%99%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%0A%D7%90%D7%99%D7%9A%20%D7%94%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA%20%D7%A2%D7%95%D7%91%D7%93%D7%AA%3F%20%D7%95%D7%90%D7%99%D7%96%D7%95%20%D7%97%D7%91%D7%99%D7%9C%D7%94%20%D7%94%D7%9B%D7%99%20%D7%9E%D7%AA%D7%90%D7%99%D7%9E%D7%94%20%D7%9C%D7%99%3F"
+            href="https://wa.me/972526134734?text=%D7%94%D7%99%D7%99%20%D7%A6%D7%95%D7%95%D7%AA%20Bot10%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%97%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D"
             target="_blank"
             rel="noopener noreferrer"
             className="whatsapp-float"
@@ -1758,7 +1833,7 @@ export default function LandingPage() {
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-              alt="Bot 10 - סוכן קולי AI חכם"
+              alt="Bot 10 WhatsApp"
               className="whatsapp-icon"
             />
           </a>
@@ -1766,16 +1841,17 @@ export default function LandingPage() {
             href="https://www.instagram.com/bot10.agent/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Follow us on Instagram"
             style={{
               backgroundColor: '#E1306C',
               borderRadius: '50%',
-              padding: '12px',
-              boxShadow: '0 2px 8px rgba(0,0,0,.25)',
-              pointerEvents: 'auto',
+              padding: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'transform 0.2s'
             }}
           >
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
               <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85c.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.359 2.618 6.78 6.98 6.98 1.28.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
             </svg>
           </a>
@@ -1784,16 +1860,16 @@ export default function LandingPage() {
             href="https://www.facebook.com/profile.php?id=61579199033129"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Follow us on Facebook"
             style={{
               backgroundColor: '#1877F2',
               borderRadius: '50%',
-              padding: '12px',
-              boxShadow: '0 2px 8px rgba(0,0,0,.25)',
-              pointerEvents: 'auto',
+              padding: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
           </a>
@@ -1823,33 +1899,23 @@ export default function LandingPage() {
       <section id="hero" className="hero-section">
         <div className="hero-content">
           <div className="hero-text-content">
+            
             <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם בעברית למכירות ושירות 24/7" className="logo-image" />
             <h1 className="main-title">הכירו את Bot 10 </h1>
             <p className="subtitle">
-              כמה לידים הלכו לאיבוד כי לא הספקת לענות?
-              <br></br>
-              כמה עסקאות נפלו כי לא חזרת בזמן?
-              <br></br>
-              וכמה כסף אתה מבזבז על מוקדנים או מזכירה שלא מספיקים לעמוד בקצב?
-              <br></br>
-              <br></br>
               אם אתה רוצה שליטה מלאה בשיחות - גם כשאתה עסוק, בחו"ל או ישן,
-              <br></br>
-              זה הזמן להכיר את  BOT10
-              <br></br>
-              העוזר הקולי מבוסס AI, זמין 24/7 ומדבר כמו סוכן אמיתי!
-              <br></br>
-              <br></br>
-              תן לBOT10 לעבוד בשבילך - ואתה תתמקד בלסגור עסקאות.
+              זה הזמן להכיר את <strong>BOT10</strong>.
+              <br/>
+              העוזר הקולי שמדבר כמו בן אדם, עובד 24/7, וסוגר לך פינות.
             </p>
             <div className="hero-buttons-container">
-              <a href="#contact" className="cta-button">
-                <MessageSquare size={24} />
+              <a href="#contact" className="cta-button btn-shimmer">
+                <Sparkles size={20} />
                 בואו נתחיל לעבוד
               </a>
-              <a href="#contact" className="cta-button-secondary">
-                <CheckCircle size={20} />
-                בדיקת התאמה ופרטים נוספים
+              <a href="#recordings" className="cta-button-secondary">
+                שמעו דוגמאות
+                <Play size={18} />
               </a>
             </div>
           </div>
@@ -1863,20 +1929,23 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      {/* Features Section */}
+      
+      {/* Features Section - Glassmorphism */}
       <section id="features" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">למה Bot 10?</h2>
-        <img src={power} alt="למה לבחור ב-Bot 10? יתרונות העוזר הקולי שלנו" className='logo-image' />
+        <div style={{textAlign: 'center', marginBottom: '40px'}}>
+             <img src={power} alt="למה לבחור ב-Bot 10? יתרונות העוזר הקולי שלנו" className='logo-image' style={{maxHeight: '120px'}} />
+        </div>
 
         <div className="features-grid">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="feature-card"
+              className="feature-card glass-card"
               style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
             >
               <div className="feature-icon">
-                <feature.icon size={40} />
+                <feature.icon size={36} />
               </div>
               <h3 className="feature-title">{feature.title}</h3>
               <p className="feature-description">{feature.description}</p>
@@ -1888,20 +1957,25 @@ export default function LandingPage() {
       <section id="who-is-it-for" className="section who-is-it-for-section">
         <div className="content-wrapper">
           <h2 className="section-title" style={{ marginBottom: '30px' }}>סרטון לדוגמא</h2>
-          <div style={{ textAlign: 'center', margin: '40px 0' }}>
-            <p style={{ fontSize: '1.1rem', marginBottom: '16px', color: '#4c51bf', fontWeight: 600 }}>
-              צפו בדוגמה לסוכן קול AI מתקדם בפעולה:
-            </p>
-            <iframe
-              width="360"
-              height="640"
-              src="https://youtube.com/embed/_G0T0kF9NOA"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              style={{ maxWidth: '100%', borderRadius: '16px', boxShadow: '0 10px 24px rgba(76,81,191,0.12)' }}
-            ></iframe>
+          <div style={{ textAlign: 'center', margin: '40px 0', width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+                borderRadius: '24px', 
+                overflow: 'hidden', 
+                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+                border: '4px solid #fff',
+                maxWidth: '360px',
+                width: '100%'
+            }}>
+                <iframe
+                width="100%"
+                height="640"
+                src="https://youtube.com/embed/_G0T0kF9NOA"
+                title="Bot 10 AI Demo"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                ></iframe>
+            </div>
           </div>
         </div>
       </section>
@@ -1916,8 +1990,7 @@ export default function LandingPage() {
             מעסקים קטנים כמו משרדי נדל"ן ו<span className="highlight">נותני שירות </span> מקצועי
             ועד לחברות ענק עם <span className="highlight">אלפי לידים</span>.
             הוא מייעל את תהליכי המכירה והשירות,
-            <span className="highlight"> חוסך משאבים</span> ומבטיח שאף<span className="highlight"> לקוח פוטנציאלי </span>לא ילך לאיבוד,
-            בזכות <span className="highlight">מענה מיידי וחכם בכל עת</span>.
+            <span className="highlight"> חוסך משאבים</span> ומבטיח שאף<span className="highlight"> לקוח פוטנציאלי </span>לא ילך לאיבוד.
           </p>
         </div>
       </section>
@@ -1925,7 +1998,9 @@ export default function LandingPage() {
       {/* How it works Section */}
       <section id="how-it-works" className="section how-it-works-section">
         <h2 className="section-title">איך זה עובד? שותפות להצלחה</h2>
-        <img src={how_it} alt="ארבעה שלבים להטמעת סוכן קולי AI בעסק שלכם" className="logo-image" />
+        <div style={{textAlign: 'center', marginBottom: '40px'}}>
+             <img src={how_it} alt="תהליך העבודה" className="logo-image" style={{maxHeight: '100px'}} />
+        </div>
         <div className="how-it-works-grid">
           {howItWorksSteps.map((step, index) => (
             <div className="how-it-works-card" key={index} style={{ animationDelay: `${index * 0.1 + 0.3}s` }}>
@@ -1955,10 +2030,13 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="section-full-width" style={{ background: '#ffffff' }}>
+      <section id="pricing" className="section-full-width" style={{ background: '#f8fafc' }}>
         <div className="section-content">
           <h2 className="section-title">החבילות שלנו </h2>
-          <img src={prices_logo} alt="חבילות מחיר לבוט קולי AI – Basic, Pro ו-Enterprise" className="logo-image" />
+          <div style={{textAlign: 'center', marginBottom: '40px'}}>
+             <img src={prices_logo} alt="חבילות מחיר לבוט קולי" className="logo-image" style={{maxHeight: '80px'}} />
+          </div>
+          
           <div className="pricing-grid">
             {pricingPlans.map((plan, index) => (
               <div
@@ -1969,16 +2047,15 @@ export default function LandingPage() {
                 <h3 className="pricing-title">{plan.name}</h3>
                 <div className="pricing-price">
                   {plan.price}
-
                 </div>
 
-                <span style={{ fontSize: '1.1rem', fontWeight: '400', color: '#1c7895', opacity: 0.8 }}>
+                <span style={{ fontSize: '1rem', fontWeight: '500', color: '#64748b', marginBottom: '20px', display:'block' }}>
                   {plan.period}
                 </span>
                 <ul className="pricing-features">
                   {plan.features.map((feature, idx) => (
                     <li key={idx}>
-                      <CheckCircle size={22} style={{ color: '#1c7d95', flexShrink: 0 }} />
+                      <CheckCircle size={20} style={{ color: '#10B981', flexShrink: 0 }} />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -1991,27 +2068,28 @@ export default function LandingPage() {
                 <ul className="pricing-sub-features">
                   {plan.serviceOptions.map((option, idx) => (
                     <li key={idx}>
-                      <CheckCircle size={22} style={{ color: '#1c7d95', flexShrink: 0 }} />
+                      <CheckCircle size={20} style={{ color: '#10B981', flexShrink: 0 }} />
                       <span>{option}</span>
                     </li>
                   ))}
                 </ul>
 
-                <a href='#contact' className="cta-button" style={{ width: '100%' }} >
+                <a href='#contact' className="cta-button btn-shimmer" >
                   בחר חבילה זו
                 </a>
-                <div style={{ marginBottom: '20px', marginTop: '40px' }}>
+                
+                <div style={{ marginBottom: '10px', marginTop: '25px', textAlign: 'center' }}>
                   <Link
                     to="/cost-calculator"
                     style={{
                       fontSize: '1rem',
-                      fontWeight: '600',
+                      fontWeight: '700',
                       color: '#1c7895',
-                      textDecoration: 'underline',
-                      cursor: 'pointer'
+                      textDecoration: 'none',
+                      borderBottom: '2px solid #f9bb2b'
                     }}
                   >
-                    🤔 חושב שזה יקר? בוא למחשבון: בוט מול מזכירה
+                    🤔 חושב שזה יקר? בוא למחשבון
                   </Link>
                 </div>
               </div>
@@ -2019,140 +2097,93 @@ export default function LandingPage() {
             ))}
           </div>
 
+          {/* Services Grid (Keeping similar structure but updated styling) */}
           <div style={{
-            background: '#fefef9',
-            borderRadius: '24px',
-            padding: '50px',
-            margin: '40px 0',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
-            opacity: 0,
-            animation: 'fadeInUp 0.8s ease-out 0.6s forwards'
+            background: '#fff',
+            borderRadius: '30px',
+            padding: '60px 40px',
+            margin: '60px auto',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.05)',
+            border: '1px solid #f1f5f9',
+            maxWidth: '1200px'
           }}>
             <h3 style={{
-              fontSize: '2.2rem',
-              fontWeight: '700',
+              fontSize: '2.5rem',
+              fontWeight: '800',
               textAlign: 'center',
-              marginBottom: '40px',
+              marginBottom: '50px',
               color: '#1c7895'
             }}>
               השירותים שלנו
             </h3>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
               gap: '40px'
             }}>
-              <div style={{ textAlign: 'center', padding: '25px' }}>
+              <div style={{ textAlign: 'center', padding: '10px' }}>
                 <div className="service-icon-hover" style={{
-                  width: '70px',
-                  height: '70px',
-                  background: '#f9bb2b',
-                  color: '#1c7895',
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px'
+                  width: '80px', height: '80px', background: '#fef3c7', color: '#d97706',
+                  borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px'
                 }}>
-                  <Star size={35} />
+                  <Star size={40} />
                 </div>
-                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1c7895' }}>
+                <h4 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '10px', color: '#1e293b' }}>
                   הצעת מכירה / סינון לידים
                 </h4>
-                <p style={{ color: '#1c7895', opacity: 0.8, lineHeight: '1.6', fontSize: '1.05rem' }}>
+                <p style={{ color: '#64748b', lineHeight: '1.6' }}>
                   הבוט יבצע שיחות מכירה מקצועיות ויסנן לידים באיכות גבוהה עבורכם
                 </p>
               </div>
 
-              <div style={{ textAlign: 'center', padding: '25px' }}>
+              <div style={{ textAlign: 'center', padding: '10px' }}>
                 <div className="service-icon-hover" style={{
-                  width: '70px',
-                  height: '70px',
-                  background: '#f9bb2b',
-                  color: '#1c7895',
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px'
+                  width: '80px', height: '80px', background: '#dbeafe', color: '#2563eb',
+                  borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px'
                 }}>
-                  <Phone size={35} />
+                  <Phone size={40} />
                 </div>
-                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1c7895' }}>
+                <h4 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '10px', color: '#1e293b' }}>
                   מזכירה קולית
                 </h4>
-                <p style={{ color: '#1c7895', opacity: 0.8, lineHeight: '1.6', fontSize: '1.05rem' }}>
+                <p style={{ color: '#64748b', lineHeight: '1.6' }}>
                   קביעת פגישות, העברת הודעות וטיפול בפניות בסיסיות של לקוחות
                 </p>
               </div>
 
-              <div style={{ textAlign: 'center', padding: '25px' }}>
+              <div style={{ textAlign: 'center', padding: '10px' }}>
                 <div className="service-icon-hover" style={{
-                  width: '70px',
-                  height: '70px',
-                  background: '#f9bb2b',
-                  color: '#1c7895',
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px'
+                  width: '80px', height: '80px', background: '#dcfce7', color: '#16a34a',
+                  borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px'
                 }}>
-                  <MessageSquare size={35} />
+                  <MessageSquare size={40} />
                 </div>
-                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1c7895' }}>
+                <h4 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '10px', color: '#1e293b' }}>
                   טיפול בהזמנות
                 </h4>
-                <p style={{ color: '#1c7895', opacity: 0.8, lineHeight: '1.6', fontSize: '1.05rem' }}>
+                <p style={{ color: '#64748b', lineHeight: '1.6' }}>
                   קבלת הזמנות מלקוחות, רישום פרטים והעברה למערכות הרלוונטיות
                 </p>
               </div>
-
-              <div style={{ textAlign: 'center', padding: '25px' }}>
+              
+              <div style={{ textAlign: 'center', padding: '10px' }}>
                 <div className="service-icon-hover" style={{
-                  width: '70px',
-                  height: '70px',
-                  background: '#f9bb2b',
-                  color: '#1c7895',
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px'
+                  width: '80px', height: '80px', background: '#f3e8ff', color: '#9333ea',
+                  borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px'
                 }}>
-                  <Database size={35} />
+                  <Database size={40} />
                 </div>
-                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1c7895' }}>
-                  איסוף מידע בסיסי/מורחב
+                <h4 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '10px', color: '#1e293b' }}>
+                    איסוף דאטה
                 </h4>
-                <p style={{ color: '#1c7895', opacity: 0.8, lineHeight: '1.6', fontSize: '1.05rem' }}>
+                <p style={{ color: '#64748b', lineHeight: '1.6' }}>
                   איסוף נתונים מלקוחות לפי הצרכים שלכם - מבסיסי ועד מפורט
                 </p>
               </div>
-              <div style={{ textAlign: 'center', padding: '25px' }}>
-                <div className="service-icon-hover" style={{
-                  width: '70px',
-                  height: '70px',
-                  background: '#f9bb2b',
-                  color: '#1c7895',
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 20px'
-                }}>
-                  <Users size={35} />
-                </div>
-                <h4 style={{ fontSize: '1.4rem', fontWeight: '600', marginBottom: '15px', color: '#1c7895' }}>
-                  שירות מותאם אישית
-                </h4>
-                <p style={{ color: '#1c7895', opacity: 0.8, lineHeight: '1.6', fontSize: '1.05rem' }}>
-                  הבוט יודע את כל המידע על הלקוחות שלכם כמו נציג שירות על סטרואידים
-                </p>
-              </div>
+
               <div>
                 <a href='#contact' >
-                  <img src={leaveDetailes} alt="השאר פרטים לייעוץ חינם על בוט קולי AI בעברית" className="leave-details-img" />
+                  <img src={leaveDetailes} alt="השאר פרטים" className="leave-details-img" />
                 </a>
               </div>
             </div>
@@ -2163,9 +2194,11 @@ export default function LandingPage() {
       {/* Recordings Section */}
       <section id="recordings" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">שמעו את הבוט שלנו בפעולה</h2>
-        <img src={record_image} alt="דוגמאות הקלטות של בוט קולי AI מדבר עברית – גפן ביטוחים, עורך דין, פיצה ועוד" className="logo-image" />
-        <p style={{ textAlign: 'center', fontSize: '1.19rem', color: '#1c7895', opacity: 0.8, marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px', opacity: 0, animation: 'fadeInUp 0.8s ease-out 0.4s forwards' }}>
-          הקלטות אמיתיות במגוון קולות שהבוט שלנו מבצע. שימו לב לטבעיות, המקצועיות והיכולת להתמודד עם מצבים שונים
+        <div style={{textAlign: 'center', marginBottom: '40px'}}>
+             <img src={record_image} alt="דוגמאות הקלטות" className="logo-image" style={{maxHeight: '100px'}} />
+        </div>
+        <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#64748b', marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px' }}>
+          הקלטות אמיתיות במגוון קולות שהבוט שלנו מבצע. שימו לב לטבעיות ולמקצועיות.
         </p>
         <div className="recordings-grid">
           {recordings.map((recording, index) => (
@@ -2183,7 +2216,9 @@ export default function LandingPage() {
       {/* FAQ Section */}
       <section id="faq" className="section faq-section">
         <h2 className="section-title"> שאלות ותשובות </h2>
-        <img src={qa_logo} alt="שאלות נפוצות על בוט טלפוני בעברית – Bot 10" className="logo-image" />
+        <div style={{textAlign: 'center', marginBottom: '40px'}}>
+             <img src={qa_logo} alt="שאלות נפוצות" className="logo-image" style={{maxHeight: '80px'}} />
+        </div>
         <div className="faq-container">
           {faqData.map((item, index) => (
             <Accordion key={index}>
@@ -2192,7 +2227,7 @@ export default function LandingPage() {
                 aria-controls={`panel${index}a-content`}
                 id={`panel${index}a-header`}
               >
-                <Typography>{item.question}</Typography>
+                <Typography variant="h6" style={{fontFamily: 'Assistant', fontWeight: 'bold'}}>{item.question}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
@@ -2205,13 +2240,11 @@ export default function LandingPage() {
       </section>
 
       {/* Keywords Section */}
-      <section className="section" style={{ backgroundColor: '#fefef9' }}>
+      <section className="section" style={{ backgroundColor: '#f8fafc' }}>
         <div className="keywords-section">
           <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '20px', color: '#1c7895' }}>
-            למה אנחנו מובילים בתחום?
-
+            הטכנולוגיה המובילה בישראל
           </h2>
-
           <div className="keywords-grid">
             {keywords.map((keyword, index) => (
               <span
@@ -2225,6 +2258,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
       <div className='footer'>
         <div id="about" className="about-content">
           <h2 className="section-title">הסיפור שלנו</h2>
@@ -2240,15 +2274,13 @@ export default function LandingPage() {
               <h3 className="founder-name">ערן</h3>
               <p className="founder-description">
                 מהנדס תעשייה וניהול עם ניסיון חוצה ארגונים בשיפור תהליכים והובלת פרויקטים, מנהל חברת שיווק שמלווה וחושפת עסקים בדיגיטל.
-                ניסיון של 8 שנים בליווי 400+ עסקים
               </p>
             </div>
 
             <div className="founder-card">
               <h3 className="founder-name">מושיק</h3>
               <p className="founder-description">
-                מפתח תוכנה ומומחה לאוטומציות ששם לו למטרה לחסוך לבעלי עסקים עד 80% מהזמן והעלויות בעזרת פתרונות חכמים מותאמים אישית.
-                מפתח Full-Stack ומומחה NLP שבנה מערכות AI לחברות Fortune-500.
+                מפתח תוכנה ומומחה לאוטומציות. מפתח Full-Stack ומומחה NLP שבנה מערכות AI לחברות Fortune-500.
               </p>
             </div>
           </div>
@@ -2256,69 +2288,52 @@ export default function LandingPage() {
           <div className="about-story">
             <p>
               במהלך הליווי השיווקי לעסקים הבנו את הכאב שחוזר שוב ושוב - לידים נופלים בין הכיסאות, לקוחות מאוכזבים לא זוכים למענה, זמן שווה כסף - והכול מתבזבז על משאבים לא יעילים.
-            </p>
-            <br />
-            <p>
-              <strong>ככה נולד BOT10</strong> – העוזר הקולי החכם שמחליף את השיחה האנושית, אבל נשמע בדיוק כמוה.
-            </p>
-            <br />
-            <p>
-              הוא עונה, יוזם, מנהל שיחה, מתמלל שיחות - ועובד 24/7.
-              ולא כמו פתרונות אחרים בשוק, הוא לא מדקלם תסריטים קבועים, אלא מנהל שיחה אמיתית, זורמת, מותאמת אישית לעסק שלך בטון, בשפה, ואפילו בגוון קול שונה. אתם חייבים לשמוע את הדוגמאות שלנו!
+              <strong> ככה נולד BOT10.</strong>
             </p>
           </div>
 
           <div className="mission-text">
             אנחנו מאמינים שהעתיד שייך למי שמאמין בשינוי ומוכן לאמץ אותו.
             <br />
-            BOT10 לא רק חוסך זמן וכסף - הוא מחזיר שליטה לידיים שלך.
-            <br /><br />
             <strong>בואו נדבר, ונראה איך גם העסק שלכם יכול לגדול עם העוזר הקולי החכם שלנו</strong>
           </div>
         </div>
       </div>
+      
       {/* Contact Section */}
-      <section id="contact" className="section" style={{ background: 'linear-gradient(135deg, #1c7895, #1c7d95)' }}>
+      <section id="contact" className="section" style={{ background: 'linear-gradient(135deg, #1c7895, #155e75)' }}>
         <ContactForm />
       </section>
 
       {/* Footer */}
       <footer className="footer">
-
-
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <img src={updatedLogo} alt="לוגו Bot 10 – סוכן קולי AI חכם לעסקים בעברית" className="footer-logo" />
+          <img src={updatedLogo} alt="לוגו Bot 10" className="footer-logo" />
           <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
             המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
           </p>
+          
           <div style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: '40px',
+            gap: '30px',
             marginBottom: '40px',
             flexWrap: 'wrap'
           }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '40px',
-              marginBottom: '40px',
-              flexWrap: 'wrap'
-            }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Mail size={20} />
+                <Mail size={20} color="#f9bb2b" />
                 <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
                   bot10.info@gmail.com
                 </a>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Phone size={20} />
+                <Phone size={20} color="#f9bb2b" />
                 <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
                   052-6134734
                 </a>
               </div>
-            </div>
           </div>
+          
           <div style={{
             borderTop: '1px solid rgba(254, 254, 249, 0.1)',
             paddingTop: '30px',

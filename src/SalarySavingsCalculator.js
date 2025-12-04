@@ -38,6 +38,16 @@ const EnterpriseCostCalculator = () => {
     const [avgDuration, setAvgDuration] = useState(2.5);
     const [numAgents, setNumAgents] = useState(2);
     const [hourlyWage, setHourlyWage] = useState(45);
+    
+    // זיהוי מובייל לשינוי עיצוב
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        handleResize(); // בדיקה ראשונית
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const THEME = {
         primary: '#103157', // הכחול הכהה של Bot-10
@@ -70,7 +80,7 @@ const EnterpriseCostCalculator = () => {
     const styles = {
         wrapper: {
             fontFamily: '"Heebo", sans-serif',
-            padding: '40px 20px',
+            padding: isMobile ? '20px 10px' : '40px 20px',
             direction: 'rtl',
             background: '#f4f7fa',
             display: 'flex',
@@ -82,35 +92,38 @@ const EnterpriseCostCalculator = () => {
             width: '100%',
             maxWidth: '1100px',
             background: '#ffffff',
-            borderRadius: '30px',
+            borderRadius: isMobile ? '20px' : '30px',
             boxShadow: '0 30px 60px -15px rgba(0,0,0,0.1)',
             overflow: 'hidden',
-            padding: '40px',
+            padding: isMobile ? '25px 15px' : '40px', // פחות ריווח במובייל
         },
         ctaButton: {
             display: 'inline-flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: '10px',
             backgroundColor: '#ffffff',
             color: THEME.success,
             padding: '12px 28px',
             borderRadius: '50px',
             fontWeight: '800',
-            fontSize: '1.1rem',
+            fontSize: isMobile ? '1rem' : '1.1rem',
             textDecoration: 'none',
             marginTop: '20px',
             boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
             cursor: 'pointer',
-            border: 'none'
+            border: 'none',
+            width: isMobile ? '100%' : 'auto' // כפתור רחב במובייל
         },
         grid: {
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-            gap: '60px',
+            // השינוי הקריטי למובייל: מאפשר לעמודות לרדת עד 280 פיקסלים לפני שבירה
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 350px), 1fr))',
+            gap: isMobile ? '40px' : '60px',
             alignItems: 'start'
         },
         sectionTitle: {
-            fontSize: '1.1rem',
+            fontSize: isMobile ? '1rem' : '1.1rem',
             fontWeight: '800',
             color: '#1a202c',
             marginBottom: '20px',
@@ -119,7 +132,7 @@ const EnterpriseCostCalculator = () => {
             gap: '10px'
         },
         card: {
-            padding: '30px',
+            padding: isMobile ? '20px' : '30px',
             borderRadius: '24px',
             position: 'relative',
             marginBottom: '25px',
@@ -128,7 +141,7 @@ const EnterpriseCostCalculator = () => {
         savingsBox: {
             marginTop: '30px',
             background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-            padding: '30px',
+            padding: isMobile ? '25px' : '30px',
             borderRadius: '24px',
             color: 'white',
             textAlign: 'center',
@@ -152,15 +165,21 @@ const EnterpriseCostCalculator = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
             >
-                <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+                <div style={{ textAlign: 'center', marginBottom: isMobile ? '30px' : '50px' }}>
                     <motion.h1
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        style={{ fontSize: '2.5rem', fontWeight: '900', color: '#1a202c', margin: 0 }}
+                        style={{ 
+                            fontSize: isMobile ? '1.8rem' : '2.5rem', // פונט קטן יותר במובייל
+                            fontWeight: '900', 
+                            color: '#1a202c', 
+                            margin: 0,
+                            lineHeight: 1.2
+                        }}
                     >
                         מחשבון התייעלות וחיסכון
                     </motion.h1>
-                    <p style={{ color: '#718096', fontSize: '1.1rem', marginTop: '10px' }}>
+                    <p style={{ color: '#718096', fontSize: isMobile ? '1rem' : '1.1rem', marginTop: '10px' }}>
                         בדוק כמה העסק שלך יכול לחסוך במעבר ל-Bot 10
                     </p>
                 </div>
@@ -187,7 +206,7 @@ const EnterpriseCostCalculator = () => {
                                 accentColor="#e53e3e"
                             />
                             <InputSlider
-                                label="עלות שעתית (עלות מעביד)"
+                                label="עלות שעתית (מעביד)"
                                 value={hourlyWage} setValue={setHourlyWage} min={30} max={100} suffix="₪/שעה"
                                 accentColor="#e53e3e"
                             />
@@ -236,14 +255,19 @@ const EnterpriseCostCalculator = () => {
                             />
 
                             <div style={{ position: 'relative', zIndex: 2 }}>
-                                <h3 style={{ margin: '0 0 10px 0', fontSize: '1.3rem', opacity: 0.95 }}>החלף את הנציגים ותחסוך:</h3>
+                                <h3 style={{ margin: '0 0 10px 0', fontSize: isMobile ? '1.1rem' : '1.3rem', opacity: 0.95 }}>החלף את הנציגים ותחסוך:</h3>
 
                                 {/* המספר הגדול - פועם */}
                                 <motion.div
                                     key={savings} // מפעיל אנימציה בכל שינוי מספר
                                     initial={{ scale: 0.8 }}
                                     animate={{ scale: 1 }}
-                                    style={{ fontSize: '3.5rem', fontWeight: '900', lineHeight: 1, textShadow: '0 4px 10px rgba(0,0,0,0.2)' }}
+                                    style={{ 
+                                        fontSize: isMobile ? '2.5rem' : '3.5rem', // מספר קטן יותר במובייל 
+                                        fontWeight: '900', 
+                                        lineHeight: 1, 
+                                        textShadow: '0 4px 10px rgba(0,0,0,0.2)' 
+                                    }}
                                 >
                                     ₪<AnimatedNumber value={savings} />
                                 </motion.div>
@@ -290,7 +314,7 @@ const EnterpriseCostCalculator = () => {
                                 </div>
                             </div>
 
-                            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#C53030', lineHeight: 1 }}>
+                            <div style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: '800', color: '#C53030', lineHeight: 1 }}>
                                 ₪<AnimatedNumber value={humanMonthlyCost} />
                             </div>
                             <div style={{ fontSize: '0.9rem', color: '#E53E3E', opacity: 0.8, marginBottom: '20px' }}>עלות חודשית קבועה</div>
@@ -326,7 +350,7 @@ const EnterpriseCostCalculator = () => {
                                 </div>
                             </div>
 
-                            <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#2F855A', lineHeight: 1 }}>
+                            <div style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: '800', color: '#2F855A', lineHeight: 1 }}>
                                 ₪<AnimatedNumber value={aiMonthlyCost} />
                             </div>
                             <div style={{ fontSize: '0.9rem', color: '#2F855A', opacity: 0.8, marginBottom: '20px' }}>עלות לפי צריכה בפועל</div>
@@ -342,7 +366,9 @@ const EnterpriseCostCalculator = () => {
 
                     </div>
                 </div>
-                <Link to="/" className="footer-link">חזרה לדף הבית</Link>
+                <div style={{textAlign: 'center', marginTop: '30px'}}>
+                   <Link to="/" className="footer-link" style={{textDecoration: 'none', fontSize: '0.9rem'}}>חזרה לדף הבית</Link>
+                </div>
 
             </motion.div>
         </div>
@@ -353,7 +379,7 @@ const EnterpriseCostCalculator = () => {
 
 const InputSlider = ({ label, value, setValue, min, max, step = 1, suffix, accentColor }) => (
     <div style={{ marginBottom: '25px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center', flexWrap: 'wrap', gap: '5px' }}>
             <label style={{ color: '#4A5568', fontWeight: '600', fontSize: '1rem' }}>{label}</label>
             <div style={{
                 background: 'white', border: `1px solid ${accentColor}`, color: accentColor,
@@ -376,15 +402,16 @@ const InputSlider = ({ label, value, setValue, min, max, step = 1, suffix, accen
 );
 
 const FeatureRow = ({ icon, text, color, bold }) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#4A5568' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', color: '#4A5568' }}>
         <div style={{
             background: bold ? '#F0FFF4' : 'transparent',
             borderRadius: '50%', padding: '2px', display: 'flex',
-            color: color
+            color: color,
+            flexShrink: 0 // מונע מהאייקון להתכווץ במובייל
         }}>
             {icon}
         </div>
-        <span style={{ fontSize: '0.95rem', fontWeight: bold ? '600' : '400', color: bold ? '#276749' : 'inherit' }}>
+        <span style={{ fontSize: '0.95rem', fontWeight: bold ? '600' : '400', color: bold ? '#276749' : 'inherit', lineHeight: '1.4' }}>
             {text}
         </span>
     </div>
