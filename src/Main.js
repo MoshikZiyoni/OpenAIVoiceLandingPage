@@ -14,7 +14,7 @@ import jobRecruit from './Job_Recruit.mp3?url';
 import course_agent from './course_agent.mp3?url';
 import politic from './politic_survey.mp3?url';
 import doritgilad from './dorit_gilad.mp3?url';
-
+import riski from './riski.mp3?url';
 //Import Images
 import updatedLogo from './updated_logo.png?url';
 import power from './power.png';
@@ -1486,7 +1486,7 @@ const ContactForm = () => {
         <h3 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '10px', textAlign: 'center', color: '#1c7895' }}>
           בואו נתחיל לעבוד יחד
         </h3>
-        <p style={{textAlign: 'center', marginBottom: '30px', color: '#64748b'}}>מלאו את הפרטים ונציג (אנושי!) יחזור אליכם</p>
+        <p style={{ textAlign: 'center', marginBottom: '30px', color: '#64748b' }}>מלאו את הפרטים ונציג (אנושי!) יחזור אליכם</p>
 
         <div className="form-group">
           <label className="form-label">שם מלא</label>
@@ -1740,6 +1740,16 @@ export default function LandingPage() {
       audioSrc: doritgilad
     },
     {
+      title: "סוכנות ביטוח",
+      description: "אימות לקוח באמצעות תעודת זהות+תאריך לידה ולאחר מכן מסירת פרטי הפוליסה",
+      audioSrc: riski
+    },
+    {
+      title: "סקר פוליטי",
+      description: "סקר פוליטי שבודק שביעות רצון",
+      audioSrc: politic
+    },
+    {
       title: "הזמנת פיצה",
       description: "קבלת הזמנה מלקוח, פירוט התפריט והצעת מכירה",
       audioSrc: pizza
@@ -1754,11 +1764,7 @@ export default function LandingPage() {
       description: "הסבר על הקורס וקביעת שיחה עם יועץ",
       audioSrc: course_agent
     },
-    {
-      title: "סקר פוליטי",
-      description: "סקר פוליטי שבודק שביעות רצון",
-      audioSrc: politic
-    }
+
 
   ];
 
@@ -1899,13 +1905,13 @@ export default function LandingPage() {
       <section id="hero" className="hero-section">
         <div className="hero-content">
           <div className="hero-text-content">
-            
+
             <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם בעברית למכירות ושירות 24/7" className="logo-image" />
             <h1 className="main-title">הכירו את Bot 10 </h1>
             <p className="subtitle">
               אם אתה רוצה שליטה מלאה בשיחות - גם כשאתה עסוק, בחו"ל או ישן,
               זה הזמן להכיר את <strong>BOT10</strong>.
-              <br/>
+              <br />
               העוזר הקולי שמדבר כמו בן אדם, עובד 24/7, וסוגר לך פינות.
             </p>
             <div className="hero-buttons-container">
@@ -1929,12 +1935,12 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      
+
       {/* Features Section - Glassmorphism */}
       <section id="features" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">למה Bot 10?</h2>
-        <div style={{textAlign: 'center', marginBottom: '40px'}}>
-             <img src={power} alt="למה לבחור ב-Bot 10? יתרונות העוזר הקולי שלנו" className='logo-image' style={{maxHeight: '120px'}} />
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <img src={power} alt="למה לבחור ב-Bot 10? יתרונות העוזר הקולי שלנו" className='logo-image' style={{ maxHeight: '120px' }} />
         </div>
 
         <div className="features-grid">
@@ -1959,14 +1965,14 @@ export default function LandingPage() {
           <h2 className="section-title" style={{ marginBottom: '30px' }}>סרטון לדוגמא</h2>
           <div style={{ textAlign: 'center', margin: '40px 0', width: '100%', display: 'flex', justifyContent: 'center' }}>
             <div style={{
-                borderRadius: '24px', 
-                overflow: 'hidden', 
-                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-                border: '4px solid #fff',
-                maxWidth: '360px',
-                width: '100%'
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+              border: '4px solid #fff',
+              maxWidth: '360px',
+              width: '100%'
             }}>
-                <iframe
+              <iframe
                 width="100%"
                 height="640"
                 src="https://youtube.com/embed/_G0T0kF9NOA"
@@ -1974,7 +1980,7 @@ export default function LandingPage() {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                ></iframe>
+              ></iframe>
             </div>
           </div>
         </div>
@@ -1998,8 +2004,8 @@ export default function LandingPage() {
       {/* How it works Section */}
       <section id="how-it-works" className="section how-it-works-section">
         <h2 className="section-title">איך זה עובד? שותפות להצלחה</h2>
-        <div style={{textAlign: 'center', marginBottom: '40px'}}>
-             <img src={how_it} alt="תהליך העבודה" className="logo-image" style={{maxHeight: '100px'}} />
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <img src={how_it} alt="תהליך העבודה" className="logo-image" style={{ maxHeight: '100px' }} />
         </div>
         <div className="how-it-works-grid">
           {howItWorksSteps.map((step, index) => (
@@ -2033,10 +2039,10 @@ export default function LandingPage() {
       <section id="pricing" className="section-full-width" style={{ background: '#f8fafc' }}>
         <div className="section-content">
           <h2 className="section-title">החבילות שלנו </h2>
-          <div style={{textAlign: 'center', marginBottom: '40px'}}>
-             <img src={prices_logo} alt="חבילות מחיר לבוט קולי" className="logo-image" style={{maxHeight: '80px'}} />
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <img src={prices_logo} alt="חבילות מחיר לבוט קולי" className="logo-image" style={{ maxHeight: '80px' }} />
           </div>
-          
+
           <div className="pricing-grid">
             {pricingPlans.map((plan, index) => (
               <div
@@ -2049,7 +2055,7 @@ export default function LandingPage() {
                   {plan.price}
                 </div>
 
-                <span style={{ fontSize: '1rem', fontWeight: '500', color: '#64748b', marginBottom: '20px', display:'block' }}>
+                <span style={{ fontSize: '1rem', fontWeight: '500', color: '#64748b', marginBottom: '20px', display: 'block' }}>
                   {plan.period}
                 </span>
                 <ul className="pricing-features">
@@ -2077,7 +2083,7 @@ export default function LandingPage() {
                 <a href='#contact' className="cta-button btn-shimmer" >
                   בחר חבילה זו
                 </a>
-                
+
                 <div style={{ marginBottom: '10px', marginTop: '25px', textAlign: 'center' }}>
                   <Link
                     to="/cost-calculator"
@@ -2165,7 +2171,7 @@ export default function LandingPage() {
                   קבלת הזמנות מלקוחות, רישום פרטים והעברה למערכות הרלוונטיות
                 </p>
               </div>
-              
+
               <div style={{ textAlign: 'center', padding: '10px' }}>
                 <div className="service-icon-hover" style={{
                   width: '80px', height: '80px', background: '#f3e8ff', color: '#9333ea',
@@ -2174,7 +2180,7 @@ export default function LandingPage() {
                   <Database size={40} />
                 </div>
                 <h4 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '10px', color: '#1e293b' }}>
-                    איסוף דאטה
+                  איסוף דאטה
                 </h4>
                 <p style={{ color: '#64748b', lineHeight: '1.6' }}>
                   איסוף נתונים מלקוחות לפי הצרכים שלכם - מבסיסי ועד מפורט
@@ -2194,8 +2200,8 @@ export default function LandingPage() {
       {/* Recordings Section */}
       <section id="recordings" className="section" style={{ backgroundColor: '#fefef9' }}>
         <h2 className="section-title">שמעו את הבוט שלנו בפעולה</h2>
-        <div style={{textAlign: 'center', marginBottom: '40px'}}>
-             <img src={record_image} alt="דוגמאות הקלטות" className="logo-image" style={{maxHeight: '100px'}} />
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <img src={record_image} alt="דוגמאות הקלטות" className="logo-image" style={{ maxHeight: '100px' }} />
         </div>
         <p style={{ textAlign: 'center', fontSize: '1.2rem', color: '#64748b', marginBottom: '50px', maxWidth: '800px', margin: '0 auto 50px' }}>
           הקלטות אמיתיות במגוון קולות שהבוט שלנו מבצע. שימו לב לטבעיות ולמקצועיות.
@@ -2216,8 +2222,8 @@ export default function LandingPage() {
       {/* FAQ Section */}
       <section id="faq" className="section faq-section">
         <h2 className="section-title"> שאלות ותשובות </h2>
-        <div style={{textAlign: 'center', marginBottom: '40px'}}>
-             <img src={qa_logo} alt="שאלות נפוצות" className="logo-image" style={{maxHeight: '80px'}} />
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <img src={qa_logo} alt="שאלות נפוצות" className="logo-image" style={{ maxHeight: '80px' }} />
         </div>
         <div className="faq-container">
           {faqData.map((item, index) => (
@@ -2227,7 +2233,7 @@ export default function LandingPage() {
                 aria-controls={`panel${index}a-content`}
                 id={`panel${index}a-header`}
               >
-                <Typography variant="h6" style={{fontFamily: 'Assistant', fontWeight: 'bold'}}>{item.question}</Typography>
+                <Typography variant="h6" style={{ fontFamily: 'Assistant', fontWeight: 'bold' }}>{item.question}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>
@@ -2299,7 +2305,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Contact Section */}
       <section id="contact" className="section" style={{ background: 'linear-gradient(135deg, #1c7895, #155e75)' }}>
         <ContactForm />
@@ -2312,7 +2318,7 @@ export default function LandingPage() {
           <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
             המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
           </p>
-          
+
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -2320,20 +2326,20 @@ export default function LandingPage() {
             marginBottom: '40px',
             flexWrap: 'wrap'
           }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Mail size={20} color="#f9bb2b" />
-                <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
-                  bot10.info@gmail.com
-                </a>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Phone size={20} color="#f9bb2b" />
-                <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
-                  052-6134734
-                </a>
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Mail size={20} color="#f9bb2b" />
+              <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                bot10.info@gmail.com
+              </a>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Phone size={20} color="#f9bb2b" />
+              <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                052-6134734
+              </a>
+            </div>
           </div>
-          
+
           <div style={{
             borderTop: '1px solid rgba(254, 254, 249, 0.1)',
             paddingTop: '30px',
