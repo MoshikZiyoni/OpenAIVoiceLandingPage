@@ -1536,7 +1536,7 @@ const ContactForm = () => {
             value={formData.company}
             onChange={handleChange}
             required
-            placeholder="שם העסק (אופציונלי)"
+            placeholder="שם העסק"
           />
         </div>
 
