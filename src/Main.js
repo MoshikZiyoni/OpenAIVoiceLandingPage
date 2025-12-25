@@ -446,7 +446,7 @@ const CustomStyles = () => (
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 24px;
+      margin: 0 auto 24px;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     }
 
@@ -1952,11 +1952,7 @@ export default function LandingPage() {
 
   return (
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl' }}>
-      <div style={{ display: 'none' }}>
-        Bot 10 הוא סוכן קולי AI בעברית המסנן לידים, מתאם פגישות ומעניק שירות לקוחות 24/7
-        למשרדי נדל״ן, קליניקות, חברות SaaS וכל עסק שמקבל שיחות.
-        AI-Voice-Bot-Israel, AI voice
-      </div>
+
       <CustomStyles />
       <AccessibilityButton />
       <CookiePopup />
