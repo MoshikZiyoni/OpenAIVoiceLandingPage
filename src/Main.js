@@ -2039,7 +2039,7 @@ export default function LandingPage() {
         <div className="hero-content">
           <div className="hero-text-content">
 
-            <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם בעברית למכירות ושירות 24/7" className="logo-image" />
+            <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם בעברית למכירות ושירות 24/7 בוט קולי AI (Voice Agent) לעסקים: הנציג שלא מפספס אף ליד" className="logo-image" />
             <h1 className="main-title">Bot 10: הנציג שלא מפספס אף ליד</h1>
             <p className="subtitle">
               סגירת פגישות אוטומטית בשיחה קולית וטקסטואלית, 24/7.
