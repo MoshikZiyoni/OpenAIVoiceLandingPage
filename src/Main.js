@@ -2047,7 +2047,7 @@ export default function LandingPage() {
               העוזר הקולי שמדבר כמו בן אדם, חוסך זמן יקר ומגדיל מכירות.
             </p>
             <div className="hero-buttons-container">
-              <a href="tel:+972526134734" className="cta-button btn-shimmer">
+              <a href="#contact" className="cta-button btn-shimmer">
                 <Sparkles size={20} />
                 דברו איתנו עכשיו
               </a>
