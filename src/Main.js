@@ -2169,7 +2169,7 @@ export default function LandingPage() {
               <iframe
                 width="100%"
                 height="640"
-                src="https://youtube.com/embed/_G0T0kF9NOA"
+                src="https://youtube.com/embed/NUAomkQIMPI"
                 title="Bot 10 AI Demo"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
