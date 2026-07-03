@@ -1631,89 +1631,179 @@ const CustomStyles = () => (
       }
 
       /* ========================================
-         MOBILE 3D ANIMATIONS (ALWAYS-ON)
+         MOBILE GPU PERFORMANCE FIXES
          ======================================== */
 
-      /* Perpetual staggered 3D float for feature cards on mobile */
-      .feature-card:nth-child(1) { animation: mobileCardFloat 5s ease-in-out infinite; }
-      .feature-card:nth-child(2) { animation: mobileCardFloat 5s ease-in-out 0.8s infinite; }
-      .feature-card:nth-child(3) { animation: mobileCardFloat 5s ease-in-out 1.6s infinite; }
-      .feature-card:nth-child(4) { animation: mobileCardFloat 5s ease-in-out 2.4s infinite; }
-      .feature-card:nth-child(5) { animation: mobileCardFloat 5s ease-in-out 3.2s infinite; }
-      .feature-card:nth-child(6) { animation: mobileCardFloat 5s ease-in-out 4s infinite; }
+      /* 
+        ROOT CAUSE: position:fixed ambient-bg with animated blurred blobs 
+        + backdrop-filter:blur on every card = GPU re-composites on every 
+        scroll frame. This kills mobile performance entirely.
+      */
 
-      /* Perpetual 3D float for how-it-works cards */
-      .how-it-works-card:nth-child(1) { animation: mobileCardTilt 6s ease-in-out infinite; }
-      .how-it-works-card:nth-child(2) { animation: mobileCardTilt 6s ease-in-out 1.5s infinite; }
-      .how-it-works-card:nth-child(3) { animation: mobileCardTilt 6s ease-in-out 3s infinite; }
-      .how-it-works-card:nth-child(4) { animation: mobileCardTilt 6s ease-in-out 4.5s infinite; }
-
-      /* Perpetual 3D float for pricing cards */
-      .pricing-card:nth-child(1) { animation: mobileCardFloat 7s ease-in-out infinite; }
-      .pricing-card:nth-child(2) { animation: mobileCardFloat 7s ease-in-out 1.2s infinite; }
-      .pricing-card:nth-child(3) { animation: mobileCardFloat 7s ease-in-out 2.4s infinite; }
-
-      /* Perpetual 3D float for recording cards - Disabled on mobile to prevent layout flickering from audio waveform rendering */
-      .recording-card {
+      /* 1. Stop ambient background animations & remove heavy filters on mobile */
+      .ambient-bg {
+        position: absolute !important; /* fixed -> absolute stops scroll-triggered recomposite */
+      }
+      .bg-blob-1, .bg-blob-2, .bg-blob-3 {
         animation: none !important;
-        /* Disable GPU-heavy effects that cause flickering on mobile */
-        perspective: none !important;
-        transform-style: flat !important;
-        transform: none !important;
+        filter: blur(60px) !important; /* reduce blur radius */
+      }
+      .bg-ray-left, .bg-ray-right {
+        filter: blur(30px) !important;
+      }
+      .bg-horizon-glow {
+        filter: blur(20px) !important;
+      }
+      .bg-stars {
+        mix-blend-mode: normal !important; /* screen blend mode is GPU-heavy */
+        opacity: 0.12 !important;
+      }
+
+      /* 2. Kill ALL backdrop-filter on mobile globally */
+      .glass-card,
+      .recording-card,
+      .feature-card,
+      .pricing-card,
+      .how-it-works-card,
+      .testimonial-card,
+      .founder-card,
+      .contact-form,
+      .comparison-table-container,
+      .MuiAccordion-root,
+      .main-header,
+      .nav-links,
+      .section,
+      .roi-card-widget,
+      .dashboard-showcase-card,
+      .phone-mockup,
+      .audio-player-container,
+      .keyword-tag,
+      [style*="backdrop-filter"] {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        background: rgba(15, 22, 42, 0.85) !important;
+      }
+
+      /* 3. Replace transparent bg-card with solid backgrounds */
+      .recording-card,
+      .feature-card,
+      .pricing-card,
+      .how-it-works-card,
+      .testimonial-card,
+      .founder-card,
+      .glass-card,
+      .dashboard-showcase-card,
+      .roi-card-widget {
+        background: rgba(15, 22, 42, 0.92) !important;
+      }
+      .MuiAccordion-root {
+        background: rgba(15, 22, 42, 0.92) !important;
+      }
+      .contact-form {
+        background: rgba(15, 22, 42, 0.92) !important;
+      }
+      .comparison-table-container {
+        background: rgba(15, 22, 42, 0.92) !important;
+      }
+
+      /* 4. Flatten ALL 3D transforms on mobile - no perspective, no preserve-3d */
+      .feature-card,
+      .pricing-card,
+      .recording-card,
+      .how-it-works-card,
+      .testimonial-card,
+      .founder-card,
+      .roi-card-widget,
+      .diagram-container-3d,
+      .dashboard-showcase-card {
+        perspective: none !important;
+        transform-style: flat !important;
         will-change: auto !important;
+      }
+
+      /* 5. Disable :active 3D transforms (touch scroll fires :active) */
+      .feature-card:active,
+      .pricing-card:active,
+      .recording-card:active,
+      .how-it-works-card:active,
+      .testimonial-card:active,
+      .founder-card:active,
+      .roi-card-widget:active,
+      .diagram-container-3d:active,
+      .dashboard-showcase-card:active {
+        transform: none !important;
+      }
+
+      /* 6. Simplify hover effects on mobile (no 3D rotations) */
+      .feature-card:hover,
+      .recording-card:hover,
+      .how-it-works-card:hover,
+      .testimonial-card:hover,
+      .founder-card:hover,
+      .pricing-card:hover,
+      .roi-card-widget:hover,
+      .dashboard-showcase-card:hover,
+      .diagram-container-3d:hover {
+        transform: translateY(-4px) !important;
+      }
+
+      /* 7. Keep card floating animations but simpler - translateY only */
+      .feature-card:nth-child(1) { animation: mobileSimpleFloat 5s ease-in-out infinite; }
+      .feature-card:nth-child(2) { animation: mobileSimpleFloat 5s ease-in-out 0.8s infinite; }
+      .feature-card:nth-child(3) { animation: mobileSimpleFloat 5s ease-in-out 1.6s infinite; }
+      .feature-card:nth-child(4) { animation: mobileSimpleFloat 5s ease-in-out 2.4s infinite; }
+      .feature-card:nth-child(5) { animation: mobileSimpleFloat 5s ease-in-out 3.2s infinite; }
+      .feature-card:nth-child(6) { animation: mobileSimpleFloat 5s ease-in-out 4s infinite; }
+
+      .how-it-works-card:nth-child(1) { animation: mobileSimpleFloat 6s ease-in-out infinite; }
+      .how-it-works-card:nth-child(2) { animation: mobileSimpleFloat 6s ease-in-out 1.5s infinite; }
+      .how-it-works-card:nth-child(3) { animation: mobileSimpleFloat 6s ease-in-out 3s infinite; }
+      .how-it-works-card:nth-child(4) { animation: mobileSimpleFloat 6s ease-in-out 4.5s infinite; }
+
+      .pricing-card:nth-child(1) { animation: mobileSimpleFloat 7s ease-in-out infinite; }
+      .pricing-card:nth-child(2) { animation: mobileSimpleFloat 7s ease-in-out 1.2s infinite; }
+      .pricing-card:nth-child(3) { animation: mobileSimpleFloat 7s ease-in-out 2.4s infinite; }
+
+      /* Recording cards - NO animation at all */
+      .recording-card {
+        animation: none !important;
+        transform: none !important;
         transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
       }
 
-      /* Prevent :active 3D transform on mobile (touch scroll fires :active) */
-      .recording-card:active {
-        transform: none !important;
+      /* Testimonial cards */
+      .testimonial-card:nth-child(1) { animation: mobileSimpleFloat 5.5s ease-in-out infinite; }
+      .testimonial-card:nth-child(2) { animation: mobileSimpleFloat 5.5s ease-in-out 1s infinite; }
+      .testimonial-card:nth-child(3) { animation: mobileSimpleFloat 5.5s ease-in-out 2s infinite; }
+
+      /* Phone mockup - simple float only */
+      .phone-mockup {
+        animation: mobileSimpleFloat 7s ease-in-out infinite !important;
       }
 
-      .recording-card:hover {
-        transform: none !important;
+      .diagram-container-3d {
+        animation: mobileSimpleFloat 8s ease-in-out infinite;
       }
 
-      /* Simplify audio player backdrop on mobile */
-      .audio-player-container {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+      .roi-card-widget {
+        animation: mobileSimpleFloat 7s ease-in-out infinite;
       }
 
-      /* Optimize recordings grid scrolling on mobile */
+      .dashboard-showcase-card:nth-child(1) {
+        animation: mobileSimpleFloat 6s ease-in-out infinite;
+      }
+      .dashboard-showcase-card:nth-child(2) {
+        animation: mobileSimpleFloat 6s ease-in-out 3s infinite;
+      }
+
+      /* 8. Optimize recordings grid scrolling */
       .recordings-grid {
         touch-action: manipulation;
         contain: layout style;
       }
 
-      /* Testimonial cards */
-      .testimonial-card:nth-child(1) { animation: mobileCardFloat 5.5s ease-in-out infinite; }
-      .testimonial-card:nth-child(2) { animation: mobileCardFloat 5.5s ease-in-out 1s infinite; }
-      .testimonial-card:nth-child(3) { animation: mobileCardFloat 5.5s ease-in-out 2s infinite; }
-
-      /* Phone mockup enhanced 3D on mobile */
-      .phone-mockup {
-        animation: mobilePhoneFloat 7s ease-in-out infinite !important;
-      }
-
-      /* Diagram container */
-      .diagram-container-3d {
-        animation: mobileCardTilt 8s ease-in-out infinite;
-      }
-
-      /* ROI card */
-      .roi-card-widget {
-        animation: mobileCardFloat 7s ease-in-out infinite;
-      }
-
-      /* Dashboard showcase cards */
-      .dashboard-showcase-card:nth-child(1) {
-        animation: mobileCardFloat 6s ease-in-out infinite;
-      }
-      .dashboard-showcase-card:nth-child(2) {
-        animation: mobileCardFloat 6s ease-in-out 3s infinite;
+      /* 9. Optimize FAQ section */
+      .faq-container {
+        contain: layout style;
       }
 
       /* Mascot orbiting ring visible on mobile */
@@ -2484,6 +2574,19 @@ const CustomStyles = () => (
       }
       100% {
         transform: perspective(1200px) translateY(0px) rotateX(4deg) rotateY(8deg) rotateZ(0deg);
+      }
+    }
+
+    /* Simple translateY-only float for mobile - no 3D, no perspective, no GPU compositing layers */
+    @keyframes mobileSimpleFloat {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+      100% {
+        transform: translateY(0);
       }
     }
 
