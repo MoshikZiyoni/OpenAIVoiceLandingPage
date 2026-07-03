@@ -1654,7 +1654,39 @@ const CustomStyles = () => (
       .pricing-card:nth-child(3) { animation: mobileCardFloat 7s ease-in-out 2.4s infinite; }
 
       /* Perpetual 3D float for recording cards - Disabled on mobile to prevent layout flickering from audio waveform rendering */
-      .recording-card { animation: none !important; }
+      .recording-card {
+        animation: none !important;
+        /* Disable GPU-heavy effects that cause flickering on mobile */
+        perspective: none !important;
+        transform-style: flat !important;
+        transform: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(15, 22, 42, 0.85) !important;
+        will-change: auto !important;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+      }
+
+      /* Prevent :active 3D transform on mobile (touch scroll fires :active) */
+      .recording-card:active {
+        transform: none !important;
+      }
+
+      .recording-card:hover {
+        transform: none !important;
+      }
+
+      /* Simplify audio player backdrop on mobile */
+      .audio-player-container {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+
+      /* Optimize recordings grid scrolling on mobile */
+      .recordings-grid {
+        touch-action: manipulation;
+        contain: layout style;
+      }
 
       /* Testimonial cards */
       .testimonial-card:nth-child(1) { animation: mobileCardFloat 5.5s ease-in-out infinite; }
@@ -2581,7 +2613,8 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
   const [isLoading, setIsLoading] = useState(true);
   const audioRef = useRef(null);
 
-  const waveBars = Array.from({ length: 40 }, (_, i) => ({
+  const isMobileDevice = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const waveBars = Array.from({ length: isMobileDevice ? 20 : 40 }, (_, i) => ({
     id: i,
     height: Math.random() * 20 + 5
   }));
@@ -2672,7 +2705,7 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
                   className={`wave-bar ${isActive ? 'active' : ''}`}
                   style={{
                     height: `${bar.height}px`,
-                    animation: isPlaying ? `waveAnimationInner ${Math.random() * 2 + 1}s ease-in-out infinite alternate` : 'none'
+                    animation: (isPlaying && !isMobileDevice) ? `waveAnimationInner ${Math.random() * 2 + 1}s ease-in-out infinite alternate` : 'none'
                   }}
                 />
               );
