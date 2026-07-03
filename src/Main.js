@@ -1812,6 +1812,15 @@ const CustomStyles = () => (
         height: 280px !important;
       }
 
+      /* 10. Disable scroll-reveal dynamic layout shift on mobile to prevent scrolling jumps */
+      .scroll-reveal, .scroll-reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        perspective: none !important;
+        transform-style: flat !important;
+      }
+
     }
 
     /* ========================================
@@ -3355,29 +3364,7 @@ export default function LandingPage() {
     });
   };
 
-  useEffect(() => {
-    // Check if it's a mobile device
-    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
-    if (!isMobile) return;
 
-    const handleOrientation = (event) => {
-      const { beta, gamma } = event;
-      if (beta === null || gamma === null) return;
-
-      // Limit rotation angles for visual appeal
-      const rotY = Math.max(-15, Math.min(15, gamma / 2.5));
-      const rotX = Math.max(-15, Math.min(15, (beta - 50) / 2.5)); // center viewing angle around 50 degrees
-
-      setMascotTilt({
-        transform: `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(12px) scale(1.03)`,
-        transition: 'transform 0.25s ease-out',
-        transformStyle: 'preserve-3d'
-      });
-    };
-
-    window.addEventListener('deviceorientation', handleOrientation);
-    return () => window.removeEventListener('deviceorientation', handleOrientation);
-  }, []);
 
   const handleDiagramChange = (tab) => {
     if (activeDiagram === tab || isTransitioning) return;
