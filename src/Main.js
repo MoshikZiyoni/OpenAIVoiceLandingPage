@@ -26,10 +26,12 @@ import prices_logo from './prices.png'
 import leaveDetailes from './leave_details.png'
 import bshvilLogo from './bshvilLogo.png'
 import dashboardPreview from './dashboardPreview.png'
+import combinedDashboard from './combined_dashboard.png'
 import crmIntegrations from './crmIntegrations.png'
 import heroBg from './hero_tech_bg.png'
 import duritLogo from './dorit_gilad_logo.png'
 import gefenLogo from './gefen_logo.png'
+import newcomLogo from './newcom_logo.png'
 import diallogo from './dial_logo.jpeg'
 import openailogo from './openai.png'
 import migdalLogo from './migdal.png'
@@ -1628,6 +1630,66 @@ const CustomStyles = () => (
         padding: 30px;
       }
 
+      /* ========================================
+         MOBILE 3D ANIMATIONS (ALWAYS-ON)
+         ======================================== */
+
+      /* Perpetual staggered 3D float for feature cards on mobile */
+      .feature-card:nth-child(1) { animation: mobileCardFloat 5s ease-in-out infinite; }
+      .feature-card:nth-child(2) { animation: mobileCardFloat 5s ease-in-out 0.8s infinite; }
+      .feature-card:nth-child(3) { animation: mobileCardFloat 5s ease-in-out 1.6s infinite; }
+      .feature-card:nth-child(4) { animation: mobileCardFloat 5s ease-in-out 2.4s infinite; }
+      .feature-card:nth-child(5) { animation: mobileCardFloat 5s ease-in-out 3.2s infinite; }
+      .feature-card:nth-child(6) { animation: mobileCardFloat 5s ease-in-out 4s infinite; }
+
+      /* Perpetual 3D float for how-it-works cards */
+      .how-it-works-card:nth-child(1) { animation: mobileCardTilt 6s ease-in-out infinite; }
+      .how-it-works-card:nth-child(2) { animation: mobileCardTilt 6s ease-in-out 1.5s infinite; }
+      .how-it-works-card:nth-child(3) { animation: mobileCardTilt 6s ease-in-out 3s infinite; }
+      .how-it-works-card:nth-child(4) { animation: mobileCardTilt 6s ease-in-out 4.5s infinite; }
+
+      /* Perpetual 3D float for pricing cards */
+      .pricing-card:nth-child(1) { animation: mobileCardFloat 7s ease-in-out infinite; }
+      .pricing-card:nth-child(2) { animation: mobileCardFloat 7s ease-in-out 1.2s infinite; }
+      .pricing-card:nth-child(3) { animation: mobileCardFloat 7s ease-in-out 2.4s infinite; }
+
+      /* Perpetual 3D float for recording cards - Disabled on mobile to prevent layout flickering from audio waveform rendering */
+      .recording-card { animation: none !important; }
+
+      /* Testimonial cards */
+      .testimonial-card:nth-child(1) { animation: mobileCardFloat 5.5s ease-in-out infinite; }
+      .testimonial-card:nth-child(2) { animation: mobileCardFloat 5.5s ease-in-out 1s infinite; }
+      .testimonial-card:nth-child(3) { animation: mobileCardFloat 5.5s ease-in-out 2s infinite; }
+
+      /* Phone mockup enhanced 3D on mobile */
+      .phone-mockup {
+        animation: mobilePhoneFloat 7s ease-in-out infinite !important;
+      }
+
+      /* Diagram container */
+      .diagram-container-3d {
+        animation: mobileCardTilt 8s ease-in-out infinite;
+      }
+
+      /* ROI card */
+      .roi-card-widget {
+        animation: mobileCardFloat 7s ease-in-out infinite;
+      }
+
+      /* Dashboard showcase cards */
+      .dashboard-showcase-card:nth-child(1) {
+        animation: mobileCardFloat 6s ease-in-out infinite;
+      }
+      .dashboard-showcase-card:nth-child(2) {
+        animation: mobileCardFloat 6s ease-in-out 3s infinite;
+      }
+
+      /* Mascot orbiting ring visible on mobile */
+      .mascot-orbit-ring {
+        width: 280px !important;
+        height: 280px !important;
+      }
+
     }
 
     /* ========================================
@@ -2259,13 +2321,13 @@ const CustomStyles = () => (
     /* ========================================
        3D TRANSFORMS & FLOATING ANIMATIONS
        ======================================== */
-    .feature-card, .pricing-card, .recording-card, .how-it-works-card, .testimonial-card, .founder-card, .roi-card-widget, .diagram-container-3d {
+    .feature-card, .pricing-card, .recording-card, .how-it-works-card, .testimonial-card, .founder-card, .roi-card-widget, .diagram-container-3d, .dashboard-showcase-card {
       perspective: 1200px;
       transform-style: preserve-3d;
       transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease, border-color 0.4s ease !important;
     }
 
-    .feature-card:active, .pricing-card:active, .recording-card:active, .how-it-works-card:active, .testimonial-card:active, .founder-card:active, .roi-card-widget:active, .diagram-container-3d:active {
+    .feature-card:active, .pricing-card:active, .recording-card:active, .how-it-works-card:active, .testimonial-card:active, .founder-card:active, .roi-card-widget:active, .diagram-container-3d:active, .dashboard-showcase-card:active {
       transform: scale(0.97) rotateX(2deg) rotateY(-2deg) translateZ(2px) !important;
       transition: transform 0.15s ease !important;
     }
@@ -2280,7 +2342,7 @@ const CustomStyles = () => (
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(249, 187, 43, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
     }
 
-    .roi-card-widget:hover {
+    .roi-card-widget:hover, .dashboard-showcase-card:hover {
       transform: translateY(-6px) rotateX(2deg) rotateY(-2deg) translateZ(8px) !important;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
     }
@@ -2340,6 +2402,173 @@ const CustomStyles = () => (
       100% {
         transform: translateY(0px) rotateX(2deg) rotateY(5deg);
       }
+    }
+
+    /* ========================================
+       MOBILE-FIRST 3D KEYFRAMES
+       ======================================== */
+    @keyframes mobileCardFloat {
+      0% {
+        transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0);
+      }
+      25% {
+        transform: translateY(-5px) rotateX(3deg) rotateY(-2deg) translateZ(5px);
+      }
+      50% {
+        transform: translateY(-8px) rotateX(-2deg) rotateY(3deg) translateZ(8px);
+      }
+      75% {
+        transform: translateY(-3px) rotateX(2deg) rotateY(-1deg) translateZ(3px);
+      }
+      100% {
+        transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0);
+      }
+    }
+
+    @keyframes mobileCardTilt {
+      0% {
+        transform: perspective(800px) rotateX(0deg) rotateY(0deg);
+      }
+      33% {
+        transform: perspective(800px) rotateX(4deg) rotateY(-3deg) translateY(-4px);
+      }
+      66% {
+        transform: perspective(800px) rotateX(-3deg) rotateY(4deg) translateY(-6px);
+      }
+      100% {
+        transform: perspective(800px) rotateX(0deg) rotateY(0deg);
+      }
+    }
+
+    @keyframes mobilePhoneFloat {
+      0% {
+        transform: perspective(1200px) translateY(0px) rotateX(4deg) rotateY(8deg) rotateZ(0deg);
+      }
+      33% {
+        transform: perspective(1200px) translateY(-12px) rotateX(-3deg) rotateY(12deg) rotateZ(-2deg);
+      }
+      66% {
+        transform: perspective(1200px) translateY(-6px) rotateX(5deg) rotateY(4deg) rotateZ(1deg);
+      }
+      100% {
+        transform: perspective(1200px) translateY(0px) rotateX(4deg) rotateY(8deg) rotateZ(0deg);
+      }
+    }
+
+    /* ========================================
+       MASCOT ORBITING PARTICLES & RING
+       ======================================== */
+    .mascot-3d-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .mascot-orbit-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 360px;
+      height: 360px;
+      margin-top: -180px;
+      margin-left: -180px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(28, 120, 149, 0.15);
+      animation: orbitRingSpin 20s linear infinite;
+      transform-style: preserve-3d;
+      pointer-events: none;
+    }
+
+    .mascot-orbit-ring::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 14px;
+      height: 14px;
+      margin-left: -7px;
+      margin-top: -7px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f9bb2b, rgba(249, 187, 43, 0.3));
+      box-shadow: 0 0 20px rgba(249, 187, 43, 0.8), 0 0 40px rgba(249, 187, 43, 0.4);
+    }
+
+    .mascot-orbit-ring::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      margin-left: -5px;
+      margin-bottom: -5px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #1c7895, rgba(28, 120, 149, 0.3));
+      box-shadow: 0 0 18px rgba(28, 120, 149, 0.8), 0 0 35px rgba(28, 120, 149, 0.4);
+    }
+
+    .orbit-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .orbit-particle-1 {
+      width: 8px;
+      height: 8px;
+      top: 25%;
+      right: -4px;
+      background: radial-gradient(circle, #6366f1, rgba(99, 102, 241, 0.2));
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.7);
+      animation: particlePulse 2s ease-in-out infinite;
+    }
+
+    .orbit-particle-2 {
+      width: 6px;
+      height: 6px;
+      bottom: 25%;
+      left: -3px;
+      background: radial-gradient(circle, #10b981, rgba(16, 185, 129, 0.2));
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+      animation: particlePulse 2.5s ease-in-out 0.5s infinite;
+    }
+
+    .orbit-particle-3 {
+      width: 5px;
+      height: 5px;
+      top: 10%;
+      left: 20%;
+      background: radial-gradient(circle, #f43f5e, rgba(244, 63, 94, 0.2));
+      box-shadow: 0 0 10px rgba(244, 63, 94, 0.6);
+      animation: particlePulse 3s ease-in-out 1s infinite;
+    }
+
+    .mascot-glow-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 250px;
+      height: 250px;
+      margin-top: -125px;
+      margin-left: -125px;
+      border-radius: 50%;
+      background: radial-gradient(circle, transparent 40%, rgba(28, 120, 149, 0.12) 60%, rgba(249, 187, 43, 0.08) 80%, transparent 100%);
+      animation: glowRingPulse 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes orbitRingSpin {
+      0% { transform: rotateX(65deg) rotateZ(0deg); }
+      100% { transform: rotateX(65deg) rotateZ(360deg); }
+    }
+
+    @keyframes particlePulse {
+      0%, 100% { opacity: 0.5; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.4); }
+    }
+
+    @keyframes glowRingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 1; }
     }
   `}</style>
 );
@@ -2998,11 +3227,11 @@ export default function LandingPage() {
     const handleOrientation = (event) => {
       const { beta, gamma } = event;
       if (beta === null || gamma === null) return;
-      
+
       // Limit rotation angles for visual appeal
       const rotY = Math.max(-15, Math.min(15, gamma / 2.5));
       const rotX = Math.max(-15, Math.min(15, (beta - 50) / 2.5)); // center viewing angle around 50 degrees
-      
+
       setMascotTilt({
         transform: `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(12px) scale(1.03)`,
         transition: 'transform 0.25s ease-out',
@@ -3131,9 +3360,9 @@ export default function LandingPage() {
 
   const clientLogos = [
     { name: "גפן ביטוחים", id: "gefen", src: gefenLogo },
+    { name: "ניוקום", id: "newcom", src: newcomLogo },
     { name: "בשביל הזהב", id: "bshvil", src: bshvilLogo },
     { name: "דורית גלעד פיננסים", id: "durit", src: duritLogo },
-    { name: "OpenAI", id: "openai", src: openailogo },
     { name: "מגדל חברה לביטוח", id: "migdal", src: migdalLogo },
   ];
   // Create a massive duplication (4 sets) to ensure the track is wide enough
@@ -3444,17 +3673,27 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div 
+          <div
             className="hero-mascot"
             onMouseMove={handleMascotMouseMove}
             onMouseLeave={handleMascotMouseLeave}
             style={mascotTilt}
           >
-            <img
-              src={other_logo}
-              alt="Bot 10 – בוט טלפוני בעברית שמנהל שיחות עסקיות אוטומטיות"
-              className="mascot-image"
-            />
+            <div className="mascot-3d-wrapper">
+              {/* Pulsing glow ring behind mascot */}
+              <div className="mascot-glow-ring"></div>
+              {/* 3D orbiting ring with glowing particles */}
+              <div className="mascot-orbit-ring">
+                <div className="orbit-particle orbit-particle-1"></div>
+                <div className="orbit-particle orbit-particle-2"></div>
+                <div className="orbit-particle orbit-particle-3"></div>
+              </div>
+              <img
+                src={other_logo}
+                alt="Bot 10 – בוט טלפוני בעברית שמנהל שיחות עסקיות אוטומטיות"
+                className="mascot-image"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -3486,22 +3725,77 @@ export default function LandingPage() {
       </section>
 
       {/* Dashboard Section - NEW */}
-      <section className="section" style={{ padding: '60px 20px', color: '#fff' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 className="section-title scroll-reveal">שליטה מלאה בידיים שלכם</h2>
-          <p style={{ maxWidth: '700px', margin: '0 auto 40px', fontSize: '1.2rem', color: '#cbd5e1' }}>
-            דשבורד ניהול מתקדם המאפשר לכם לעקוב אחרי כל השיחות, לראות אנליטיקות בזמן אמת, ולהבין בדיוק מה קורה בעסק שלכם.
+      <section className="section" style={{ padding: '80px 20px', color: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 className="section-title scroll-reveal" style={{ textAlign: 'center', marginBottom: '10px' }}>שליטה מלאה ומעקב חכם בידיים שלכם</h2>
+          <p className="scroll-reveal" style={{ maxWidth: '750px', margin: '0 auto 50px', fontSize: '1.15rem', color: '#cbd5e1', textAlign: 'center', lineHeight: '1.7' }}>
+            דשבורד הניהול של Bot 10 מעניק לכם שליטה מוחלטת על פעילות הסוכן הקולי, החל ממעקב אנליטי מקיף ועד להגדרות תזמון מותאמות אישית.
           </p>
-          <div style={{
-            borderRadius: '20px',
-            overflow: 'hidden',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
-            border: '1px solid rgba(255,255,255,0.1)'
+          
+          <div className="dashboard-grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: '30px'
           }}>
-            <img src={dashboardPreview} alt="דשבורד ניהול Bot 10" style={{ width: '100%', display: 'block' }} />
+            {/* Dashboard Card 1 - Analytics */}
+            <div className="dashboard-showcase-card glass-card scroll-reveal-scale" style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '24px',
+              borderRadius: '24px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid var(--border-glass)'
+            }}>
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', marginBottom: '12px' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: '700', color: '#f9bb2b', margin: 0 }}>אנליטיקות וניהול שיחות בזמן אמת</h3>
+                  <BarChart3 size={24} style={{ color: '#f9bb2b' }} />
+                </div>
+                <p style={{ fontSize: '0.95rem', color: '#cbd5e1', lineHeight: '1.6', textAlign: 'right', margin: 0 }}>
+                  עקבו אחר סטטיסטיקות השיחות שלכם בכל רגע נתון. קבלו דוחות מפורטים על איכות המענה, זמני שיחה, סינון לידים חכם ואחוזי סגירת פגישות בעסק.
+                </p>
+              </div>
+              <div style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                <img src={dashboardPreview} alt="דשבורד אנליטיקות Bot 10" style={{ width: '100%', display: 'block' }} />
+              </div>
+            </div>
+
+            {/* Dashboard Card 2 - Follow Up System */}
+            <div className="dashboard-showcase-card glass-card scroll-reveal-scale" style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              padding: '24px',
+              borderRadius: '24px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid var(--border-glass)'
+            }}>
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'flex-end', marginBottom: '12px' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: '700', color: '#f9bb2b', margin: 0 }}>מערך Follow-up וחוקיות חכמה</h3>
+                  <RefreshCw size={24} style={{ color: '#f9bb2b' }} />
+                </div>
+                <p style={{ fontSize: '0.95rem', color: '#cbd5e1', lineHeight: '1.6', textAlign: 'right', margin: 0 }}>
+                  מערכת חוקיות Follow-up מתקדמת עם שליטה מוחלטת על שעות וימי הפעילות (תזמונים מותאמים), הגדרת מרווחי ניסיונות חיוג מחדש, והשבתה אוטומטית מלאה בחגים ובשבתות.
+                </p>
+              </div>
+              <div style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
+                border: '1px solid rgba(255,255,255,0.08)'
+              }}>
+                <img src={combinedDashboard} alt="מערך Follow up מקיף Bot 10" style={{ width: '100%', display: 'block' }} />
+              </div>
+            </div>
           </div>
         </div>
-
       </section >
 
       {/* Comparison Section */}
@@ -3685,7 +3979,7 @@ export default function LandingPage() {
             </button>
           </div>
 
-          <div 
+          <div
             className="diagram-container-3d"
             style={{
               borderRadius: '24px',
