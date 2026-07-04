@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, Activity, Smartphone, Volume2, TrendingUp, DollarSign, ShieldCheck, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, Activity, Smartphone, Volume2, TrendingUp, DollarSign, ShieldCheck, ArrowLeft, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
@@ -1821,6 +1821,35 @@ const CustomStyles = () => (
         transform-style: flat !important;
       }
 
+      /* 11. Typography, diagram tab buttons, and comparison table overrides for all mobile screens */
+      .main-title {
+        font-size: clamp(2rem, 7vw, 2.8rem) !important;
+      }
+      .section-title {
+        font-size: clamp(1.6rem, 6vw, 2.2rem) !important;
+        margin-bottom: 15px !important;
+      }
+      .diagram-tab-btn {
+        padding: 8px 12px !important;
+        font-size: 0.82rem !important;
+        border-radius: 8px !important;
+      }
+      .comparison-table th, .comparison-table td {
+        padding: 10px 8px !important;
+        font-size: 0.85rem !important;
+      }
+      .diagram-arrow {
+        width: 38px !important;
+        height: 38px !important;
+        background: rgba(15, 22, 42, 0.85) !important;
+      }
+      .diagram-arrow.prev {
+        right: 10px !important;
+      }
+      .diagram-arrow.next {
+        left: 10px !important;
+      }
+
     }
 
     /* ========================================
@@ -1897,56 +1926,142 @@ const CustomStyles = () => (
       line-height: 1.6;
     }
 
-    .scenario-buttons {
+     .scenario-slider-container {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .scenario-btn {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--text-body);
-      padding: 14px 20px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 1.05rem;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 16px;
       direction: rtl;
     }
 
-    .scenario-btn:hover, .scenario-btn.active {
-      background: rgba(99, 102, 241, 0.08);
-      border-color: rgba(99, 102, 241, 0.5);
-      color: #fefef9;
-      transform: translateX(-4px);
-    }
-    
-    .scenario-btn.active {
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
-      border-color: var(--indigo);
+    .scenario-active-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      text-align: right;
     }
 
-    .scenario-icon-tag {
-      background: rgba(255, 255, 255, 0.05);
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+    .scenario-icon-tag-large {
+      font-size: 2.2rem;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #f9bb2b;
-      margin-left: 12px;
+      flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.08);
     }
 
-    .scenario-btn.active .scenario-icon-tag {
-      background: rgba(99, 102, 241, 0.2);
-      color: #fff;
+    .scenario-info-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .scenario-active-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fefef9;
+      margin: 0;
+    }
+
+    .scenario-active-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .slider-arrow {
+      background: linear-gradient(135deg, #f9bb2b, #ffd54f) !important;
+      border: none !important;
+      color: #030712 !important;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(249, 187, 43, 0.35), 0 0 10px rgba(249, 187, 43, 0.15);
+    }
+
+    .slider-arrow:hover {
+      background: linear-gradient(135deg, #ffd54f, #f9bb2b) !important;
+      color: #030712 !important;
+      box-shadow: 0 6px 20px rgba(249, 187, 43, 0.5), 0 0 15px rgba(249, 187, 43, 0.3);
+      transform: scale(1.08);
+    }
+    
+    .slider-arrow:active {
+      transform: scale(0.95);
+    }
+
+    .slider-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator-dot.active {
+      background: var(--indigo);
+      width: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+
+    .diagram-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, #f9bb2b, #ffd54f) !important;
+      border: none !important;
+      color: #030712 !important;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 6px 25px rgba(249, 187, 43, 0.45), 0 0 15px rgba(249, 187, 43, 0.2);
+    }
+
+    .diagram-arrow:hover {
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 8px 30px rgba(249, 187, 43, 0.6), 0 0 25px rgba(249, 187, 43, 0.35);
+      background: linear-gradient(135deg, #ffd54f, #f9bb2b) !important;
+    }
+    
+    .diagram-arrow.prev {
+      right: -28px;
+    }
+
+    .diagram-arrow.next {
+      left: -28px;
     }
 
     /* PHONE FRAME MOCKUP */
@@ -3039,6 +3154,20 @@ const InteractivePhoneSimulator = () => {
     timerRefs.current = [];
   };
 
+  const scenarioKeys = Object.keys(scenarios);
+  
+  const handlePrevScenario = () => {
+    const currentIndex = scenarioKeys.indexOf(activeScenario);
+    const prevIndex = (currentIndex - 1 + scenarioKeys.length) % scenarioKeys.length;
+    setActiveScenario(scenarioKeys[prevIndex]);
+  };
+
+  const handleNextScenario = () => {
+    const currentIndex = scenarioKeys.indexOf(activeScenario);
+    const nextIndex = (currentIndex + 1) % scenarioKeys.length;
+    setActiveScenario(scenarioKeys[nextIndex]);
+  };
+
   const startSimulation = (scenarioId) => {
     clearAllTimers();
     setIsPlaying(true);
@@ -3113,19 +3242,35 @@ const InteractivePhoneSimulator = () => {
             שימו לב להבנת השפה הטבעית (NLP), זיהוי כוונות וביצוע משימות קצה (הזמנות, קביעת פגישות, סינון ראשוני) במקביל!
           </div>
 
-          <div className="scenario-buttons">
-            {Object.keys(scenarios).map((key) => (
-              <button
-                key={key}
-                className={`scenario-btn ${activeScenario === key ? 'active' : ''}`}
+          <div className="scenario-slider-container">
+            <button className="slider-arrow prev" onClick={handlePrevScenario} aria-label="הקודם">
+              <ChevronRight size={20} />
+            </button>
+            
+            <div className="scenario-active-card">
+              <span className="scenario-icon-tag-large">{scenarios[activeScenario].avatar}</span>
+              <div className="scenario-info-wrapper">
+                <h4 className="scenario-active-name">{scenarios[activeScenario].name}</h4>
+                <p className="scenario-active-desc">
+                  {activeScenario === 'pizza' && 'סימולציית הזמנת פיצה משפחתית כולל תוספות, שתייה ומשלוח'}
+                  {activeScenario === 'realestate' && 'בירור צרכים, תקציב וסינון לידים מתקדם כולל תיאום פגישת המשך'}
+                  {activeScenario === 'clinic' && 'תיאום וקביעת תור פנוי לטיפול ביומן המרפאה ואישור SMS'}
+                </p>
+              </div>
+            </div>
+
+            <button className="slider-arrow next" onClick={handleNextScenario} aria-label="הבא">
+              <ChevronLeft size={20} />
+            </button>
+          </div>
+          
+          <div className="slider-indicators">
+            {scenarioKeys.map((key) => (
+              <span 
+                key={key} 
+                className={`indicator-dot ${activeScenario === key ? 'active' : ''}`}
                 onClick={() => setActiveScenario(key)}
-              >
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  <span className="scenario-icon-tag">{scenarios[key].avatar}</span>
-                  {scenarios[key].name}
-                </span>
-                <ArrowLeft size={18} style={{ opacity: activeScenario === key ? 1 : 0.4, transform: 'rotate(180deg)' }} />
-              </button>
+              />
             ))}
           </div>
         </div>
@@ -3373,6 +3518,20 @@ export default function LandingPage() {
       setActiveDiagram(tab);
       setIsTransitioning(false);
     }, 250);
+  };
+
+  const diagramKeys = ['scenario1', 'scenario2', 'scenario3', 'scenario4'];
+
+  const handlePrevDiagram = () => {
+    const currentIndex = diagramKeys.indexOf(activeDiagram);
+    const prevIndex = (currentIndex - 1 + diagramKeys.length) % diagramKeys.length;
+    handleDiagramChange(diagramKeys[prevIndex]);
+  };
+
+  const handleNextDiagram = () => {
+    const currentIndex = diagramKeys.indexOf(activeDiagram);
+    const nextIndex = (currentIndex + 1) % diagramKeys.length;
+    handleDiagramChange(diagramKeys[nextIndex]);
   };
 
   useEffect(() => {
@@ -4029,13 +4188,14 @@ export default function LandingPage() {
             justifyContent: 'center'
           }}>
             <button
+              className="diagram-tab-btn"
               onClick={() => handleDiagramChange('scenario1')}
               style={{
                 padding: '12px 24px',
                 borderRadius: '12px',
                 border: 'none',
                 cursor: 'pointer',
-                fontWeight: '600',
+                fontWeight: activeDiagram === 'scenario1' ? '800' : '500',
                 fontSize: '1rem',
                 fontFamily: 'inherit',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -4047,13 +4207,14 @@ export default function LandingPage() {
               תרחיש 1: שיחה נכנסת וטיפול בלידים
             </button>
             <button
+              className="diagram-tab-btn"
               onClick={() => handleDiagramChange('scenario2')}
               style={{
                 padding: '12px 24px',
                 borderRadius: '12px',
                 border: 'none',
                 cursor: 'pointer',
-                fontWeight: '600',
+                fontWeight: activeDiagram === 'scenario2' ? '800' : '500',
                 fontSize: '1rem',
                 fontFamily: 'inherit',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -4065,13 +4226,14 @@ export default function LandingPage() {
               תרחיש 2: מעקב ושיחות יוצאות (Follow-up)
             </button>
             <button
+              className="diagram-tab-btn"
               onClick={() => handleDiagramChange('scenario3')}
               style={{
                 padding: '12px 24px',
                 borderRadius: '12px',
                 border: 'none',
                 cursor: 'pointer',
-                fontWeight: '600',
+                fontWeight: activeDiagram === 'scenario3' ? '800' : '500',
                 fontSize: '1rem',
                 fontFamily: 'inherit',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -4083,13 +4245,14 @@ export default function LandingPage() {
               תרחיש 3: תיאום פגישות אוטומטי מ-CRM
             </button>
             <button
+              className="diagram-tab-btn"
               onClick={() => handleDiagramChange('scenario4')}
               style={{
                 padding: '12px 24px',
                 borderRadius: '12px',
                 border: 'none',
                 cursor: 'pointer',
-                fontWeight: '600',
+                fontWeight: activeDiagram === 'scenario4' ? '800' : '500',
                 fontSize: '1rem',
                 fontFamily: 'inherit',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -4102,40 +4265,60 @@ export default function LandingPage() {
             </button>
           </div>
 
-          <div
-            className="diagram-container-3d"
-            style={{
-              borderRadius: '24px',
-              overflow: 'hidden',
-              boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              background: 'rgba(15, 22, 42, 0.4)',
-              padding: '20px'
-            }}
-          >
-            <img
-              src={
-                activeDiagram === 'scenario1' ? scenarioDiagram :
-                  activeDiagram === 'scenario2' ? scenarioDiagram2 :
-                    activeDiagram === 'scenario3' ? scenarioDiagram3 :
-                      scenarioDiagram4
-              }
-              alt={
-                activeDiagram === 'scenario1' ? "תרשים זרימת שיחה של Bot 10 - שיחה נכנסת וטיפול בלידים" :
-                  activeDiagram === 'scenario2' ? "תרשים זרימת שיחה של Bot 10 - מעקב ושיחות יוצאות (Follow-up)" :
-                    activeDiagram === 'scenario3' ? "תרשים זרימת שיחה של Bot 10 - תיאום פגישות אוטומטי מלידים" :
-                      "תרשים זרימת שיחה של Bot 10 - ניתוב שיחות ומענה במרכזייה"
-              }
+          {/* Diagram Slider Container with Right/Left Navigation Chevrons */}
+          <div style={{ position: 'relative', width: '100%', maxWidth: '1000px', margin: '0 auto', display: 'flex', alignItems: 'center' }}>
+            <button 
+              className="diagram-arrow prev" 
+              onClick={handlePrevDiagram}
+              aria-label="התרחיש הקודם"
+            >
+              <ChevronRight size={24} />
+            </button>
+
+            <div
+              className="diagram-container-3d"
               style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-                borderRadius: '14px',
-                transition: 'opacity 0.25s ease-in-out, transform 0.25s ease-in-out',
-                opacity: isTransitioning ? 0 : 1,
-                transform: isTransitioning ? 'scale(0.98)' : 'scale(1)'
+                flex: 1,
+                borderRadius: '24px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(15, 22, 42, 0.4)',
+                padding: '20px'
               }}
-            />
+            >
+              <img
+                src={
+                  activeDiagram === 'scenario1' ? scenarioDiagram :
+                    activeDiagram === 'scenario2' ? scenarioDiagram2 :
+                      activeDiagram === 'scenario3' ? scenarioDiagram3 :
+                        scenarioDiagram4
+                }
+                alt={
+                  activeDiagram === 'scenario1' ? "תרשים זרימת שיחה של Bot 10 - שיחה נכנסת וטיפול בלידים" :
+                    activeDiagram === 'scenario2' ? "תרשים זרימת שיחה של Bot 10 - מעקב ושיחות יוצאות (Follow-up)" :
+                      activeDiagram === 'scenario3' ? "תרשים זרימת שיחה של Bot 10 - תיאום פגישות אוטומטי מלידים" :
+                        "תרשים זרימת שיחה של Bot 10 - ניתוב שיחות ומענה במרכזייה"
+                }
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  borderRadius: '14px',
+                  transition: 'opacity 0.25s ease-in-out, transform 0.25s ease-in-out',
+                  opacity: isTransitioning ? 0 : 1,
+                  transform: isTransitioning ? 'scale(0.98)' : 'scale(1)'
+                }}
+              />
+            </div>
+
+            <button 
+              className="diagram-arrow next" 
+              onClick={handleNextDiagram}
+              aria-label="התרחיש הבא"
+            >
+              <ChevronLeft size={24} />
+            </button>
           </div>
         </div>
       </section>
