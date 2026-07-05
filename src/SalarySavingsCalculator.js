@@ -9,8 +9,8 @@ const MotionLink = motion(Link);
 const Icons = {
     robot: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4" /><line x1="8" y1="16" x2="8" y2="16" /><line x1="16" y1="16" x2="16" y2="16" /></svg>,
     user: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>,
-    check: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2f855a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
-    x: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c53030" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
+    check: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
+    x: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
     arrowLeft: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
 };
 
@@ -50,11 +50,11 @@ const EnterpriseCostCalculator = () => {
     }, []);
 
     const THEME = {
-        primary: '#103157', // הכחול הכהה של Bot-10
-        accent: '#3182ce',  // כחול בהיר לאלמנטים אינטראקטיביים
-        success: '#10B981', // ירוק לכסף והצלחה
-        error: '#EF4444',   // אדום להוצאות
-        bg: '#F3F4F6'       // רקע כללי
+        primary: '#1c7895', 
+        accent: '#f9bb2b',  
+        success: '#10b981', 
+        error: '#ef4444',   
+        bg: '#020408'       
     };
 
     const [humanMonthlyCost, setHumanMonthlyCost] = useState(0);
@@ -79,21 +79,24 @@ const EnterpriseCostCalculator = () => {
     // --- STYLES ---
     const styles = {
         wrapper: {
-            fontFamily: '"Heebo", sans-serif',
+            fontFamily: '"Assistant", sans-serif',
             padding: isMobile ? '20px 10px' : '40px 20px',
             direction: 'rtl',
-            background: '#f4f7fa',
+            background: THEME.bg,
             display: 'flex',
             justifyContent: 'center',
-            minHeight: '80vh',
+            minHeight: '100vh',
             alignItems: 'center'
         },
         container: {
             width: '100%',
             maxWidth: '1100px',
-            background: '#ffffff',
+            backgroundColor: 'rgba(15, 22, 42, 0.55)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             borderRadius: isMobile ? '20px' : '30px',
-            boxShadow: '0 30px 60px -15px rgba(0,0,0,0.1)',
+            boxShadow: '0 30px 60px -15px rgba(0,0,0,0.4)',
             overflow: 'hidden',
             padding: isMobile ? '25px 15px' : '40px', // פחות ריווח במובייל
         },
@@ -102,22 +105,21 @@ const EnterpriseCostCalculator = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '10px',
-            backgroundColor: '#ffffff',
-            color: THEME.success,
+            backgroundColor: THEME.accent,
+            color: '#080C16',
             padding: '12px 28px',
             borderRadius: '50px',
             fontWeight: '800',
             fontSize: isMobile ? '1rem' : '1.1rem',
             textDecoration: 'none',
             marginTop: '20px',
-            boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+            boxShadow: '0 5px 15px rgba(249, 187, 43, 0.25)',
             cursor: 'pointer',
             border: 'none',
             width: isMobile ? '100%' : 'auto' // כפתור רחב במובייל
         },
         grid: {
             display: 'grid',
-            // השינוי הקריטי למובייל: מאפשר לעמודות לרדת עד 280 פיקסלים לפני שבירה
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 350px), 1fr))',
             gap: isMobile ? '40px' : '60px',
             alignItems: 'start'
@@ -125,7 +127,7 @@ const EnterpriseCostCalculator = () => {
         sectionTitle: {
             fontSize: isMobile ? '1rem' : '1.1rem',
             fontWeight: '800',
-            color: '#1a202c',
+            color: '#fefef9',
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'center',
@@ -151,7 +153,7 @@ const EnterpriseCostCalculator = () => {
         },
         calculationNote: {
             fontSize: '0.75rem',
-            color: '#718096',
+            color: '#94a3b8',
             marginTop: '4px',
             fontWeight: '400'
         }
@@ -172,14 +174,14 @@ const EnterpriseCostCalculator = () => {
                         style={{ 
                             fontSize: isMobile ? '1.8rem' : '2.5rem', // פונט קטן יותר במובייל
                             fontWeight: '900', 
-                            color: '#1a202c', 
+                            color: '#fefef9', 
                             margin: 0,
                             lineHeight: 1.2
                         }}
                     >
                         מחשבון התייעלות וחיסכון
                     </motion.h1>
-                    <p style={{ color: '#718096', fontSize: isMobile ? '1rem' : '1.1rem', marginTop: '10px' }}>
+                    <p style={{ color: '#c8d3e6', fontSize: isMobile ? '1rem' : '1.1rem', marginTop: '10px' }}>
                         בדוק כמה העסק שלך יכול לחסוך במעבר ל-Bot 10
                     </p>
                 </div>
@@ -196,19 +198,19 @@ const EnterpriseCostCalculator = () => {
                             style={{ marginBottom: '40px' }}
                         >
                             <div style={styles.sectionTitle}>
-                                <span style={{ background: '#FED7D7', color: '#C53030', padding: '5px 10px', borderRadius: '8px', fontSize: '0.8rem' }}>1</span>
+                                <span style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', padding: '5px 10px', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid rgba(239, 68, 68, 0.25)' }}>1</span>
                                 כוח האדם הנוכחי
                             </div>
 
                             <InputSlider
                                 label="כמה נציגים להחליף?"
                                 value={numAgents} setValue={setNumAgents} min={1} max={15} suffix="נציגים"
-                                accentColor="#e53e3e"
+                                accentColor="#ef4444"
                             />
                             <InputSlider
                                 label="עלות שעתית (מעביד)"
                                 value={hourlyWage} setValue={setHourlyWage} min={30} max={100} suffix="₪/שעה"
-                                accentColor="#e53e3e"
+                                accentColor="#ef4444"
                             />
                         </motion.div>
 
@@ -219,19 +221,19 @@ const EnterpriseCostCalculator = () => {
                             transition={{ delay: 0.3 }}
                         >
                             <div style={styles.sectionTitle}>
-                                <span style={{ background: '#BEE3F8', color: '#2C5282', padding: '5px 10px', borderRadius: '8px', fontSize: '0.8rem' }}>2</span>
+                                <span style={{ background: 'rgba(28, 120, 149, 0.15)', color: '#1c7895', padding: '5px 10px', borderRadius: '8px', fontSize: '0.8rem', border: '1px solid rgba(28, 120, 149, 0.25)' }}>2</span>
                                 נפח הפעילות
                             </div>
 
                             <InputSlider
                                 label="כמות שיחות ביום"
                                 value={callsPerDay} setValue={setCallsPerDay} min={10} max={1000} step={10} suffix="שיחות"
-                                accentColor="#3182ce"
+                                accentColor="#1c7895"
                             />
                             <InputSlider
                                 label="משך שיחה ממוצע"
                                 value={avgDuration} setValue={setAvgDuration} min={0.5} max={10} step={0.5} suffix="דקות"
-                                accentColor="#3182ce"
+                                accentColor="#1c7895"
                             />
                         </motion.div>
 
@@ -255,7 +257,7 @@ const EnterpriseCostCalculator = () => {
                             />
 
                             <div style={{ position: 'relative', zIndex: 2 }}>
-                                <h3 style={{ margin: '0 0 10px 0', fontSize: isMobile ? '1.1rem' : '1.3rem', opacity: 0.95 }}>החלף את הנציגים ותחסוך:</h3>
+                                <h3 style={{ margin: '0 0 10px 0', fontSize: isMobile ? '1.1rem' : '1.3rem', opacity: 0.95, color: '#white' }}>החלף את הנציגים ותחסוך:</h3>
 
                                 {/* המספר הגדול - פועם */}
                                 <motion.div
@@ -266,13 +268,14 @@ const EnterpriseCostCalculator = () => {
                                         fontSize: isMobile ? '2.5rem' : '3.5rem', // מספר קטן יותר במובייל 
                                         fontWeight: '900', 
                                         lineHeight: 1, 
-                                        textShadow: '0 4px 10px rgba(0,0,0,0.2)' 
+                                        textShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                                        color: '#white'
                                     }}
                                 >
                                     ₪<AnimatedNumber value={savings} />
                                 </motion.div>
 
-                                <p style={{ margin: '10px 0 0 0', fontSize: '1rem', fontWeight: '500', background: 'rgba(255,255,255,0.2)', display: 'inline-block', padding: '5px 15px', borderRadius: '20px' }}>
+                                <p style={{ margin: '10px 0 0 0', fontSize: '1rem', fontWeight: '500', background: 'rgba(255,255,255,0.2)', display: 'inline-block', padding: '5px 15px', borderRadius: '20px', color: '#white' }}>
                                     בכל חודש מחדש!
                                 </p>
 
@@ -298,14 +301,14 @@ const EnterpriseCostCalculator = () => {
 
                         {/* כרטיס אנושי */}
                         <motion.div
-                            style={{ ...styles.card, background: '#FFF5F5', border: '2px solid #FED7D7' }}
+                            style={{ ...styles.card, background: 'rgba(15, 22, 42, 0.65)', border: '2px solid rgba(239, 68, 68, 0.25)' }}
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.4 }}
                             whileHover={{ y: -5, boxShadow: '0 10px 25px rgba(229, 62, 62, 0.1)' }}
                         >
                             <div style={{ marginBottom: '15px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#C53030', fontWeight: 'bold' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ef4444', fontWeight: 'bold' }}>
                                     {Icons.user} צוות אנושי ({numAgents})
                                 </div>
                                 {/* --- תוספת הסבר חישוב אנושי --- */}
@@ -314,34 +317,34 @@ const EnterpriseCostCalculator = () => {
                                 </div>
                             </div>
 
-                            <div style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: '800', color: '#C53030', lineHeight: 1 }}>
+                            <div style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: '800', color: '#ef4444', lineHeight: 1 }}>
                                 ₪<AnimatedNumber value={humanMonthlyCost} />
                             </div>
-                            <div style={{ fontSize: '0.9rem', color: '#E53E3E', opacity: 0.8, marginBottom: '20px' }}>עלות חודשית קבועה</div>
+                            <div style={{ fontSize: '0.9rem', color: '#ef4444', opacity: 0.8, marginBottom: '20px' }}>עלות חודשית קבועה</div>
 
-                            <div style={{ height: '1px', background: '#FED7D7', width: '100%', marginBottom: '20px' }}></div>
+                            <div style={{ height: '1px', background: 'rgba(239, 68, 68, 0.15)', width: '100%', marginBottom: '20px' }}></div>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                <FeatureRow icon={Icons.x} text="תשלום על זמן מת ללא שיחות" color="#C53030" />
-                                <FeatureRow icon={Icons.x} text={`מוגבל ל-${numAgents} שיחות במקביל בלבד`} color="#C53030" />
-                                <FeatureRow icon={Icons.x} text="ימי מחלה, חופשות והפסקות" color="#C53030" />
+                                <FeatureRow icon={Icons.x} text="תשלום על זמן מת ללא שיחות" color="#ef4444" />
+                                <FeatureRow icon={Icons.x} text={`מוגבל ל-${numAgents} שיחות במקביל בלבד`} color="#ef4444" />
+                                <FeatureRow icon={Icons.x} text="ימי מחלה, חופשות והפסקות" color="#ef4444" />
                             </div>
                         </motion.div>
 
                         {/* כרטיס AI */}
                         <motion.div
-                            style={{ ...styles.card, background: '#F0FFF4', border: '2px solid #48BB78' }}
+                            style={{ ...styles.card, background: 'rgba(15, 22, 42, 0.65)', border: '2px solid rgba(16, 185, 129, 0.25)' }}
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.5 }}
                             whileHover={{ y: -5, boxShadow: '0 10px 25px rgba(72, 187, 120, 0.2)' }}
                         >
-                            <div style={{ position: 'absolute', top: 15, left: 15, background: '#48BB78', color: 'white', fontSize: '0.8rem', fontWeight: 'bold', padding: '4px 10px', borderRadius: '12px' }}>
+                            <div style={{ position: 'absolute', top: 15, left: 15, background: '#10b981', color: 'white', fontSize: '0.8rem', fontWeight: 'bold', padding: '4px 10px', borderRadius: '12px' }}>
                                 הבחירה המומלצת
                             </div>
 
                             <div style={{ marginBottom: '15px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#276749', fontWeight: 'bold' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981', fontWeight: 'bold' }}>
                                     {Icons.robot} סוכן Bot-10
                                 </div>
                                 {/* --- תוספת הסבר חישוב בוט --- */}
@@ -350,24 +353,24 @@ const EnterpriseCostCalculator = () => {
                                 </div>
                             </div>
 
-                            <div style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: '800', color: '#2F855A', lineHeight: 1 }}>
+                            <div style={{ fontSize: isMobile ? '2rem' : '2.5rem', fontWeight: '800', color: '#10b981', lineHeight: 1 }}>
                                 ₪<AnimatedNumber value={aiMonthlyCost} />
                             </div>
-                            <div style={{ fontSize: '0.9rem', color: '#2F855A', opacity: 0.8, marginBottom: '20px' }}>עלות לפי צריכה בפועל</div>
+                            <div style={{ fontSize: '0.9rem', color: '#10b981', opacity: 0.8, marginBottom: '20px' }}>עלות לפי צריכה בפועל</div>
 
-                            <div style={{ height: '1px', background: '#9AE6B4', width: '100%', marginBottom: '20px' }}></div>
+                            <div style={{ height: '1px', background: 'rgba(16, 185, 129, 0.15)', width: '100%', marginBottom: '20px' }}></div>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                <FeatureRow icon={Icons.check} text="0 שקלים על זמן המתנה" color="#2F855A" bold />
-                                <FeatureRow icon={Icons.check} text="ללא הגבלת שיחות במקביל" color="#2F855A" bold />
-                                <FeatureRow icon={Icons.check} text="זמינות 24/7 ללא עלות נוספת" color="#2F855A" bold />
+                                <FeatureRow icon={Icons.check} text="0 שקלים על זמן המתנה" color="#10b981" bold />
+                                <FeatureRow icon={Icons.check} text="ללא הגבלת שיחות במקביל" color="#10b981" bold />
+                                <FeatureRow icon={Icons.check} text="זמינות 24/7 ללא עלות נוספת" color="#10b981" bold />
                             </div>
                         </motion.div>
 
                     </div>
                 </div>
                 <div style={{textAlign: 'center', marginTop: '30px'}}>
-                   <Link to="/" className="footer-link" style={{textDecoration: 'none', fontSize: '0.9rem'}}>חזרה לדף הבית</Link>
+                   <Link to="/" className="footer-link" style={{color: '#fefef9', textDecoration: 'underline', fontSize: '0.95rem', fontWeight: '600'}}>חזרה לדף הבית</Link>
                 </div>
 
             </motion.div>
@@ -380,9 +383,9 @@ const EnterpriseCostCalculator = () => {
 const InputSlider = ({ label, value, setValue, min, max, step = 1, suffix, accentColor }) => (
     <div style={{ marginBottom: '25px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center', flexWrap: 'wrap', gap: '5px' }}>
-            <label style={{ color: '#4A5568', fontWeight: '600', fontSize: '1rem' }}>{label}</label>
+            <label style={{ color: '#c8d3e6', fontWeight: '600', fontSize: '0.95rem' }}>{label}</label>
             <div style={{
-                background: 'white', border: `1px solid ${accentColor}`, color: accentColor,
+                background: 'rgba(255, 255, 255, 0.04)', border: '1px solid #f9bb2b', color: '#f9bb2b',
                 padding: '2px 10px', borderRadius: '8px', fontWeight: 'bold', minWidth: '80px', textAlign: 'center'
             }}>
                 {value} <span style={{ fontSize: '0.8em', opacity: 0.8 }}>{suffix}</span>
@@ -393,8 +396,8 @@ const InputSlider = ({ label, value, setValue, min, max, step = 1, suffix, accen
                 type="range" min={min} max={max} step={step} value={value}
                 onChange={(e) => setValue(Number(e.target.value))}
                 style={{
-                    width: '100%', height: '8px', background: '#E2E8F0', borderRadius: '10px',
-                    accentColor: accentColor, outline: 'none', cursor: 'pointer', zIndex: 2
+                    width: '100%', height: '8px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '10px',
+                    accentColor: '#f9bb2b', outline: 'none', cursor: 'pointer', zIndex: 2
                 }}
             />
         </div>
@@ -402,16 +405,16 @@ const InputSlider = ({ label, value, setValue, min, max, step = 1, suffix, accen
 );
 
 const FeatureRow = ({ icon, text, color, bold }) => (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', color: '#4A5568' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', color: '#c8d3e6' }}>
         <div style={{
-            background: bold ? '#F0FFF4' : 'transparent',
+            background: bold ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
             borderRadius: '50%', padding: '2px', display: 'flex',
             color: color,
             flexShrink: 0 // מונע מהאייקון להתכווץ במובייל
         }}>
             {icon}
         </div>
-        <span style={{ fontSize: '0.95rem', fontWeight: bold ? '600' : '400', color: bold ? '#276749' : 'inherit', lineHeight: '1.4' }}>
+        <span style={{ fontSize: '0.95rem', fontWeight: bold ? '600' : '400', color: bold ? '#10b981' : 'inherit', lineHeight: '1.4' }}>
             {text}
         </span>
     </div>

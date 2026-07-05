@@ -3,7 +3,6 @@ import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Z
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
-import AccessibilityButton from './AccessibilityButton';
 import CookiePopup from './Cookies';
 
 // Import audio files
@@ -560,7 +559,7 @@ const CustomStyles = () => (
        ======================================== */
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
       gap: 24px;
       margin-bottom: 60px;
     }
@@ -784,7 +783,7 @@ const CustomStyles = () => (
        ======================================== */
     .recordings-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
       gap: 24px;
       margin-bottom: 60px;
     }
@@ -1444,7 +1443,7 @@ const CustomStyles = () => (
     }
 
     /* Testimonials */
-    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 50px; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; margin-top: 50px; }
     .testimonial-card { 
       background: var(--bg-card); backdrop-filter: blur(16px); 
       padding: 40px; border-radius: 20px; 
@@ -1850,6 +1849,38 @@ const CustomStyles = () => (
         left: 10px !important;
       }
 
+      /* Mobile padding, typography, and card styling adjustments to prevent clipping */
+      .keywords-section {
+        padding: 30px 15px !important;
+        margin-bottom: 30px !important;
+      }
+      .keywords-grid {
+        margin-top: 20px !important;
+        gap: 8px !important;
+      }
+      .keyword-tag {
+        padding: 8px 14px !important;
+        font-size: 0.85rem !important;
+      }
+      .feature-card,
+      .pricing-card,
+      .testimonial-card,
+      .founder-card,
+      .how-it-works-card {
+        padding: 24px 16px !important;
+      }
+      .live-status-ticker {
+        font-size: 0.8rem !important;
+        padding: 6px 12px !important;
+        white-space: normal !important;
+        line-height: 1.4 !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        border-radius: 20px !important;
+      }
+      .phone-mockup {
+        max-width: 100% !important;
+      }
     }
 
     /* ========================================
@@ -3836,7 +3867,6 @@ export default function LandingPage() {
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl', position: 'relative' }}>
 
       <CustomStyles />
-      <AccessibilityButton />
       <CookiePopup />
 
       {/* Modern, Eye-catching Ambient Glow Background with Starfield */}

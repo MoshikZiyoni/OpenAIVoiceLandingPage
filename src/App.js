@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BlogPage from './Blog';
 import EnterpriseCostCalculator from './SalarySavingsCalculator';
 import ContactForm from './Contact';
+import AccessibilityButton from './AccessibilityButton';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/cost-calculator" element={<EnterpriseCostCalculator></EnterpriseCostCalculator>}/>
           <Route path = "/contactform" element={<ContactForm></ContactForm>}/>
         </Routes>
+        <AccessibilityButton />
       </Router>
     </div>
   );
