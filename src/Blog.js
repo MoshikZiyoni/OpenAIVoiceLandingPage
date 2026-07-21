@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Mail, Phone, Linkedin } from 'lucide-react';
+import updatedLogo from './updated_logo.png?url';
 
 // נתוני המאמרים
 const articles = [
@@ -111,7 +113,7 @@ const articles = [
         </section>
         
         <div style={{ textAlign: 'center', margin: '40px 0' }}>
-          <p style={{ fontSize: '1.1rem', marginBottom: '16px', color: '#4c51bf', fontWeight: 600 }}>
+          <p style={{ fontSize: '1.1rem', marginBottom: '16px', color: '#818cf8', fontWeight: 600 }}>
             צפו בדוגמה לסוכן קול AI מתקדם בפעולה:
           </p>
           <iframe
@@ -268,13 +270,29 @@ const BlogPage = () => {
 
   // סגנונות CSS
   const styles = `
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --primary: #1c7895;
+      --primary-dark: #0e4f66;
+      --accent: #f9bb2b;
+      --accent-glow: rgba(249, 187, 43, 0.15);
+      --light: #fefef9;
+      --bg-deep: #080C16;
+      --bg-surface: rgba(12, 18, 36, 0.65);
+      --bg-card: rgba(15, 22, 42, 0.55);
+      --border-glass: rgba(255, 255, 255, 0.06);
+      --border-glass-hover: rgba(249, 187, 43, 0.35);
+      --text-secondary: #94a3b8;
+      --text-body: #cbd5e1;
+    }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Assistant', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f3f4f6;
+      background-color: #020408;
+      color: #fefef9;
       direction: rtl;
     }
 
@@ -294,7 +312,10 @@ const BlogPage = () => {
     .blog-main-title {
       font-size: 2.5rem;
       font-weight: 800;
-      color: #1c7895;
+      background: linear-gradient(135deg, #fefef9 30%, #f9bb2b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-bottom: 10px;
     }
 
@@ -306,53 +327,68 @@ const BlogPage = () => {
     }
 
     .article-card {
-      background: #ffffff;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-radius: 1rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       padding: 24px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border: 1px solid transparent;
+      border: 1px solid var(--border-glass);
     }
 
     .article-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      border-color: #c7d2fe;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--accent-glow);
+      border-color: var(--border-glass-hover);
     }
 
     .article-card-title {
       font-size: 1.25rem;
       font-weight: 700;
-      color: #1f2937;
+      color: #fefef9;
       margin-bottom: 12px;
       line-height: 1.4;
+      transition: color 0.3s;
+    }
+
+    .article-card:hover .article-card-title {
+      color: #f9bb2b;
     }
 
     .article-card-summary {
       font-size: 1rem;
-      color: #4b5563;
+      color: var(--text-body);
       margin-bottom: 20px;
       flex-grow: 1;
     }
 
     .read-more-btn {
       display: inline-block;
-      color: #4c51bf;
+      color: #f9bb2b;
       font-weight: 600;
       text-decoration: none;
       margin-top: auto;
+      transition: transform 0.3s;
+    }
+
+    .article-card:hover .read-more-btn {
+      transform: translateX(-5px);
     }
 
     /* Single Article View Styles */
     .single-article-container {
-      background: #ffffff;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 40px;
       border-radius: 1rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-glass);
       animation: fadeIn 0.5s ease-out;
     }
 
@@ -360,16 +396,18 @@ const BlogPage = () => {
       display: inline-flex;
       align-items: center;
       margin-bottom: 20px;
-      color: #4c51bf;
+      color: #f9bb2b;
       font-weight: 600;
       cursor: pointer;
       background: none;
       border: none;
       font-size: 1rem;
       padding: 0;
+      transition: transform 0.3s;
     }
     
     .back-button:hover {
+      transform: translateX(5px);
       text-decoration: underline;
     }
 
@@ -388,25 +426,27 @@ const BlogPage = () => {
       line-height: 1.25;
       margin-bottom: 16px;
       font-weight: 800;
-      background: linear-gradient(to right, #4c51bf, #7c3aed);
+      background: linear-gradient(135deg, #fefef9 30%, #f9bb2b 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .blog-article {
       max-width: 800px;
       margin: 0 auto;
-      color: #1f2937;
+      color: var(--text-body);
       line-height: 1.75;
     }
 
     .blog-article section {
-      background-color: #ffffff;
+      background-color: rgba(12, 18, 36, 0.4);
       padding: 24px;
       border-radius: 0.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
       margin-bottom: 24px;
       border: 1px solid;
+      backdrop-filter: blur(10px);
     }
 
     .blog-article h2 {
@@ -420,7 +460,7 @@ const BlogPage = () => {
       font-weight: 600;
       margin-top: 20px;
       margin-bottom: 10px;
-      color: #374151;
+      color: #fefef9;
     }
 
     .blog-article p {
@@ -438,17 +478,17 @@ const BlogPage = () => {
     }
 
     /* Colors */
-    .indigo { color: #4c51bf; }
-    .purple { color: #7c3aed; }
-    .green { color: #10b981; }
-    .green-text { color: #10b981; }
-    .semibold { font-weight: 600; }
+    .indigo { color: #818cf8; }
+    .purple { color: #a78bfa; }
+    .green { color: #34d399; }
+    .green-text { color: #f9bb2b; }
+    .semibold { font-weight: 600; color: #fefef9; }
     
     .call-to-action-text {
       text-align: center;
       font-size: 1.25rem;
       font-weight: 700;
-      color: #4c51bf;
+      color: #fefef9;
       margin-top: 40px;
     }
 
@@ -456,23 +496,34 @@ const BlogPage = () => {
       text-align: center;
       font-size: 1.5rem;
       font-weight: 800;
-      color: #7c3aed;
+      color: #f9bb2b;
       margin-top: 16px;
     }
 
     .call-to-action-link a {
-      color: #3b82f6;
+      color: #f9bb2b;
       text-decoration: none;
+      border-bottom: 2px solid #f9bb2b;
     }
 
-    .footer-link {
-      display: block;
+    /* Premium Footer Styles */
+    .footer {
+      border-top: 1px solid rgba(254, 254, 249, 0.1);
+      padding: 60px 20px 40px;
+      background: rgba(8, 12, 22, 0.6);
+      backdrop-filter: blur(10px);
       text-align: center;
-      margin-top: 40px;
-      font-size: 1.1rem;
-      color: #07455c;
-      text-decoration: none;
-      font-weight: 600;
+      margin-top: 80px;
+      width: 100%;
+    }
+
+    .footer-logo {
+      height: 50px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    .footer-logo:hover {
+      transform: scale(1.05);
     }
   `;
 
@@ -483,7 +534,7 @@ const BlogPage = () => {
       {/* Header */}
       <header className="blog-main-header">
         <h1 className="blog-main-title">הבלוג של Bot 10</h1>
-        <p style={{ fontSize: '1.1rem', color: '#4b5563' }}>תובנות, חידושים וכלים לניהול חכם של העסק בעידן ה-AI</p>
+        <p style={{ fontSize: '1.1rem', color: '#94a3b8' }}>תובנות, חידושים וכלים לניהול חכם של העסק בעידן ה-AI</p>
       </header>
 
       {selectedArticleId === null ? (
@@ -514,7 +565,7 @@ const BlogPage = () => {
 
           <header className="blog-header">
             <h1 className="blog-title">{selectedArticle.title}</h1>
-            <p className="blog-intro-text" style={{ fontSize: '1.125rem', color: '#4b5563', maxWidth: '768px', margin: '0 auto' }}>
+            <p className="blog-intro-text" style={{ fontSize: '1.125rem', color: '#cbd5e1', maxWidth: '768px', margin: '0 auto' }}>
               {selectedArticle.summary}
             </p>
           </header>
@@ -523,7 +574,7 @@ const BlogPage = () => {
             {selectedArticle.content}
 
             <p className="call-to-action-text">
-              ב-Bot-10.com אנו מובילים את המהפכה הזו, ומספקים <span style={{ fontWeight: 700, background: 'linear-gradient(to right, #4c51bf, #7c3aed)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>סוכני קול AI מתקדמים</span> המשלבים את כל המגמות והיכולות הללו.
+              ב-Bot-10.com אנו מובילים את המהפכה הזו, ומספקים <span style={{ fontWeight: 700, background: 'linear-gradient(to right, #f9bb2b, #ffd54f)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>סוכני קול AI מתקדמים</span> המשלבים את כל המגמות והיכולות הללו.
             </p>
             <p className="call-to-action-link">
               למידע נוסף ולקביעת פגישת ייעוץ, בקרו באתר שלנו: <Link to="/contactform">Bot-10.com</Link>
@@ -532,7 +583,50 @@ const BlogPage = () => {
         </div>
       )}
 
-      <Link to="/" className="footer-link">חזרה לדף הבית</Link>
+      {/* Premium Footer */}
+      <footer className="footer">
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <img src={updatedLogo} alt="לוגו Bot 10" className="footer-logo" />
+          <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px', color: '#cbd5e1' }}>
+            המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
+          </p>
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '30px',
+            marginBottom: '40px',
+            flexWrap: 'wrap'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Mail size={20} color="#f9bb2b" />
+              <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                bot10.info@gmail.com
+              </a>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Phone size={20} color="#f9bb2b" />
+              <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                052-6134734
+              </a>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Linkedin size={20} color="#f9bb2b" />
+              <a href="https://www.linkedin.com/company/bot10-ai-voice-agents/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div style={{
+            borderTop: '1px solid rgba(254, 254, 249, 0.1)',
+            paddingTop: '30px',
+            opacity: '0.6'
+          }}>
+            <p>© 2026 Bot 10. כל הזכויות שמורות. | <Link to="/accessibility" style={{ color: '#fefef9', textDecoration: 'underline' }}>הצהרת נגישות</Link> | <Link to="/" style={{ color: '#fefef9', textDecoration: 'underline', marginRight: '10px' }}>חזרה לדף הבית</Link></p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

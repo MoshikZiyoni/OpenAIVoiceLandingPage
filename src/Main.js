@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, Activity, Smartphone, Volume2, TrendingUp, DollarSign, ShieldCheck, ArrowLeft, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, Activity, Smartphone, Volume2, TrendingUp, DollarSign, ShieldCheck, ArrowLeft, RefreshCw, ChevronLeft, ChevronRight, Linkedin } from 'lucide-react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import CookiePopup from './Cookies';
 
 // Import audio files
 import gefenUrl from './gefen_record2.mp3?url';
+import gevia from './Gevia_record.mp3?url';
 import law_office from './law_office.mp3?url';
 import pizza from './pizza_miami.mp3?url';
 import jobRecruit from './Job_Recruit.mp3?url';
@@ -14,8 +15,9 @@ import course_agent from './course_agent.mp3?url';
 import politic from './politic_survey.mp3?url';
 import doritgilad from './dorit_gilad.mp3?url';
 import riski from './riski.mp3?url';
+import mashcanta_record from './Mashcanta.mp3?url';
 //Import Images
-import updatedLogo from './updated_logo.png?url';
+import updatedLogo from './new_logo_white.png?url';
 import power from './power.png';
 import how_it from './how_it.png'
 import record_image from './recored_image.png'
@@ -26,18 +28,37 @@ import leaveDetailes from './leave_details.png'
 import bshvilLogo from './bshvilLogo.png'
 import dashboardPreview from './dashboardPreview.png'
 import combinedDashboard from './combined_dashboard.png'
-import crmIntegrations from './crmIntegrations.png'
+import priorityLogo from './CRM-LOGOS/Priority_logo.png';
+import zapierLogo from './CRM-LOGOS/Zapier.png';
+import fireberryLogo from './CRM-LOGOS/fire_berry.png';
+import googleSheetsLogo from './CRM-LOGOS/google sheets.png';
+import hubspotLogo from './CRM-LOGOS/hubspot.png';
+import makeLogo from './CRM-LOGOS/make.png';
+import mondayLogo from './CRM-LOGOS/monday.png';
+import salesforceLogo from './CRM-LOGOS/salesforce.png';
+
 import heroBg from './hero_tech_bg.png'
 import duritLogo from './dorit_gilad_logo.png'
 import gefenLogo from './gefen_logo.png'
 import newcomLogo from './newcom_logo.png'
-import diallogo from './dial_logo.jpeg'
-import openailogo from './openai.png'
+
 import migdalLogo from './migdal.png'
+import insurtechLogo from './insurtech_logo.png'
 import scenarioDiagram from './scenario_1.png'
 import scenarioDiagram2 from './scenario_2.png'
 import scenarioDiagram3 from './scenario_3.png'
 import scenarioDiagram4 from './scenario_4.png'
+
+const crmLogos = [
+  { id: 'monday', name: 'Monday.com', logo: mondayLogo, desc: 'ניהול משימות, לידים ופרויקטים', floatAnim: 'floatCard1 4.2s ease-in-out infinite 0s' },
+  { id: 'salesforce', name: 'Salesforce', logo: salesforceLogo, desc: 'מערכת CRM ארגונית מובילה', floatAnim: 'floatCard2 4.8s ease-in-out infinite 0.6s' },
+  { id: 'hubspot', name: 'HubSpot', logo: hubspotLogo, desc: 'שיווק, מכירות ושירות אוטומטי', floatAnim: 'floatCard3 3.9s ease-in-out infinite 1.2s' },
+  { id: 'zapier', name: 'Zapier', logo: zapierLogo, desc: 'חיבור ואוטומציה בין אלפי אפליקציות', floatAnim: 'floatCard1 4.5s ease-in-out infinite 0.3s' },
+  { id: 'make', name: 'Make', logo: makeLogo, desc: 'בניית תהליכי עבודה ואוטומציות מתקדמות', floatAnim: 'floatCard2 4.1s ease-in-out infinite 1.5s' },
+  { id: 'priority', name: 'Priority', logo: priorityLogo, desc: 'ניהול עסקי עמוק וסנכרון ERP', floatAnim: 'floatCard3 4.7s ease-in-out infinite 0.8s' },
+  { id: 'fireberry', name: 'Fireberry', logo: fireberryLogo, desc: 'ניהול קשרי לקוחות ותהליכי מכירה', floatAnim: 'floatCard1 4.3s ease-in-out infinite 1.8s' },
+  { id: 'sheets', name: 'Google Sheets', logo: googleSheetsLogo, desc: 'סנכרון נתונים וטבלאות בזמן אמת', floatAnim: 'floatCard2 4.6s ease-in-out infinite 0.4s' },
+];
 
 // Custom styles component
 const CustomStyles = () => (
@@ -70,6 +91,8 @@ const CustomStyles = () => (
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     
     html {
@@ -171,6 +194,210 @@ const CustomStyles = () => (
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+
+    /* ========================================
+       FLOATING CRM LOGOS STYLES
+       ======================================== */
+    @keyframes floatCard1 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-14px) rotate(1deg); }
+    }
+
+    @keyframes floatCard2 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-18px) rotate(-1.2deg); }
+    }
+
+    @keyframes floatCard3 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(0.8deg); }
+    }
+
+    @keyframes crmMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .crm-section-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 20px 40px 20px;
+    }
+
+    .crm-ambient-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 350px;
+      background: radial-gradient(circle, rgba(28, 120, 149, 0.18) 0%, rgba(249, 187, 43, 0.08) 45%, transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .crm-floating-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 1024px) {
+      .crm-floating-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .crm-floating-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .crm-floating-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 16px;
+      }
+    }
+
+    .crm-card-wrapper {
+      perspective: 1000px;
+    }
+
+    .crm-floating-card {
+      background: rgba(15, 22, 42, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .crm-floating-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #1c7895, #f9bb2b, transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: 2px;
+    }
+
+    .crm-floating-card:hover {
+      transform: translateY(-16px) scale(1.06) !important;
+      border-color: rgba(249, 187, 43, 0.45);
+      box-shadow: 0 22px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(249, 187, 43, 0.25);
+      background: rgba(22, 34, 60, 0.85);
+      z-index: 10;
+    }
+
+    .crm-floating-card:hover::before {
+      opacity: 1;
+    }
+
+    .crm-logo-img-wrapper {
+      width: 100%;
+      height: 80px;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .crm-floating-card:hover .crm-logo-img-wrapper {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(249, 187, 43, 0.3);
+    }
+
+    .crm-logo-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .crm-logo-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fefef9;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .crm-logo-desc {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .crm-marquee-wrapper {
+      margin-top: 50px;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      padding: 10px 0;
+    }
+
+    .crm-marquee-track {
+      display: inline-flex;
+      gap: 24px;
+      animation: crmMarquee 25s linear infinite;
+    }
+
+    .crm-marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .crm-marquee-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 20px;
+      border-radius: 50px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .crm-marquee-badge-img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    .crm-marquee-badge-text {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      font-weight: 600;
     }
 
     /* ========================================
@@ -648,7 +875,7 @@ const CustomStyles = () => (
        ======================================== */
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: 24px;
       margin-bottom: 60px;
       align-items: stretch;
@@ -1880,6 +2107,222 @@ const CustomStyles = () => (
       }
       .phone-mockup {
         max-width: 100% !important;
+      }
+    }
+
+    /* ========================================
+       MOBILE FIXES FOR 365X854 & NARROW SCREENS
+       ======================================== */
+    @media (max-width: 480px) {
+      html, body {
+        width: 100vw;
+        max-width: 100%;
+        overflow-x: hidden !important;
+      }
+
+      .section {
+        padding: 40px 12px !important;
+      }
+
+      .section-full-width .section-content {
+        padding: 0 12px !important;
+      }
+
+      .hero-section {
+        padding: 95px 12px 35px !important;
+      }
+
+      .main-title {
+        font-size: clamp(1.65rem, 6.5vw, 2.2rem) !important;
+        line-height: 1.25 !important;
+        word-break: break-word !important;
+      }
+
+      .section-title {
+        font-size: clamp(1.4rem, 5.5vw, 1.8rem) !important;
+        line-height: 1.3 !important;
+        margin-bottom: 14px !important;
+        word-break: break-word !important;
+      }
+
+      .subtitle {
+        font-size: 0.95rem !important;
+        line-height: 1.55 !important;
+        margin-bottom: 20px !important;
+      }
+
+      .hero-badge, .live-status-ticker {
+        font-size: 0.78rem !important;
+        padding: 6px 12px !important;
+        white-space: normal !important;
+        text-align: center !important;
+        max-width: 100% !important;
+      }
+
+      .hero-buttons-container {
+        gap: 10px !important;
+        margin-top: 20px !important;
+        width: 100% !important;
+      }
+
+      .cta-button, .cta-button-secondary {
+        padding: 12px 16px !important;
+        font-size: 0.92rem !important;
+        width: 100% !important;
+        justify-content: center !important;
+      }
+
+      .feature-card,
+      .pricing-card,
+      .recording-card,
+      .how-it-works-card,
+      .testimonial-card,
+      .founder-card,
+      .glass-card,
+      .dashboard-showcase-card {
+        padding: 18px 12px !important;
+        border-radius: 16px !important;
+      }
+
+      .pricing-price {
+        font-size: 2.2rem !important;
+      }
+
+      .pricing-title {
+        font-size: 1.3rem !important;
+      }
+
+      .services-card-container {
+        padding: 22px 12px !important;
+        border-radius: 18px !important;
+        margin-bottom: 30px !important;
+      }
+
+      .services-card-container h3 {
+        font-size: 1.6rem !important;
+        margin-bottom: 25px !important;
+      }
+
+      .contact-form {
+        padding: 20px 12px !important;
+        border-radius: 16px !important;
+      }
+
+      .form-input {
+        padding: 10px 12px !important;
+        font-size: 0.92rem !important;
+      }
+
+      .scenario-slider-container {
+        flex-direction: column !important;
+        padding: 12px 10px !important;
+        gap: 10px !important;
+        align-items: stretch !important;
+      }
+
+      .scenario-active-card {
+        width: 100% !important;
+        gap: 10px !important;
+      }
+
+      .scenario-icon-tag-large {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 1.5rem !important;
+      }
+
+      .scenario-active-name {
+        font-size: 0.95rem !important;
+      }
+
+      .scenario-active-desc {
+        font-size: 0.8rem !important;
+      }
+
+      .slider-arrow {
+        width: 38px !important;
+        height: 38px !important;
+        align-self: center !important;
+      }
+
+      .phone-mockup-wrapper {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+
+      .phone-mockup {
+        height: auto !important;
+        min-height: 480px !important;
+        max-height: 550px !important;
+        border-width: 6px !important;
+        border-radius: 28px !important;
+      }
+
+      .phone-screen {
+        padding-top: 16px !important;
+      }
+
+      .phone-header {
+        padding: 10px 10px !important;
+      }
+
+      .phone-footer {
+        padding: 10px 10px !important;
+      }
+
+      .msg-bubble {
+        max-width: 90% !important;
+        font-size: 0.82rem !important;
+        padding: 8px 10px !important;
+      }
+
+      .roi-card-widget {
+        padding: 18px 10px !important;
+        gap: 16px !important;
+        border-radius: 16px !important;
+      }
+
+      .roi-results {
+        padding: 14px 8px !important;
+        gap: 12px !important;
+      }
+
+      .roi-result-num {
+        font-size: 1.9rem !important;
+      }
+
+      .comparison-table-container {
+        border-radius: 12px !important;
+      }
+
+      .comparison-table th, .comparison-table td {
+        padding: 8px 4px !important;
+        font-size: 0.78rem !important;
+      }
+
+      .diagram-tab-btn {
+        padding: 6px 10px !important;
+        font-size: 0.75rem !important;
+        width: 100% !important;
+      }
+
+      .footer .mission-text {
+        padding: 16px 10px !important;
+        margin: 20px 0 !important;
+        font-size: 0.95rem !important;
+      }
+
+      .footer .founder-card {
+        padding: 16px 12px !important;
+      }
+
+      .keywords-section {
+        padding: 20px 10px !important;
+      }
+
+      .keyword-tag {
+        padding: 6px 10px !important;
+        font-size: 0.78rem !important;
       }
     }
 
@@ -3186,7 +3629,7 @@ const InteractivePhoneSimulator = () => {
   };
 
   const scenarioKeys = Object.keys(scenarios);
-  
+
   const handlePrevScenario = () => {
     const currentIndex = scenarioKeys.indexOf(activeScenario);
     const prevIndex = (currentIndex - 1 + scenarioKeys.length) % scenarioKeys.length;
@@ -3277,7 +3720,7 @@ const InteractivePhoneSimulator = () => {
             <button className="slider-arrow prev" onClick={handlePrevScenario} aria-label="הקודם">
               <ChevronRight size={20} />
             </button>
-            
+
             <div className="scenario-active-card">
               <span className="scenario-icon-tag-large">{scenarios[activeScenario].avatar}</span>
               <div className="scenario-info-wrapper">
@@ -3294,11 +3737,11 @@ const InteractivePhoneSimulator = () => {
               <ChevronLeft size={20} />
             </button>
           </div>
-          
+
           <div className="slider-indicators">
             {scenarioKeys.map((key) => (
-              <span 
-                key={key} 
+              <span
+                key={key}
                 className={`indicator-dot ${activeScenario === key ? 'active' : ''}`}
                 onClick={() => setActiveScenario(key)}
               />
@@ -3639,7 +4082,7 @@ export default function LandingPage() {
     {
       icon: Star,
       title: "יכולות שירות ומכירה ברמה גבוהה",
-      description: "הבוט מסוגל לנהל שיחות שירות ומכירה מתקדמות ביעילות של 1:10 לעומת נציג אנושי הוא לא מתעייף וזמן הטיפול מתקצר!"
+      description: "הבוט מסוגל לנהל שיחות שירות ומכירה מתקדמות ביעילות של 1:10 לעומת נציג אנושי, תוך עמידה מלאה ברגולציה ואימות זהות לקוח מאובטח. הוא לא מתעייף וזמן הטיפול מתקצר!"
     },
     {
       icon: BarChart3,
@@ -3677,6 +4120,7 @@ export default function LandingPage() {
     { name: "בשביל הזהב", id: "bshvil", src: bshvilLogo },
     { name: "דורית גלעד פיננסים", id: "durit", src: duritLogo },
     { name: "מגדל חברה לביטוח", id: "migdal", src: migdalLogo },
+    { name: "Insurtech Israel", id: "insurtech", src: insurtechLogo },
   ];
   // Create a massive duplication (4 sets) to ensure the track is wide enough
   // We need enough content to fill the screen width at least once per track.
@@ -3763,6 +4207,17 @@ export default function LandingPage() {
       title: 'תיאום פגישת ייעוץ עו"ד',
       description: "פנייה ללקוח, בדיקת השירות הנדרש והעברת הבקשה לעורך דין שיחזור אליו",
       audioSrc: law_office
+    },
+    {
+      title: 'משכנתא',
+      description: "פנייה ללקוח, בדיקת השירות הנדרש והעברת הבקשה למשכנתא",
+      audioSrc: mashcanta_record
+    },
+
+    {
+      title: 'גביית תשלום',
+      description: "גביית תשלום מלקוח",
+      audioSrc: gevia
     },
     {
       title: "רואת חשבון",
@@ -4043,10 +4498,10 @@ export default function LandingPage() {
           <p className="scroll-reveal" style={{ maxWidth: '750px', margin: '0 auto 50px', fontSize: '1.15rem', color: '#cbd5e1', textAlign: 'center', lineHeight: '1.7' }}>
             דשבורד הניהול של Bot 10 מעניק לכם שליטה מוחלטת על פעילות הסוכן הקולי, החל ממעקב אנליטי מקיף ועד להגדרות תזמון מותאמות אישית.
           </p>
-          
+
           <div className="dashboard-grid" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
             gap: '30px'
           }}>
             {/* Dashboard Card 1 - Analytics */}
@@ -4297,8 +4752,8 @@ export default function LandingPage() {
 
           {/* Diagram Slider Container with Right/Left Navigation Chevrons */}
           <div style={{ position: 'relative', width: '100%', maxWidth: '1000px', margin: '0 auto', display: 'flex', alignItems: 'center' }}>
-            <button 
-              className="diagram-arrow prev" 
+            <button
+              className="diagram-arrow prev"
               onClick={handlePrevDiagram}
               aria-label="התרחיש הקודם"
             >
@@ -4342,8 +4797,8 @@ export default function LandingPage() {
               />
             </div>
 
-            <button 
-              className="diagram-arrow next" 
+            <button
+              className="diagram-arrow next"
               onClick={handleNextDiagram}
               aria-label="התרחיש הבא"
             >
@@ -4442,7 +4897,7 @@ export default function LandingPage() {
 
       {/* Services Section (Moved above Pricing) */}
       <section id="services" className="section">
-        <div style={{
+        <div className="services-card-container" style={{
           background: 'rgba(255, 255, 255, 0.05)',
           backdropFilter: 'blur(10px)',
           borderRadius: '30px',
@@ -4463,7 +4918,7 @@ export default function LandingPage() {
           </h3>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
             gap: '40px'
           }}>
             <div style={{ textAlign: 'center', padding: '10px' }}>
@@ -4538,13 +4993,52 @@ export default function LandingPage() {
 
       {/* Integrations Section */}
       <section className="section">
-        <h2 className="section-title scroll-reveal" style={{ fontSize: '2.5rem' }}>מתממשק לכלים שאתם אוהבים</h2>
-        <div style={{ textAlign: 'center', marginTop: '40px', padding: '0 20px' }}>
-          <img
-            src={crmIntegrations}
-            alt="אינטגרציות CRM - Monday, HubSpot, Salesforce, Zapier..."
-            style={{ width: '100%', maxWidth: '1200px', height: 'auto', display: 'block', margin: '0 auto' }}
-          />
+        <h2 className="section-title scroll-reveal" style={{ fontSize: '2.5rem' }}>
+          מתממשק לכלים שאתם אוהבים
+        </h2>
+        <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '1.15rem', maxWidth: '750px', margin: '14px auto 0 auto' }} className="scroll-reveal">
+          סנכרון מלא וחיבור בזמן אמת לכל מערכות ה-CRM, מסדי הנתונים וכלי האוטומציה המובילים
+        </p>
+
+        <div className="crm-section-container">
+          <div className="crm-ambient-glow" />
+
+          <div className="crm-floating-grid">
+            {crmLogos.map((item, index) => (
+              <div
+                key={item.id}
+                className="crm-card-wrapper scroll-reveal"
+                data-delay={`${index * 0.1}`}
+              >
+                <div
+                  className="crm-floating-card"
+                  style={{
+                    animation: item.floatAnim,
+                  }}
+                >
+                  <div className="crm-logo-img-wrapper">
+                    <img src={item.logo} alt={item.name} className="crm-logo-img" />
+                  </div>
+                  <div className="crm-logo-title">{item.name}</div>
+                  <div className="crm-logo-desc">{item.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Floating Infinite Marquee Ticker */}
+          <div className="crm-marquee-wrapper scroll-reveal">
+            <div className="crm-marquee-track">
+              {[...crmLogos, ...crmLogos, ...crmLogos].map((item, idx) => (
+                <div key={`${item.id}-badge-${idx}`} className="crm-marquee-badge">
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, flexShrink: 0 }}>
+                    <img src={item.logo} alt={item.name} className="crm-marquee-badge-img" />
+                  </div>
+                  <span className="crm-marquee-badge-text">{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -4828,6 +5322,12 @@ export default function LandingPage() {
               <Phone size={20} color="#f9bb2b" />
               <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
                 052-6134734
+              </a>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Linkedin size={20} color="#f9bb2b" />
+              <a href="https://www.linkedin.com/company/bot10-ai-voice-agents/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#fefef9' }}>
+                LinkedIn
               </a>
             </div>
           </div>
