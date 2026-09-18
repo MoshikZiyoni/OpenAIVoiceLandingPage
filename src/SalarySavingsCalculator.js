@@ -34,9 +34,9 @@ const AnimatedNumber = ({ value }) => {
 
 const EnterpriseCostCalculator = () => {
     // --- STATE ---
-    const [callsPerDay, setCallsPerDay] = useState(150);
-    const [avgDuration, setAvgDuration] = useState(2.5);
-    const [numAgents, setNumAgents] = useState(2);
+    const [callsPerDay, setCallsPerDay] = useState(35);
+    const [avgDuration, setAvgDuration] = useState(1.5);
+    const [numAgents, setNumAgents] = useState(1);
     const [hourlyWage, setHourlyWage] = useState(45);
     
     // זיהוי מובייל לשינוי עיצוב
@@ -61,19 +61,23 @@ const EnterpriseCostCalculator = () => {
     const [aiMonthlyCost, setAiMonthlyCost] = useState(0);
     const [savings, setSavings] = useState(0);
 
-    // קבועים
-    const aiPricePerMinute = 1.5;
+    // קבועים תואמים לתמחור הרשמי של Bot 10
+    const basePlanPrice = 1000;      // חבילת בסיס חודשית (החל מחודש 2)
+    const includedMinutes = 600;     // 600 דקות כלולות במחיר הבסיס
+    const extraPricePerMinute = 1.5; // ₪1.5 לכל דקה נוספת מעבר למכסה
     const workingDays = 22;
     const shiftHours = 9;
 
-    // חישובים
+    // חישובים מציאותיים ומדויקים
     useEffect(() => {
         const totalHumanCost = numAgents * hourlyWage * shiftHours * workingDays;
-        const totalAiCost = callsPerDay * avgDuration * aiPricePerMinute * workingDays;
+        const totalMinutes = callsPerDay * avgDuration * workingDays;
+        const extraMinutes = Math.max(0, totalMinutes - includedMinutes);
+        const totalAiCost = basePlanPrice + (extraMinutes * extraPricePerMinute);
 
         setHumanMonthlyCost(Math.floor(totalHumanCost));
         setAiMonthlyCost(Math.floor(totalAiCost));
-        setSavings(Math.floor(totalHumanCost - totalAiCost));
+        setSavings(Math.max(0, Math.floor(totalHumanCost - totalAiCost)));
     }, [callsPerDay, avgDuration, numAgents, hourlyWage]);
 
     // --- STYLES ---
@@ -281,16 +285,44 @@ const EnterpriseCostCalculator = () => {
 
                                 <br />
 
-                                {/* כפתור ה-Link החדש */}
-                                <MotionLink
-                                    to="/contactform"
-                                    style={styles.ctaButton}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    <span>אני רוצה לחסוך את הכסף הזה</span>
-                                    {Icons.arrowLeft}
-                                </MotionLink>
+                                {/* כפתורי הנעה לפעולה */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+                                    <MotionLink
+                                        to="/contactform"
+                                        style={styles.ctaButton}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <span>אני רוצה לחסוך את הכסף הזה</span>
+                                        {Icons.arrowLeft}
+                                    </MotionLink>
+
+                                    <motion.a
+                                        href={`https://wa.me/972526134734?text=${encodeURIComponent(`היי צוות Bot 10, ביצעתי חישוב במחשבון החיסכון:\n- מספר נציגים: ${numAgents}\n- שיחות ביום: ${callsPerDay}\n- חיסכון חודשי משוער: ₪${savings.toLocaleString()}\nאשמח לשמוע פרטים והצעה מותאמת לעסק שלי.`)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '8px',
+                                            background: 'rgba(37, 211, 102, 0.15)',
+                                            border: '1px solid #25d366',
+                                            color: '#25d366',
+                                            padding: '10px 22px',
+                                            borderRadius: '50px',
+                                            fontWeight: '700',
+                                            fontSize: '0.95rem',
+                                            textDecoration: 'none',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                        whileHover={{ scale: 1.03, backgroundColor: '#25d366', color: '#080C16' }}
+                                        whileTap={{ scale: 0.97 }}
+                                    >
+                                        <span>שלח חישוב זה לוואטסאפ להצעה מותאמת</span>
+                                    </motion.a>
+                                </div>
 
                             </div>
                         </motion.div>
@@ -349,7 +381,7 @@ const EnterpriseCostCalculator = () => {
                                 </div>
                                 {/* --- תוספת הסבר חישוב בוט --- */}
                                 <div style={styles.calculationNote}>
-                                    (לפי {aiPricePerMinute} ש"ח לדקה, ללא דמי הקמה)
+                                    (חבילת בסיס ₪1,000 ל-600 דק' + ₪{extraPricePerMinute} לכל דקה נוספת)
                                 </div>
                             </div>
 

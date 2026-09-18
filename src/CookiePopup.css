@@ -1,92 +1,108 @@
-:root {
-  --primary-color: #c62828;
-  --text-color: #333;
-  --background-color: #ffffff;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  --transition-speed: 0.3s;
-}
-
 .cookie-popup {
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  background-color: var(--background-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  z-index: 1000;
-  transform: translateY(200%);
-  transition: transform var(--transition-speed) ease-in-out;
-  max-width: 600px; /* Prevents the popup from being too wide on large screens */
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  max-width: 620px;
   margin: 0 auto;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(10, 118, 240, 0.15);
+  z-index: 9999;
+  transform: translateY(150%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  pointer-events: none;
+  font-family: 'Assistant', sans-serif;
 }
 
 .cookie-popup.visible {
   transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .cookie-popup__content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
-  gap: 1rem;
-  flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+  padding: 1rem 1.25rem;
+  gap: 1.25rem;
 }
 
 .cookie-popup__content p {
   margin: 0;
-  font-size: 1rem;
-  color: var(--text-color);
-  flex-grow: 1; /* Allows the text to take up available space */
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.cookie-popup__content p b {
+  color: #f9bb2b;
 }
 
 .cookie-popup__actions {
   display: flex;
-  gap: 0.75rem;
-  flex-shrink: 0; /* Prevents buttons from shrinking */
+  gap: 0.6rem;
+  flex-shrink: 0;
 }
 
 .cookie-popup__button {
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--border-radius);
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
-  transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
+  font-weight: 600;
+  font-size: 0.88rem;
+  font-family: 'Assistant', sans-serif;
+  transition: all 0.2s ease;
 }
-
-.cookie-popup__button:hover {
-    transform: translateY(-2px); /* Slight lift on hover */
-}
-
 
 .cookie-popup__button--primary {
-  background-color: var(--primary-color);
-  color: white;
+  background: linear-gradient(135deg, #0A76F0, #0056b3);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(10, 118, 240, 0.35);
 }
 
 .cookie-popup__button--primary:hover {
-  background-color: #a02020; /* A darker shade for hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(10, 118, 240, 0.5);
 }
 
 .cookie-popup__button--secondary {
-  background-color: transparent;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .cookie-popup__button--secondary:hover {
-  background-color: var(--primary-color);
-  color: white;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 480px) {
+@media (max-width: 580px) {
+  .cookie-popup {
+    bottom: 16px;
+    left: 12px;
+    right: 12px;
+  }
+
   .cookie-popup__content {
     flex-direction: column;
     text-align: center;
+    gap: 0.85rem;
+  }
+
+  .cookie-popup__actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cookie-popup__button {
+    flex: 1;
   }
 }

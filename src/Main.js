@@ -3,7 +3,6 @@ import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Z
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
-import CookiePopup from './Cookies';
 
 // Import audio files
 import gefenUrl from './gefen_record2.mp3?url';
@@ -3846,10 +3845,12 @@ const InlineRoiCalculator = () => {
   const [leads, setLeads] = useState(800);
   const [hourlyWage, setHourlyWage] = useState(50);
 
-  // ROI calculations
-  const hoursSaved = Math.round(leads * 4 / 60); // 4 minutes per lead
-  const moneySaved = Math.round(leads * 0.08 * hourlyWage * 30); // Multi-factor labor saving estimation
-  const meetingsAdded = Math.round(leads * 0.28); // 28% of leads qualified that would be missed or delayed
+  // חישובי ROI מציאותיים ומדויקים
+  const hoursSaved = Math.max(1, Math.round((leads * 3.5) / 60)); // כ-3.5 דקות בממוצע לשיחה, סיכום ועדכון CRM
+  const laborCostSaved = hoursSaved * hourlyWage * 1.2; // עלות שכר ישירה בתוספת עלויות מעביד
+  const recapturedValue = Math.round(leads * 0.15 * 30); // שווי הצלת 15% שיחות שמתפספסות במוקד אנושי (מענה 24/7)
+  const moneySaved = Math.round(laborCostSaved + recapturedValue);
+  const meetingsAdded = Math.max(1, Math.round(leads * 0.06)); // כ-6% מהשיחות הופכות לפגישות או מכירות מתואמות
 
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -4322,7 +4323,6 @@ export default function LandingPage() {
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl', position: 'relative' }}>
 
       <CustomStyles />
-      <CookiePopup />
 
       {/* Modern, Eye-catching Ambient Glow Background with Starfield */}
       <div className="ambient-bg">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, Linkedin } from 'lucide-react';
+import { Mail, Phone, Linkedin, Share2, Check, Copy, MessageCircle } from 'lucide-react';
 import updatedLogo from './updated_logo.png?url';
 
 // נתוני המאמרים
@@ -265,8 +265,33 @@ const articles = [
 // רכיב דף הבלוג
 const BlogPage = () => {
   const [selectedArticleId, setSelectedArticleId] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   const selectedArticle = articles.find(a => a.id === selectedArticleId);
+
+  const handleShareWhatsApp = (title) => {
+    const url = window.location.href;
+    const text = `${title}\n\nקראו עוד בבלוג של Bot 10:\n${url}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const handleShareLinkedIn = () => {
+    const url = window.location.href;
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const handleShareFacebook = () => {
+    const url = window.location.href;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+  };
+
+  const handleCopyLink = () => {
+    try {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    } catch (e) {}
+  };
 
   // סגנונות CSS
   const styles = `
@@ -506,6 +531,89 @@ const BlogPage = () => {
       border-bottom: 2px solid #f9bb2b;
     }
 
+    /* Share Bar Styles */
+    .share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 24px auto 32px;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      max-width: 600px;
+      flex-wrap: wrap;
+    }
+
+    .share-label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 6px;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .share-btn-whatsapp {
+      background: rgba(37, 211, 102, 0.15);
+      color: #25d366;
+      border-color: rgba(37, 211, 102, 0.3);
+    }
+    .share-btn-whatsapp:hover {
+      background: #25d366;
+      color: #0b0f19;
+    }
+
+    .share-btn-linkedin {
+      background: rgba(10, 102, 194, 0.15);
+      color: #38bdf8;
+      border-color: rgba(10, 102, 194, 0.3);
+    }
+    .share-btn-linkedin:hover {
+      background: #0a66c2;
+      color: #ffffff;
+    }
+
+    .share-btn-facebook {
+      background: rgba(24, 119, 242, 0.15);
+      color: #60a5fa;
+      border-color: rgba(24, 119, 242, 0.3);
+    }
+    .share-btn-facebook:hover {
+      background: #1877f2;
+      color: #ffffff;
+    }
+
+    .share-btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .share-btn-copy:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
     /* Premium Footer Styles */
     .footer {
       border-top: 1px solid rgba(254, 254, 249, 0.1);
@@ -568,10 +676,78 @@ const BlogPage = () => {
             <p className="blog-intro-text" style={{ fontSize: '1.125rem', color: '#cbd5e1', maxWidth: '768px', margin: '0 auto' }}>
               {selectedArticle.summary}
             </p>
+
+            {/* Top Share Bar */}
+            <div className="share-bar">
+              <span className="share-label">
+                <Share2 size={16} color="#f9bb2b" />
+                שתף מאמר:
+              </span>
+              <button
+                className="share-btn share-btn-whatsapp"
+                onClick={() => handleShareWhatsApp(selectedArticle.title)}
+                title="שתף ב-WhatsApp"
+              >
+                <MessageCircle size={15} />
+                WhatsApp
+              </button>
+              <button
+                className="share-btn share-btn-linkedin"
+                onClick={handleShareLinkedIn}
+                title="שתף ב-LinkedIn"
+              >
+                <Linkedin size={15} />
+                LinkedIn
+              </button>
+              <button
+                className="share-btn share-btn-facebook"
+                onClick={handleShareFacebook}
+                title="שתף ב-Facebook"
+              >
+                Facebook
+              </button>
+              <button
+                className="share-btn share-btn-copy"
+                onClick={handleCopyLink}
+                title="העתק קישור למאמר"
+              >
+                {copied ? <Check size={15} color="#22c55e" /> : <Copy size={15} />}
+                {copied ? 'הועתק!' : 'העתק קישור'}
+              </button>
+            </div>
           </header>
 
           <article className="blog-article">
             {selectedArticle.content}
+
+            {/* Bottom Share Bar */}
+            <div className="share-bar" style={{ marginTop: '40px' }}>
+              <span className="share-label">
+                <Share2 size={16} color="#f9bb2b" />
+                אהבת את המאמר? שתף עם קולגות:
+              </span>
+              <button
+                className="share-btn share-btn-whatsapp"
+                onClick={() => handleShareWhatsApp(selectedArticle.title)}
+              >
+                <MessageCircle size={15} />
+                WhatsApp
+              </button>
+              <button
+                className="share-btn share-btn-linkedin"
+                onClick={handleShareLinkedIn}
+              >
+                <Linkedin size={15} />
+                LinkedIn
+              </button>
+              <button
+                className="share-btn share-btn-copy"
+                onClick={handleCopyLink}
+              >
+                {copied ? <Check size={15} color="#22c55e" /> : <Copy size={15} />}
+                {copied ? 'הקישור הועתק!' : 'העתק קישור'}
+              </button>
+            </div>
 
             <p className="call-to-action-text">
               ב-Bot-10.com אנו מובילים את המהפכה הזו, ומספקים <span style={{ fontWeight: 700, background: 'linear-gradient(to right, #f9bb2b, #ffd54f)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>סוכני קול AI מתקדמים</span> המשלבים את כל המגמות והיכולות הללו.
