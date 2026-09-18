@@ -200,6 +200,69 @@
     })(window, document, "clarity", "script", "s3gpbk0sc3");
   </script>
 
+  <!-- OneSignal Custom Styles (RTL, Dark Glassmorphism, Position above Accessibility) -->
+  <style>
+    /* OneSignal Bell Positioning - Clears 'דברו איתנו' completely, sits neatly on right */
+    #onesignal-bell-container {
+      position: fixed !important;
+      bottom: 85px !important;
+      right: 22px !important;
+      left: auto !important;
+      z-index: 998 !important;
+    }
+
+    #onesignal-bell-container .onesignal-bell-launcher {
+      background: linear-gradient(135deg, #0A76F0, #0056b3) !important;
+      box-shadow: 0 4px 15px rgba(10, 118, 240, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* OneSignal Slidedown Dialog - Premium Glassmorphism & RTL styling */
+    #onesignal-slidedown-dialog {
+      font-family: 'Assistant', sans-serif !important;
+      direction: rtl !important;
+      text-align: right !important;
+      background: rgba(13, 20, 36, 0.97) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(249, 187, 43, 0.35) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(10, 118, 240, 0.2) !important;
+      color: #fefef9 !important;
+      max-width: 500px !important;
+    }
+
+    #onesignal-slidedown-dialog #onesignal-slidedown-message {
+      color: #e2e8f0 !important;
+      font-size: 0.95rem !important;
+      line-height: 1.55 !important;
+      font-weight: 500 !important;
+    }
+
+    #onesignal-slidedown-dialog #onesignal-slidedown-allow-button {
+      background: linear-gradient(135deg, #f9bb2b 0%, #e0a31a 100%) !important;
+      color: #0b0f19 !important;
+      font-weight: 700 !important;
+      border-radius: 10px !important;
+      font-family: 'Assistant', sans-serif !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(249, 187, 43, 0.3) !important;
+      transition: transform 0.2s ease !important;
+    }
+
+    #onesignal-slidedown-dialog #onesignal-slidedown-allow-button:hover {
+      transform: translateY(-1px) !important;
+    }
+
+    #onesignal-slidedown-dialog #onesignal-slidedown-cancel-button {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #cbd5e1 !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 10px !important;
+      font-family: 'Assistant', sans-serif !important;
+    }
+  </style>
+
   <!-- OneSignal Web Push (1-Click Free Push Notifications) -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
@@ -210,19 +273,19 @@
         allowLocalhostAsSecureOrigin: true,
         notifyButton: {
           enable: true,
-          position: 'bottom-left',
+          position: 'bottom-right',
           theme: 'inverse',
           text: {
-            'tip.state.unsubscribed': 'הפעל התראות לקבלת עדכונים',
-            'tip.state.subscribed': 'אתה רשום לעדכונים מ-Bot 10',
+            'tip.state.unsubscribed': 'הפעל התראות לקבלת עדכונים מ-Bot 10',
+            'tip.state.subscribed': 'אתה רשום לקבלת עדכונים מ-Bot 10',
             'tip.state.blocked': 'התראות חסומות בדפדפן',
-            'message.prenotify': 'לחץ להרשמה לקבלת עדכונים',
-            'message.action.subscribed': 'תודה שנרשמת לעדכונים!',
-            'message.action.resubscribed': 'נרשמת מחדש לעדכונים',
-            'message.action.unsubscribed': 'ביטלת את ההרשמה',
-            'dialog.main.title': 'ניהול עדכוני Bot 10',
-            'dialog.main.button.subscribe': 'הרשם',
-            'dialog.main.button.unsubscribe': 'בטל הרשמה'
+            'message.prenotify': 'לחץ להרשמה לקבלת עדכונים מ-Bot 10',
+            'message.action.subscribed': 'תודה שנרשמת לקבלת עדכונים!',
+            'message.action.resubscribed': 'נרשמת מחדש לקבלת עדכונים',
+            'message.action.unsubscribed': 'ביטלת את ההרשמה לעדכונים',
+            'dialog.main.title': 'ניהול קבלת עדכונים מ-Bot 10',
+            'dialog.main.button.subscribe': 'אשר קבלת עדכונים',
+            'dialog.main.button.unsubscribe': 'הסר אותי מקבלת עדכונים'
           }
         },
         promptOptions: {
@@ -232,8 +295,8 @@
                 type: "push",
                 autoPrompt: true,
                 text: {
-                  actionMessage: "האם תרצה לקבל עדכונים וחידושים מ-Bot 10?",
-                  acceptButton: "כן, אפשר",
+                  actionMessage: "מעוניינים בעדכונים, טיפים מקצועיים והטבות בלעדיות מ-Bot 10? ההרשמה מרצון וניתנת להסרה בקלות בכל עת.",
+                  acceptButton: "אני מאשר/ת קבלה 🔔",
                   cancelButton: "לא עכשיו"
                 },
                 delay: {
