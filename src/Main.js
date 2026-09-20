@@ -15,6 +15,7 @@ import politic from './politic_survey.mp3?url';
 import doritgilad from './dorit_gilad.mp3?url';
 import riski from './riski.mp3?url';
 import mashcanta_record from './Mashcanta.mp3?url';
+import cloneVoice from './clone_voice.mp3?url';
 //Import Images
 import updatedLogo from './new_logo_white.png?url';
 import power from './power.png';
@@ -1031,6 +1032,53 @@ const CustomStyles = () => (
       border-color: var(--border-glass-hover);
     }
     
+    .recording-card.featured-recording-card {
+      grid-column: 1 / -1;
+      border: 1.5px solid rgba(249, 187, 43, 0.55);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 35px rgba(249, 187, 43, 0.15);
+      position: relative;
+    }
+
+    .recording-card.featured-recording-card:hover {
+      border-color: rgba(249, 187, 43, 0.95);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.55), 0 0 45px rgba(249, 187, 43, 0.3);
+      transform: translateY(-6px) scale(1.005);
+    }
+
+    .recording-featured-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #f9bb2b 0%, #ff9800 100%);
+      color: #0f172a;
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 15px rgba(249, 187, 43, 0.35);
+      letter-spacing: 0.3px;
+    }
+
+    .recording-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    .recording-tag-chip {
+      background: rgba(249, 187, 43, 0.1);
+      border: 1px solid rgba(249, 187, 43, 0.3);
+      color: #fcd34d;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-weight: 600;
+    }
+    
     .recording-title {
       font-size: 1.2rem;
       font-weight: 700;
@@ -1086,11 +1134,16 @@ const CustomStyles = () => (
     
     .audio-progress-container {
       position: relative;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.1);
+      height: 7px;
+      background: rgba(255, 255, 255, 0.12);
       border-radius: 10px;
       cursor: pointer;
       overflow: hidden;
+      transition: background 0.2s ease;
+    }
+
+    .audio-progress-container:hover {
+      background: rgba(255, 255, 255, 0.22);
     }
     
     .audio-progress-bar {
@@ -1114,6 +1167,7 @@ const CustomStyles = () => (
       gap: 1px;
       height: 25px;
       flex: 1;
+      cursor: pointer;
     }
     
     .wave-bar {
@@ -3306,7 +3360,7 @@ const CustomStyles = () => (
 );
 
 // Enhanced Audio player component without volume control
-const AudioPlayer = ({ title, description, audioSrc, style }) => {
+const AudioPlayer = ({ title, description, audioSrc, badge, isFeatured, tags, style }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -3358,8 +3412,12 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
 
   const handleProgressClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickRatio = clickX / rect.width;
+    if (!rect.width || !duration) return;
+
+    // Support both RTL and LTR layouts accurately
+    const isRtl = window.getComputedStyle(e.currentTarget).direction === 'rtl';
+    const clickX = isRtl ? (rect.right - e.clientX) : (e.clientX - rect.left);
+    const clickRatio = Math.max(0, Math.min(1, clickX / rect.width));
     const newTime = clickRatio * duration;
 
     if (audioRef.current) {
@@ -3380,9 +3438,22 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
       "Bot 10 - סוכן קולי AI בעברית | בוט טלפוני למכירות, שירות וסינון לידים 24/7";
   }, []);
   return (
-    <div className="recording-card" style={style}>
+    <div className={`recording-card ${isFeatured ? 'featured-recording-card' : ''}`} style={style}>
+      {badge && (
+        <div className="recording-featured-badge">
+          <Sparkles size={14} style={{ verticalAlign: 'middle', marginLeft: '6px' }} />
+          <span>{badge}</span>
+        </div>
+      )}
       <h3 className="recording-title">{title}</h3>
       <p className="recording-description">{description}</p>
+      {tags && tags.length > 0 && (
+        <div className="recording-tags-container">
+          {tags.map((tag, i) => (
+            <span key={i} className="recording-tag-chip">{tag}</span>
+          ))}
+        </div>
+      )}
 
       <div className="audio-player-container">
         <button className="play-button" onClick={togglePlay} disabled={isLoading}>
@@ -3396,9 +3467,13 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
         </button>
 
         <div className="audio-controls">
-          <div className="audio-wave-visualization">
+          <div 
+            className="audio-wave-visualization" 
+            onClick={handleProgressClick}
+            title="לחץ לקפיצה בשיחה"
+          >
             {waveBars.map((bar, index) => {
-              const isActive = isPlaying && (index / waveBars.length) * 100 < progressPercentage;
+              const isActive = (index / waveBars.length) * 100 <= progressPercentage;
               return (
                 <div
                   key={bar.id}
@@ -3412,7 +3487,11 @@ const AudioPlayer = ({ title, description, audioSrc, style }) => {
             })}
           </div>
 
-          <div className="audio-progress-container" onClick={handleProgressClick}>
+          <div 
+            className="audio-progress-container" 
+            onClick={handleProgressClick}
+            title="לחץ לקפיצה בשיחה"
+          >
             <div
               className="audio-progress-bar"
               style={{ width: `${progressPercentage}%` }}
@@ -4199,6 +4278,20 @@ export default function LandingPage() {
 
   const recordings = [
     {
+      title: "👑 שכפול קול בלעדי - הדגל שלנו (שיחת סינון והדגמה חיה)",
+      description: "הקול הטוב ביותר שלנו אי פעם! שכפול קול אותנטי ומדויק של מושיק (ממייסדי Bot 10). שיחה יוצאת אמיתית שבה הבוט מציג את עצמו, מסנן לידים, וברגע שהלקוח מבקש הדגמה – הבוט מבצע סימולציה חיה של אפיון משכנתא, מתאים את עצמו לפידבק בזמן אמת, ומתאם פגישת המשך עם הצוות בטבעיות מדהימה ללא שום תחושת רובוטיות.",
+      audioSrc: cloneVoice,
+      badge: "⭐ הדגל שלנו - הקול הטוב ביותר אי פעם (שכפול קול אישי)",
+      isFeatured: true,
+      tags: [
+        "🎙️ שכפול קול אותנטי 100%",
+        "🎯 שיחה יוצאת & סינון לידים",
+        "💡 סימולציה חיה של משכנתאות",
+        "⚡ גמישות והתאמה בזמן אמת",
+        "📅 תיאום פגישת המשך אוטומטית"
+      ]
+    },
+    {
       title: " סוכנות ביטוח (סיפור הצלחה🏆)",
       description: "אימות לקוח באמצעות תעודת זהות+תאריך לידה ולאחר מכן מסירת פרטי הפוליסה",
       audioSrc: riski
@@ -4262,10 +4355,14 @@ export default function LandingPage() {
     "מענה טלפוני 24/7", "צ'אטבוט קולי", "מענה אוטומטי לשיחות",
     "עוזר טלפוני", "רובוט טלפוני", "AI", "בינה מלאכותית",
     "עיבוד שפה טבעית", "למידת מכונה", "קריינות", "דיבור בעברית", "חיסכון בזמן", "אוטומציה", "פיתרון דיגיטלי", "סוכן AI",
-    "AI-Voice-Bot-Israel", "AI voice"
+    "AI-Voice-Bot-Israel", "AI voice", "שכפול קול", "שכפול קול AI", "שיבוט קול", "Voice Cloning"
   ];
 
   const faqData = [
+    {
+      question: "האם ניתן להשתמש בקול שלי או של נציג מהעסק (שכפול קול)?",
+      answer: "בהחלט! אנו מתמחים בטכנולוגיית שכפול קול (Voice Cloning) מתקדמת ביותר ברמה בינלאומית. נוכל לדגום את הקול שלכם או של נציג מטעמכם, ולהטמיע אותו בבוט כך שהלקוחות שלכם ישמעו אתכם ישירות – בטבעיות, חום ורהיטות מושלמת (שמעו את הדוגמה הראשית שלנו בהקלטות למעלה!)."
+    },
     {
       question: "איך הבוט יודע לענות על העסק הספציפי שלי?",
       answer: "אנו מבצעים אפיון מעמיק ומלמדים את הבוט על העסק שלכם ואת המטרה שלכם. הבוט יכול להתחבר למאגרי מידע שלכם, כך שהוא עונה מתוך מידע אמיתי של העסק."
@@ -5144,6 +5241,9 @@ export default function LandingPage() {
               title={recording.title}
               description={recording.description}
               audioSrc={recording.audioSrc}
+              badge={recording.badge}
+              isFeatured={recording.isFeatured}
+              tags={recording.tags}
               style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
             />
           ))}
