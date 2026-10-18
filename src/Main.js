@@ -1,5 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
-import { Phone, Database, CheckCircle, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, Activity, Smartphone, Volume2, TrendingUp, DollarSign, ShieldCheck, ArrowLeft, RefreshCw, ChevronLeft, ChevronRight, Linkedin } from 'lucide-react';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import HeroAudioPlayer from './components/HeroAudioPlayer';
+import LeadCaptureForm from './components/LeadCaptureForm';
+import LeadModal from './components/LeadModal';
+import LiteYouTubeEmbed from './components/LiteYouTubeEmbed';
+import StickyMobileBar from './components/StickyMobileBar';
+import UpgradedRoiCalculator from './components/UpgradedRoiCalculator';
+import PricingSection from './components/PricingSection';
+import IndustrySolutions from './components/IndustrySolutions';
+import { Phone, Database, Play, Pause, Mail, MessageSquare, Star, Zap, Users, BarChart3, Clock, Menu, X, ClipboardCheck, DraftingCompass, FlaskConical, Rocket, Sparkles, RefreshCw, ChevronLeft, ChevronRight, Linkedin } from 'lucide-react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
@@ -23,7 +32,6 @@ import how_it from './how_it.png'
 import record_image from './recored_image.png'
 import other_logo from './other_logo.png'
 import qa_logo from './qa.png'
-import prices_logo from './prices.png'
 import leaveDetailes from './leave_details.png'
 import bshvilLogo from './bshvilLogo.png'
 import dashboardPreview from './dashboardPreview.png'
@@ -37,7 +45,6 @@ import makeLogo from './CRM-LOGOS/make.png';
 import mondayLogo from './CRM-LOGOS/monday.png';
 import salesforceLogo from './CRM-LOGOS/salesforce.png';
 
-import heroBg from './hero_tech_bg.png'
 import duritLogo from './dorit_gilad_logo.png'
 import gefenLogo from './gefen_logo.png'
 import newcomLogo from './newcom_logo.png'
@@ -3360,47 +3367,59 @@ const CustomStyles = () => (
 );
 
 // Enhanced Audio player component without volume control
-const AudioPlayer = ({ title, description, audioSrc, badge, isFeatured, tags, style }) => {
+const AudioPlayer = ({ title, description, audioSrc, badge, isFeatured, tags, style, onTrackPlay }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef(null);
 
   const isMobileDevice = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const waveBars = Array.from({ length: isMobileDevice ? 20 : 40 }, (_, i) => ({
+  const waveBars = useMemo(() => Array.from({ length: isMobileDevice ? 20 : 40 }, (_, i) => ({
     id: i,
     height: Math.random() * 20 + 5
-  }));
+  })), [isMobileDevice]);
+
+  const syncDuration = () => {
+    const audio = audioRef.current;
+    if (audio && audio.duration && !isNaN(audio.duration) && audio.duration !== Infinity) {
+      setDuration(audio.duration);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleLoadedMetadata = () => {
-      setDuration(audio.duration);
-      setIsLoading(false);
-    };
+    if (audio.readyState >= 1 && audio.duration && !isNaN(audio.duration)) {
+      syncDuration();
+    }
 
-    const handleTimeUpdate = () => {
+    const handleLoaded = () => syncDuration();
+    const handleTime = () => {
       setCurrentTime(audio.currentTime);
+      if (!duration && audio.duration) syncDuration();
     };
-
-    const handleEnded = () => {
+    const handleEnd = () => {
       setIsPlaying(false);
       setCurrentTime(0);
     };
 
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('loadedmetadata', handleLoaded);
+    audio.addEventListener('loadeddata', handleLoaded);
+    audio.addEventListener('canplay', handleLoaded);
+    audio.addEventListener('timeupdate', handleTime);
+    audio.addEventListener('ended', handleEnd);
 
     return () => {
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('loadedmetadata', handleLoaded);
+      audio.removeEventListener('loadeddata', handleLoaded);
+      audio.removeEventListener('canplay', handleLoaded);
+      audio.removeEventListener('timeupdate', handleTime);
+      audio.removeEventListener('ended', handleEnd);
     };
-  }, []);
+  }, [audioSrc, duration]);
 
   const togglePlay = () => {
     if (isPlaying) {
@@ -3467,8 +3486,8 @@ const AudioPlayer = ({ title, description, audioSrc, badge, isFeatured, tags, st
         </button>
 
         <div className="audio-controls">
-          <div 
-            className="audio-wave-visualization" 
+          <div
+            className="audio-wave-visualization"
             onClick={handleProgressClick}
             title="לחץ לקפיצה בשיחה"
           >
@@ -3487,8 +3506,8 @@ const AudioPlayer = ({ title, description, audioSrc, badge, isFeatured, tags, st
             })}
           </div>
 
-          <div 
-            className="audio-progress-container" 
+          <div
+            className="audio-progress-container"
             onClick={handleProgressClick}
             title="לחץ לקפיצה בשיחה"
           >
@@ -3508,534 +3527,45 @@ const AudioPlayer = ({ title, description, audioSrc, badge, isFeatured, tags, st
       <audio
         ref={audioRef}
         src={audioSrc}
-        onEnded={() => setIsPlaying(false)}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
         preload="metadata"
+        onLoadedMetadata={syncDuration}
+        onCanPlay={syncDuration}
+        onEnded={() => {
+          setIsPlaying(false);
+          setCurrentTime(0);
+        }}
+        onPlay={() => {
+          setIsPlaying(true);
+          if (onTrackPlay) onTrackPlay(title);
+        }}
+        onPause={() => setIsPlaying(false)}
       />
     </div>
-  );
-};
-
-// Contact form component
-const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    message: ''
-  });
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('https://formspree.io/f/xpwrjdyl', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (data.ok) {
-        alert('תודה על פנייתך! נחזור אליך בהקדם');
-        setFormData({ name: '', email: '', phone: '', company: '', message: '' });
-      } else {
-        alert('אירעה שגיאה בשליחת הטופס');
-      }
-    } catch (error) {
-      alert('אירעה שגיאה בשליחת הטופס. נסה שוב או פנה אלינו ישירות.');
-      console.error(error);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  return (
-    <div className="contact-form-container">
-      <form className="contact-form" onSubmit={handleSubmit}>
-        <h3 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '10px', textAlign: 'center', color: '#fefef9' }}>
-          בואו נתחיל לעבוד יחד
-        </h3>
-        <p style={{ textAlign: 'center', marginBottom: '30px', color: '#94a3b8' }}>מלאו את הפרטים ונציג (אנושי!) יחזור אליכם</p>
-
-        <div className="form-group">
-          <label className="form-label">שם מלא</label>
-          <input
-            type="text"
-            name="name"
-            className="form-input"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            placeholder="ישראל ישראלי"
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">אימייל</label>
-          <input
-            type="email"
-            name="email"
-            className="form-input"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            placeholder="israel@gmail.com"
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">טלפון</label>
-          <input
-            type="tel"
-            name="phone"
-            className="form-input"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            placeholder="050-0000000"
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">שם החברה</label>
-          <input
-            type="text"
-            name="company"
-            className="form-input"
-            value={formData.company}
-            onChange={handleChange}
-            required
-            placeholder="שם העסק"
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">הודעה</label>
-          <textarea
-            name="message"
-            className="form-input form-textarea"
-            value={formData.message}
-            onChange={handleChange}
-            placeholder="ספרו לנו על הצרכים שלכם..."
-          />
-        </div>
-
-        <button type="submit" className="submit-button btn-shimmer">
-          שלח פנייה
-        </button>
-      </form>
-
-      <div style={{ justifySelf: 'center' }}>
-        <img
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/528e0dac3_WhatsAppImage2025-06-19at175252.jpeg"
-          alt="צור קשר עם צוות Bot 10 להטמעת עוזר קולי AI בעסק שלך"
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-            borderRadius: '20px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)',
-            animation: 'float 4s ease-in-out infinite'
-          }}
-        />
-      </div>
-    </div>
-  );
-};
-
-// ============================================================================
-// NEW COMPONENT: INTERACTIVE PHONE SIMULATOR (CONVERSION WIDGET)
-// ============================================================================
-const InteractivePhoneSimulator = () => {
-  const [activeScenario, setActiveScenario] = useState('pizza');
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const chatEndRef = useRef(null);
-  const timerRefs = useRef([]);
-
-  const scenarios = {
-    pizza: {
-      name: 'הזמנת פיצה 🍕',
-      avatar: '🍕',
-      script: [
-        { sender: 'bot', text: 'שלום, הגעת לפיצה דונלד! איזה מגש נוכל להכין לך היום?' },
-        { sender: 'user', text: 'היי, רציתי להזמין פיצה משפחתית עם זיתים ובצל.' },
-        { sender: 'bot', text: 'בטח! משפחתית עם זיתים ובצל. תרצה להוסיף שתייה או תוספת נוספת?' },
-        { sender: 'user', text: 'כן, בקבוק קולה גדול וזהו.' },
-        { sender: 'bot', text: 'מצוין, בקבוק קולה ופיצה משפחתית עם זיתים ובצל. ההזמנה התקבלה ונשלחה להכנה! תרצה לשלם באשראי כעת?' },
-        { sender: 'user', text: 'כן, תודה רבה!' }
-      ]
-    },
-    realestate: {
-      name: 'סינון לידים לנדל"ן 🏢',
-      avatar: '🏢',
-      script: [
-        { sender: 'bot', text: 'היי! הגעת לנציג ה-AI של סוכנות נדל״ן טופ. מחפש דירה לקנייה או להשכרה?' },
-        { sender: 'user', text: 'אהלן, אני מחפש לקנות דירת 4 חדרים באזור גבעתיים.' },
-        { sender: 'bot', text: 'גבעתיים זה אזור מעולה! מה התקציב המשוער שלך לרכישה?' },
-        { sender: 'user', text: 'בסביבות ה-3.2 מיליון שקלים.' },
-        { sender: 'bot', text: 'מצוין. יש לנו 2 נכסים שעונים בדיוק על ההגדרות האלו! נוח לך שנציג מומחה יחזור אליך מחר בבוקר לתיאום סיור?' },
-        { sender: 'user', text: 'כן, מעולה. בשעה 10:00 זה מצוין.' }
-      ]
-    },
-    clinic: {
-      name: 'תור למרפאת שיניים 🩺',
-      avatar: '🩺',
-      script: [
-        { sender: 'bot', text: 'שלום, כאן עוזר ה-AI של מרפאת שיניים דוקטור גל. איך אוכל לעזור לך היום?' },
-        { sender: 'user', text: 'היי, אני צריך לקבוע תור דחוף לבדיקה או שיננית השבוע.' },
-        { sender: 'bot', text: 'אשמח לעזור. יש לי תור פנוי לשיננית ביום רביעי הקרוב ב-16:00, או ביום חמישי ב-09:30 בבוקר. מה עדיף לך?' },
-        { sender: 'user', text: 'יום רביעי ב-16:00 מתאים לי מאוד.' },
-        { sender: 'bot', text: 'רשמתי! התור נקבע ליום רביעי ב-16:00. תשלח לי הודעת אישור ב-SMS כעת. נתראה במרפאה!' }
-      ]
-    }
-  };
-
-  const clearAllTimers = () => {
-    timerRefs.current.forEach(clearTimeout);
-    timerRefs.current = [];
-  };
-
-  const scenarioKeys = Object.keys(scenarios);
-
-  const handlePrevScenario = () => {
-    const currentIndex = scenarioKeys.indexOf(activeScenario);
-    const prevIndex = (currentIndex - 1 + scenarioKeys.length) % scenarioKeys.length;
-    setActiveScenario(scenarioKeys[prevIndex]);
-  };
-
-  const handleNextScenario = () => {
-    const currentIndex = scenarioKeys.indexOf(activeScenario);
-    const nextIndex = (currentIndex + 1) % scenarioKeys.length;
-    setActiveScenario(scenarioKeys[nextIndex]);
-  };
-
-  const startSimulation = (scenarioId) => {
-    clearAllTimers();
-    setIsPlaying(true);
-    setMessages([]);
-    setIsTyping(false);
-
-    const script = scenarios[scenarioId].script;
-    let accumulatedDelay = 500;
-
-    script.forEach((msg, idx) => {
-      // Typing indicator delay
-      const typeTimer = setTimeout(() => {
-        setIsTyping(true);
-      }, accumulatedDelay);
-      timerRefs.current.push(typeTimer);
-
-      accumulatedDelay += 1200 + msg.text.length * 20;
-
-      // Add message delay
-      const msgTimer = setTimeout(() => {
-        setIsTyping(false);
-        setMessages(prev => [...prev, msg]);
-      }, accumulatedDelay);
-      timerRefs.current.push(msgTimer);
-
-      accumulatedDelay += 800;
-    });
-
-    const endTimer = setTimeout(() => {
-      setIsPlaying(false);
-    }, accumulatedDelay);
-    timerRefs.current.push(endTimer);
-  };
-
-  const stopSimulation = () => {
-    clearAllTimers();
-    setIsPlaying(false);
-    setMessages([]);
-    setIsTyping(false);
-  };
-
-  useEffect(() => {
-    // Scroll to bottom of chat screen
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, isTyping]);
-
-  useEffect(() => {
-    stopSimulation();
-    return () => clearAllTimers();
-  }, [activeScenario]);
-
-  return (
-    <section className="section simulator-section scroll-reveal">
-      <div className="simulator-container">
-
-        {/* Info Content */}
-        <div className="simulator-info">
-          <div className="live-status-ticker">
-            <span className="live-pulse-dot"></span>
-            <span>סוכן קולי AI בפעולה בזמן אמת</span>
-          </div>
-          <h2 className="section-title" style={{ textAlign: 'right', marginBottom: '15px' }}>
-            נסו את הבוט בפעולה
-          </h2>
-          <p style={{ color: 'var(--text-body)', fontSize: '1.15rem', lineHeight: '1.6', marginBottom: '20px' }}>
-            בחרו אחד מהתרחישים הנפוצים למטה, ולחצו על כפתור ההפעלה בטלפון כדי לראות כיצד סוכן ה-AI מתנהל מול הלקוח בצורה אנושית וזורמת לחלוטין.
-          </p>
-
-          <div className="highlight-box">
-            שימו לב להבנת השפה הטבעית (NLP), זיהוי כוונות וביצוע משימות קצה (הזמנות, קביעת פגישות, סינון ראשוני) במקביל!
-          </div>
-
-          <div className="scenario-slider-container">
-            <button className="slider-arrow prev" onClick={handlePrevScenario} aria-label="הקודם">
-              <ChevronRight size={20} />
-            </button>
-
-            <div className="scenario-active-card">
-              <span className="scenario-icon-tag-large">{scenarios[activeScenario].avatar}</span>
-              <div className="scenario-info-wrapper">
-                <h4 className="scenario-active-name">{scenarios[activeScenario].name}</h4>
-                <p className="scenario-active-desc">
-                  {activeScenario === 'pizza' && 'סימולציית הזמנת פיצה משפחתית כולל תוספות, שתייה ומשלוח'}
-                  {activeScenario === 'realestate' && 'בירור צרכים, תקציב וסינון לידים מתקדם כולל תיאום פגישת המשך'}
-                  {activeScenario === 'clinic' && 'תיאום וקביעת תור פנוי לטיפול ביומן המרפאה ואישור SMS'}
-                </p>
-              </div>
-            </div>
-
-            <button className="slider-arrow next" onClick={handleNextScenario} aria-label="הבא">
-              <ChevronLeft size={20} />
-            </button>
-          </div>
-
-          <div className="slider-indicators">
-            {scenarioKeys.map((key) => (
-              <span
-                key={key}
-                className={`indicator-dot ${activeScenario === key ? 'active' : ''}`}
-                onClick={() => setActiveScenario(key)}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile Phone Mockup */}
-        <div className="phone-mockup-wrapper">
-          <div className="phone-mockup">
-            <div className="phone-notch">
-              <div className="phone-speaker"></div>
-              <div className="phone-camera"></div>
-            </div>
-
-            <div className="phone-screen">
-              {/* Header */}
-              <div className="phone-header">
-                <Volume2 size={20} color="#f9bb2b" style={{ opacity: isPlaying && !isTyping && messages[messages.length - 1]?.sender === 'bot' ? 1 : 0.3 }} />
-                <div className="phone-header-info">
-                  <div className="phone-status">
-                    <span className="phone-status-title">סוכן קולי Bot 10</span>
-                    <span className="phone-status-subtitle">
-                      <span className="live-pulse-dot" style={{ width: '6px', height: '6px' }}></span>
-                      מחובר | פעיל
-                    </span>
-                  </div>
-                  <div className="phone-avatar">
-                    {scenarios[activeScenario].avatar}
-                  </div>
-                </div>
-              </div>
-
-              {/* Chat Body */}
-              <div className="phone-chat-body">
-                {messages.length === 0 && !isTyping && (
-                  <div style={{ textAlign: 'center', margin: 'auto', color: 'var(--text-secondary)', padding: '0 20px', fontSize: '0.95rem' }}>
-                    <Smartphone size={40} style={{ margin: '0 auto 15px', color: 'rgba(255,255,255,0.1)' }} />
-                    לחצו על הכפתור למטה כדי להתחיל הדמיית שיחה קולית
-                  </div>
-                )}
-
-                {messages.map((msg, i) => (
-                  <div key={i} className={`msg-bubble ${msg.sender}`}>
-                    {msg.text}
-                  </div>
-                ))}
-
-                {isTyping && (
-                  <div className="msg-bubble bot" style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '10px 14px' }}>
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#fff', animation: 'pulse 1s infinite' }} />
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#fff', animation: 'pulse 1s infinite 0.2s' }} />
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#fff', animation: 'pulse 1s infinite 0.4s' }} />
-                  </div>
-                )}
-
-                <div ref={chatEndRef}></div>
-              </div>
-
-              {/* Footer */}
-              <div className="phone-footer">
-                {isPlaying && (
-                  <div className="phone-wave-visualization">
-                    {Array.from({ length: 15 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="phone-wave-bar active"
-                        style={{
-                          animationDelay: `${i * 0.05}s`,
-                          background: isTyping ? 'rgba(255,255,255,0.2)' : '#f9bb2b'
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {!isPlaying ? (
-                  <button className="phone-action-btn" onClick={() => startSimulation(activeScenario)}>
-                    <Play size={16} />
-                    הפעל הדמיית שיחה
-                  </button>
-                ) : (
-                  <button className="phone-action-btn active" onClick={stopSimulation}>
-                    <Pause size={16} />
-                    עצור שיחה
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-// ============================================================================
-// NEW COMPONENT: INLINE ROI CALCULATOR (CONVERSION WIDGET)
-// ============================================================================
-const InlineRoiCalculator = () => {
-  const [leads, setLeads] = useState(800);
-  const [hourlyWage, setHourlyWage] = useState(50);
-
-  // חישובי ROI מציאותיים ומדויקים
-  const hoursSaved = Math.max(1, Math.round((leads * 3.5) / 60)); // כ-3.5 דקות בממוצע לשיחה, סיכום ועדכון CRM
-  const laborCostSaved = hoursSaved * hourlyWage * 1.2; // עלות שכר ישירה בתוספת עלויות מעביד
-  const recapturedValue = Math.round(leads * 0.15 * 30); // שווי הצלת 15% שיחות שמתפספסות במוקד אנושי (מענה 24/7)
-  const moneySaved = Math.round(laborCostSaved + recapturedValue);
-  const meetingsAdded = Math.max(1, Math.round(leads * 0.06)); // כ-6% מהשיחות הופכות לפגישות או מכירות מתואמות
-
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  return (
-    <section id="roi-calculator" className="roi-section scroll-reveal">
-      <div style={{ maxWidth: '800px', margin: '0 auto 50px', textAlign: 'center' }}>
-        <h2 className="section-title">מחשבון ROI - כמה תחסכו בחודש?</h2>
-        <p style={{ color: 'var(--text-body)', fontSize: '1.2rem', lineHeight: '1.6' }}>
-          הקלידו את נתוני העסק שלכם וראו מיידית את כמות השעות, הכסף והפגישות שהבוט הקולי החכם יחסוך ויניב לכם בכל חודש.
-        </p>
-      </div>
-
-      <div className="roi-card-widget">
-
-        {/* Sliders Inputs */}
-        <div className="roi-inputs">
-          <h3 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '10px', color: '#fefef9' }}>הגדרות העסק</h3>
-
-          {/* Leads input */}
-          <div className="roi-input-group">
-            <div className="roi-label-container">
-              <span className="roi-slider-val">{formatNumber(leads)} שיחות</span>
-              <span>שיחות/לידים בחודש:</span>
-            </div>
-            <input
-              type="range"
-              min="100"
-              max="5000"
-              step="100"
-              value={leads}
-              onChange={(e) => setLeads(parseInt(e.target.value))}
-              className="roi-range-slider"
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              <span>5,000+</span>
-              <span>100</span>
-            </div>
-          </div>
-
-          {/* Cost input */}
-          <div className="roi-input-group" style={{ marginTop: '10px' }}>
-            <div className="roi-label-container">
-              <span className="roi-slider-val">₪{hourlyWage} לשעה</span>
-              <span>עלות לשעת עבודת נציג:</span>
-            </div>
-            <input
-              type="range"
-              min="35"
-              max="150"
-              step="5"
-              value={hourlyWage}
-              onChange={(e) => setHourlyWage(parseInt(e.target.value))}
-              className="roi-range-slider"
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              <span>₪150</span>
-              <span>₪35</span>
-            </div>
-          </div>
-
-          <div style={{ marginTop: '20px', color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={18} color="#10b981" />
-            <span>החישוב מבוסס על שכר ממוצע, עלויות סוציאליות ואחוז שיחות שלא נענו.</span>
-          </div>
-        </div>
-
-        {/* Dynamic Calculations display */}
-        <div className="roi-results">
-
-          <div className="roi-result-metric">
-            <div className="roi-result-title">חיסכון חודשי מוערך 💰</div>
-            <div className="roi-result-num highlight-green">
-              ₪{formatNumber(moneySaved)}
-            </div>
-          </div>
-
-          <div className="roi-result-metric">
-            <div className="roi-result-title">שעות עבודה שנחסכו ⏱️</div>
-            <div className="roi-result-num">
-              {formatNumber(hoursSaved)} שעות
-            </div>
-          </div>
-
-          <div className="roi-result-metric">
-            <div className="roi-result-title">פגישות/מכירות שנוספו 🚀</div>
-            <div className="roi-result-num" style={{ color: '#f9bb2b' }}>
-              +{formatNumber(meetingsAdded)}
-            </div>
-          </div>
-
-          <a href="#contact" className="cta-button btn-shimmer" style={{ width: '100%', justifyContent: 'center', padding: '16px 0', fontSize: '1.1rem' }}>
-            אני רוצה לחסוך ₪{formatNumber(moneySaved)} בחודש
-          </a>
-        </div>
-
-      </div>
-    </section>
   );
 };
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeCalls, setActiveCalls] = useState(48);
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [calculatorData, setCalculatorData] = useState(null);
+  const [listenedRecordings, setListenedRecordings] = useState([]);
+
+  const handleTrackPlay = (title) => {
+    setListenedRecordings(prev => prev.includes(title) ? prev : [...prev, title]);
+  };
+
+  const handleSelectPlan = (planName) => {
+    setSelectedPlan(planName);
+    setIsLeadModalOpen(true);
+  };
+
+  const handleCalculatorCta = (data) => {
+    setCalculatorData(data);
+    setIsLeadModalOpen(true);
+  };
+
   const [activeDiagram, setActiveDiagram] = useState('scenario1');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [mascotTilt, setMascotTilt] = useState({});
@@ -4088,18 +3618,7 @@ export default function LandingPage() {
     handleDiagramChange(diagramKeys[nextIndex]);
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveCalls(prev => {
-        const change = Math.floor(Math.random() * 5) - 2; // -2, -1, 0, 1, 2
-        const next = prev + change;
-        if (next < 35) return 35;
-        if (next > 55) return 55;
-        return next;
-      });
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -4209,77 +3728,11 @@ export default function LandingPage() {
   ];
 
 
-  const pricingPlans = [
-    {
-      name: "Basic – כולל 1,000 דקות מתנה לחודש הראשון",
-      price: "₪3,000",
-      period: " (חד פעמי בחודש הראשון)",
-      features: [
-        "כולל הקמה, תסריט מותאם והטמעה",
-        "מספר וירטואלי ייעודי",
-        "תמלול שיחות ודוחות בסיסיים",
-        "תמיכה טכנית",
-        "החל מהחודש השני: ₪1,000 לחודש עבור 600 דקות",
-        "₪1.5 לכל דקה נוספת מעבר למכסה",
-      ],
-      suitableFor: "מתאים לעסקים קטנים או התחלתיים שרוצים לבחון את הפלטפורמה.",
-      serviceOptionsTitle: "באיזה אופן? (בחר שירות אחד)",
-      serviceOptions: [
-        "הצעת מכירה / סינון לידים",
-        "מזכירה קולית",
-        "טיפול בהזמנות",
-        "איסוף מידע בסיסי",
-      ],
-    },
-    {
-      name: "Pro (מותאם אישית)",
-      price: "צור קשר",
-      period: "",
-      featured: true,
-      features: [
-        "עוזר קולי חכם ומותאם אישית",
-        "ניהול תסריטים מתקדמים ודינמיים",
-        "מספר וירטואלי ייעודי",
-        "דשבורד מפורט ודוחות מתקדמים",
-        "תמיכה מלאה",
-        "חיבור למערכות CRM ואינטגרציות",
-      ],
-      suitableFor: "לעסקים עם זרם לידים קבוע שדורשים אוטומציה מלאה.",
-      serviceOptionsTitle: "כל השירותים כלולים",
-      serviceOptions: [
-        "הצעת מכירה / סינון לידים",
-        "מזכירה קולית",
-        "טיפול בהזמנות",
-        "איסוף מידע מורחב",
-      ],
-    },
-    {
-      name: "Enterprise (מותאם לארגונים)",
-      price: "צור קשר",
-      period: "",
-      features: [
-        "תמיכה במעל 5,000 דקות שיחה בחודש",
-        "מספר עוזרים קוליים במקביל",
-        "התאמה אישית מלאה למערכות קיימות",
-        "בינה מלאכותית מותאמת לפי תחום ושפה",
-        "מערכת בקרת איכות ודוחות עומק",
-        "תמיכה והטמעה צמודה",
-      ],
-      suitableFor: "לחברות וארגונים עם היקף פעילות גדול או ריבוי צוותים.",
-      serviceOptionsTitle: "כל השירותים כלולים",
-      serviceOptions: [
-        "הצעת מכירה / סינון לידים",
-        "מזכירה קולית",
-        "טיפול בהזמנות",
-        "שירותים מותאמים אישית",
-      ],
-    },
-  ];
 
   const recordings = [
     {
       title: "👑 שכפול קול בלעדי - הדגל שלנו (שיחת סינון והדגמה חיה)",
-      description: "הקול הטוב ביותר שלנו אי פעם! שכפול קול אותנטי ומדויק של מושיק (ממייסדי Bot 10). שיחה יוצאת אמיתית שבה הבוט מציג את עצמו, מסנן לידים, וברגע שהלקוח מבקש הדגמה – הבוט מבצע סימולציה חיה של אפיון משכנתא, מתאים את עצמו לפידבק בזמן אמת, ומתאם פגישת המשך עם הצוות בטבעיות מדהימה ללא שום תחושת רובוטיות.",
+      description: "הקול הטוב ביותר שלנו אי פעם! שכפול קול אותנטי ומדויק של ערן (ממייסדי Bot 10). שיחה יוצאת אמיתית שבה הבוט מציג את עצמו, מסנן לידים, וברגע שהלקוח מבקש הדגמה – הבוט מבצע סימולציה חיה של אפיון משכנתא, מתאים את עצמו לפידבק בזמן אמת, ומתאם פגישת המשך עם הצוות בטבעיות מדהימה ללא שום תחושת רובוטיות.",
       audioSrc: cloneVoice,
       badge: "⭐ הדגל שלנו - הקול הטוב ביותר אי פעם (שכפול קול אישי)",
       isFeatured: true,
@@ -4348,15 +3801,6 @@ export default function LandingPage() {
 
   ];
 
-  const keywords = [
-    "בוט קולי", "עוזר קולי",
-    "מוקדן וירטואלי", "שירות לקוחות דיגיטלי", "שיחות יוצאות אוטומטי",
-    "שיחות נכנסות", "סיכום פגישות", "סינון לידים", "מזכירה קולית",
-    "מענה טלפוני 24/7", "צ'אטבוט קולי", "מענה אוטומטי לשיחות",
-    "עוזר טלפוני", "רובוט טלפוני", "AI", "בינה מלאכותית",
-    "עיבוד שפה טבעית", "למידת מכונה", "קריינות", "דיבור בעברית", "חיסכון בזמן", "אוטומציה", "פיתרון דיגיטלי", "סוכן AI",
-    "AI-Voice-Bot-Israel", "AI voice", "שכפול קול", "שכפול קול AI", "שיבוט קול", "Voice Cloning"
-  ];
 
   const faqData = [
     {
@@ -4411,13 +3855,17 @@ export default function LandingPage() {
     { name: "ירון פלד", role: "מנהל מכירות", text: "השירות הכי טוב שעשיתי לעסק. הלידים מגיעים חמים ומוכנים לסגירה." }
   ];
 
-  const integrations = [
-    "Monday.com", "HubSpot", "Salesforce", "Pipedrive", "Google Sheets", "Priority", "Zapier", "Make"
-  ];
 
 
   return (
     <div style={{ fontFamily: 'Assistant, sans-serif', direction: 'rtl', position: 'relative' }}>
+      <Helmet>
+        <title>Bot 10: הנציג הקולי שמדבר בקול שלך, מתקשר ללידים תוך 5 שניות וסוגר לך פגישות 24/7</title>
+        <meta name="description" content="בלי תפריטי הקשות ובלי קול רובוטי. סוכן AI קולי וטקסטואלי שמאומן על העסק שלך, מסנן לידים קרים, קובע פגישות ביומן ומסתנכרן אוטומטית ל-CRM שלך." />
+        <link rel="canonical" href="https://bot-10.com/" />
+        <meta property="og:title" content="Bot 10: הנציג הקולי שמדבר בקול שלך וסוגר לך פגישות 24/7" />
+        <meta property="og:description" content="סוכן AI קולי וטקסטואלי לעסקים בישראל עם שכפול קול אותנטי (Voice Cloning) וסנכרון מלא ל-CRM." />
+      </Helmet>
 
       <CustomStyles />
 
@@ -4491,17 +3939,16 @@ export default function LandingPage() {
         <nav>
           <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`} onClick={() => setIsMenuOpen(false)}>
             <li><a href="#features">הבוט שלנו</a></li>
+            <li><a href="#solutions">פתרונות לפי ענף</a></li>
             <li><a href="#who-is-it-for">מי הקהל?</a></li>
             <li><a href="#how-it-works">איך זה עובד?</a></li>
             <li><a href="#pricing">מחירים</a></li>
-            <li><a href="#recordings">דוגמאות</a></li>
+            <li><a href="#recordings">דוגמאות קוליות</a></li>
+            <li><a href="#roi-calculator">מחשבון ROI</a></li>
             <li><a href="#faq">שאלות ותשובות</a></li>
             <li><a href="#about">מי אנחנו</a></li>
-            <li><a href="/blog" target="_blank">בלוג</a></li>
-            <li><Link to="/roi-calculator">מחשבון המרה</Link></li>
-            <li><Link to="/cost-calculator"> מחשבון הוצאות</Link></li>
-            <li><a href="#contact">צור קשר <Mail size={18} /></a></li>
-
+            <li><Link to="/blog">בלוג</Link></li>
+            <li><a href="#contact" className="nav-cta-highlight">צור קשר <Mail size={16} /></a></li>
           </ul>
         </nav>
         <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -4514,26 +3961,47 @@ export default function LandingPage() {
         <div className="hero-content">
           <div className="hero-text-content">
 
-            <div className="live-status-ticker">
-              <span className="live-pulse-dot"></span>
-              <span>{activeCalls} שיחות מנוהלות כעת בזמן אמת | 99.4% מענה מוצלח החודש</span>
+            <div className="hero-authority-badge">
+              <span className="badge-pulse-indicator"></span>
+              <span>🎙️ סוכני AI קוליים מתקדמים לעסקים | שכפול קול אישי 100% בעברית | מענה וסינון לידים 24/7</span>
             </div>
             <img src={updatedLogo} alt="Bot 10 - סוכן קולי AI חכם בעברית למכירות ושירות 24/7 בוט קולי AI (Voice Agent) לעסקים: הנציג שלא מפספס אף ליד" className="logo-image" />
-            <h1 className="main-title">Bot 10: הנציג שלא מפספס אף ליד</h1>
+            <h1 className="main-title">Bot 10: הנציג הקולי שמדבר בקול שלך, מתקשר ללידים תוך 5 שניות וסוגר לך פגישות 24/7</h1>
             <p className="subtitle">
-              סגירת פגישות אוטומטית בשיחה קולית וטקסטואלית, 24/7.
-              <br />
-              העוזר הקולי שמדבר כמו בן אדם, חוסך זמן יקר ומגדיל מכירות.
+              בלי תפריטי הקשות ובלי קול רובוטי. סוכן AI קולי וטקסטואלי שמאומן על העסק שלך, מסנן לידים קרים, קובע פגישות ביומן ומסתנכרן אוטומטית ל-CRM שלך.
             </p>
             <div className="hero-buttons-container">
-              <a href="#contact" className="cta-button btn-shimmer">
+              <button
+                type="button"
+                className="cta-button btn-shimmer"
+                onClick={() => setIsLeadModalOpen(true)}
+              >
                 <Sparkles size={20} />
                 דברו איתנו עכשיו
-              </a>
-              <a href="#recordings" className="cta-button-secondary">
-                שמעו דוגמאות
+              </button>
+              <a href="#hero-flagship-player" className="cta-button-secondary">
+                שמעו הדגמה חיה (30 שניות)
                 <Play size={18} />
               </a>
+            </div>
+
+            {/* Above-the-fold Hero Audio Player */}
+            <div id="hero-flagship-player" style={{ width: '100%' }}>
+              <HeroAudioPlayer audioSrc={cloneVoice} onPlayTrack={handleTrackPlay} />
+            </div>
+
+            {/* Quick Hero Mini-Form */}
+            <div style={{ marginTop: '20px', width: '100%' }}>
+              <LeadCaptureForm
+                sourceSection="hero_mini_form"
+                selectedPlan={selectedPlan}
+                calculatorData={calculatorData}
+                listenedRecordings={listenedRecordings}
+                title="רוצים לשמוע איך הבוט יישמע עם הקול והתסריט של העסק שלכם?"
+                subtitle="השאירו שם וטלפון – אנחנו נכין תסריט ראשוני מותאם לעסק שלכם ונעלה מולכם לשיחת הדגמה קצרה."
+                submitButtonText="תכינו לי הדגמה לעסק ודברו איתי ←"
+                compact={true}
+              />
             </div>
           </div>
 
@@ -4709,30 +4177,13 @@ export default function LandingPage() {
         <div className="content-wrapper">
           <h2 className="section-title scroll-reveal" style={{ marginBottom: '30px' }}>סרטון לדוגמא</h2>
           <div style={{ textAlign: 'center', margin: '40px 0', width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <div style={{
-              borderRadius: '24px',
-              overflow: 'hidden',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-              border: '4px solid #fff',
-              maxWidth: '360px',
-              width: '100%'
-            }}>
-              <iframe
-                width="100%"
-                height="640"
-                src="https://youtube.com/embed/NUAomkQIMPI"
-                title="Bot 10 AI Demo"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <LiteYouTubeEmbed videoId="NUAomkQIMPI" title="ערן ציפל - שיווק דיגיטלי לעסקים מדגים את Bot 10" />
           </div>
         </div>
       </section >
 
       {/* Interactive Savings / ROI Calculator Widget */}
-      <InlineRoiCalculator />
+      <UpgradedRoiCalculator onCtaClick={handleCalculatorCta} />
 
       {/* Who is it for Section */}
       <section id="who-is-it-for" className="section who-is-it-for-section">
@@ -4959,8 +4410,8 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          {/* Second Track (Identical Duplicate) */}
-          <div className="logo-slider-track">
+          {/* Second Track (Duplicate for CSS Marquee with aria-hidden) */}
+          <div className="logo-slider-track" aria-hidden="true">
             {sliderLogos.map((logo, index) => (
               <div key={`track2-${logo.id}-${index}`} className="logo-item" style={{ gap: '10px' }}>
                 <div style={{
@@ -5124,12 +4575,21 @@ export default function LandingPage() {
           </div>
 
           {/* Floating Infinite Marquee Ticker */}
+          {/* Floating Infinite Marquee Ticker */}
           <div className="crm-marquee-wrapper scroll-reveal">
             <div className="crm-marquee-track">
-              {[...crmLogos, ...crmLogos, ...crmLogos].map((item, idx) => (
-                <div key={`${item.id}-badge-${idx}`} className="crm-marquee-badge">
+              {crmLogos.map((item, idx) => (
+                <div key={`${item.id}-primary-${idx}`} className="crm-marquee-badge">
                   <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, flexShrink: 0 }}>
                     <img src={item.logo} alt={item.name} className="crm-marquee-badge-img" />
+                  </div>
+                  <span className="crm-marquee-badge-text">{item.name}</span>
+                </div>
+              ))}
+              {crmLogos.map((item, idx) => (
+                <div key={`${item.id}-dup-${idx}`} className="crm-marquee-badge" aria-hidden="true">
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, flexShrink: 0 }}>
+                    <img src={item.logo} alt="" className="crm-marquee-badge-img" />
                   </div>
                   <span className="crm-marquee-badge-text">{item.name}</span>
                 </div>
@@ -5154,76 +4614,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="section-full-width">
-        <div className="section-content">
-          <h2 className="section-title scroll-reveal">החבילות שלנו </h2>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <img src={prices_logo} alt="חבילות מחיר לבוט קולי" className="logo-image" style={{ maxHeight: '80px' }} />
-          </div>
-
-          <div className="pricing-grid">
-            {pricingPlans.map((plan, index) => (
-              <div
-                key={index}
-                className={`pricing-card scroll-reveal ${plan.featured ? 'featured' : ''}`}
-                style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
-              >
-                <h3 className="pricing-title">{plan.name}</h3>
-                <div className="pricing-price">
-                  {plan.price}
-                </div>
-
-                <span style={{ fontSize: '1rem', fontWeight: '500', color: '#64748b', marginBottom: '20px', display: 'block' }}>
-                  {plan.period}
-                </span>
-                <ul className="pricing-features">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx}>
-                      <CheckCircle size={20} style={{ color: '#10B981', flexShrink: 0 }} />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <h4 className="pricing-section-title">למי זה מתאים?</h4>
-                <p className="pricing-suitable-for">{plan.suitableFor}</p>
-
-                <h4 className="pricing-section-title">{plan.serviceOptionsTitle}</h4>
-                <ul className="pricing-sub-features">
-                  {plan.serviceOptions.map((option, idx) => (
-                    <li key={idx}>
-                      <CheckCircle size={20} style={{ color: '#10B981', flexShrink: 0 }} />
-                      <span>{option}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <a href='#contact' className="cta-button btn-shimmer" >
-                  בחר חבילה זו
-                </a>
-
-                <div style={{ marginBottom: '10px', marginTop: '25px', textAlign: 'center' }}>
-                  <Link
-                    to="/cost-calculator"
-                    style={{
-                      fontSize: '1rem',
-                      fontWeight: '700',
-                      color: '#f9bb2b',
-                      textDecoration: 'none',
-                      borderBottom: '2px solid #f9bb2b'
-                    }}
-                  >
-                    🤔 חישוב ROI - כמה תחסכו בחודש?
-                  </Link>
-                </div>
-              </div>
-
-            ))}
-          </div>
-
-        </div>
-      </section>
+      <PricingSection onSelectPlan={handleSelectPlan} />
 
       {/* Recordings Section */}
       <section id="recordings" className="section">
@@ -5245,6 +4636,7 @@ export default function LandingPage() {
               isFeatured={recording.isFeatured}
               tags={recording.tags}
               style={{ animationDelay: `${index * 0.1 + 0.3}s` }}
+              onTrackPlay={handleTrackPlay}
             />
           ))}
         </div>
@@ -5277,24 +4669,7 @@ export default function LandingPage() {
       </section>
 
       {/* Keywords Section */}
-      <section className="section">
-        <div className="keywords-section">
-          <h2 className="section-title scroll-reveal" style={{ fontSize: '2.5rem', marginBottom: '20px' }}>
-            הטכנולוגיה המובילה בישראל
-          </h2>
-          <div className="keywords-grid">
-            {keywords.map((keyword, index) => (
-              <span
-                key={index}
-                className="keyword-tag"
-                style={{ animationDelay: `${index * 0.05 + 0.4}s` }}
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <IndustrySolutions />
 
       <div className='footer'>
         <div id="about" className="about-content">
@@ -5338,8 +4713,16 @@ export default function LandingPage() {
       </div>
 
       {/* Contact Section */}
-      <section id="contact" className="section">
-        <ContactForm />
+      <section id="contact" className="section" style={{ padding: '80px 20px' }}>
+        <LeadCaptureForm
+          sourceSection="bottom_form"
+          selectedPlan={selectedPlan}
+          calculatorData={calculatorData}
+          listenedRecordings={listenedRecordings}
+          title="רוצים לשמוע איך Bot 10 יישמע בעסק שלכם? השאירו טלפון לשיחת אפיון והדגמה אישית"
+          subtitle="אנחנו נכין תסריט ראשוני מותאם לעסק שלכם ונעלה מולכם לשיחת הדגמה קצרה ללא התחייבות."
+          submitButtonText="תכינו לי הדגמה לעסק ודברו איתי ←"
+        />
       </section>
 
       {/* Floating Sticky CTA */}
@@ -5441,6 +4824,18 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div >
+
+      {/* Sticky Mobile CTA Bar */}
+      <StickyMobileBar onOpenModal={() => setIsLeadModalOpen(true)} />
+
+      {/* Conversion Lead Modal */}
+      <LeadModal
+        isOpen={isLeadModalOpen}
+        onClose={() => setIsLeadModalOpen(false)}
+        sourceSection="homepage_modal"
+        selectedPlan={selectedPlan}
+        calculatorData={calculatorData}
+        listenedRecordings={listenedRecordings}
+      />    </div >
   );
 }
