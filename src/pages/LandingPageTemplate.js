@@ -55,6 +55,51 @@ export default function LandingPageTemplate({
     }
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "דף הבית",
+        "item": "https://bot-10.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": h1Title || seoTitle,
+        "item": canonicalUrl
+      }
+    ]
+  };
+
+  const faqSchema = faqItems && faqItems.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    }))
+  } : null;
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": h1Title || seoTitle,
+    "provider": {
+      "@type": "Organization",
+      "name": "Bot 10",
+      "url": "https://bot-10.com"
+    },
+    "description": seoDescription,
+    "areaServed": "IL"
+  };
+
   return (
     <div className="landing-page-container" dir="rtl">
       {/* SEO Helmet Tags */}
@@ -63,11 +108,27 @@ export default function LandingPageTemplate({
         <meta name="description" content={seoDescription} />
         {seoKeywords && <meta name="keywords" content={seoKeywords} />}
         <link rel="canonical" href={canonicalUrl} />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="he_IL" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seoTitle} />
+        <meta name="twitter:description" content={seoDescription} />
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+        {faqSchema && (
+          <script type="application/ld+json">
+            {JSON.stringify(faqSchema)}
+          </script>
+        )}
+        <script type="application/ld+json">
+          {JSON.stringify(serviceSchema)}
+        </script>
       </Helmet>
 
       {/* Header */}
@@ -82,7 +143,7 @@ export default function LandingPageTemplate({
               <span>← חזרה לדף הבית</span>
             </Link>
             <a href="#demo-audio" className="landing-nav-item">שמעו הקלטה</a>
-            <a href="#roi-section" className="landing-nav-item">מחשבון אובדן</a>
+            <a href="#roi-section" className="landing-nav-item">מחשבון ROI</a>
             <a href="#landing-lead-form" className="landing-nav-item landing-cta-nav">דברו איתנו</a>
           </nav>
         </div>
@@ -260,8 +321,26 @@ export default function LandingPageTemplate({
             <div>טלפון וואטסאפ: <a href="https://wa.me/972526134734">052-6134734</a></div>
           </div>
         </div>
+        <div style={{ maxWidth: '1000px', margin: '20px auto 10px', padding: '16px 10px 0', borderTop: '1px solid rgba(255,255,255,0.08)', fontSize: '0.88rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '14px', textAlign: 'center' }}>
+          <span style={{ opacity: 0.6 }}>פתרונות נוספים:</span>
+          <Link to="/virtual-secretary" style={{ color: '#94a3b8', textDecoration: 'none' }}>מזכירה וירטואלית</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/insurance-finance" style={{ color: '#94a3b8', textDecoration: 'none' }}>ביטוח ופיננסים</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/real-estate" style={{ color: '#94a3b8', textDecoration: 'none' }}>נדל״ן ותיווך</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/clinics-lawyers" style={{ color: '#94a3b8', textDecoration: 'none' }}>קליניקות ועורכי דין</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/outbound-sales" style={{ color: '#94a3b8', textDecoration: 'none' }}>שיחות יוצאות Outbound</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/roi-calculator" style={{ color: '#94a3b8', textDecoration: 'none' }}>מחשבון ROI</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/cost-calculator" style={{ color: '#94a3b8', textDecoration: 'none' }}>מחשבון חיסכון שכר</Link>
+          <span style={{ opacity: 0.3 }}>•</span>
+          <Link to="/blog" style={{ color: '#94a3b8', textDecoration: 'none' }}>בלוג</Link>
+        </div>
         <div className="landing-footer-bottom">
-          <Link to="/">דף הבית של Bot 10</Link> | <Link to="/accessibility">הצהרת נגישות</Link> | © {new Date().getFullYear()} Bot 10 AI. כל הזכויות שמורות.
+          <Link to="/">דף הבית של Bot 10</Link> | <Link to="/accessibility">הצהרת נגישות</Link> | <Link to="/contactform">יצירת קשר</Link> | © {new Date().getFullYear()} Bot 10 AI. כל הזכויות שמורות.
         </div>
       </footer>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Mail, Phone, Linkedin, Share2, Check, Copy, MessageCircle } from 'lucide-react';
 import updatedLogo from './updated_logo.png?url';
 
@@ -635,8 +636,30 @@ const BlogPage = () => {
     }
   `;
 
+  const pageTitle = selectedArticle
+    ? `${selectedArticle.title} | הבלוג של Bot 10`
+    : 'הבלוג של Bot 10 | סוכני קול AI, בינה מלאכותית שיחתית ומדריכים לעסקים';
+  const pageDesc = selectedArticle
+    ? selectedArticle.summary
+    : 'מאמרים מקצועיים, תובנות ומדריכים על סוכני קול AI, בינה מלאכותית שיחתית, אוטומציה של מוקדי שירות ושיפור אחוזי המרה בעסקים בישראל.';
+
   return (
     <div className="blog-container">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <link rel="canonical" href="https://bot-10.com/blog" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content="https://bot-10.com/blog" />
+        <meta property="og:type" content="blog" />
+        <meta property="og:locale" content="he_IL" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+      </Helmet>
       <style>{styles}</style>
 
       {/* Header */}

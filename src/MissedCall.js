@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, animate } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const MotionLink = motion(Link);
 
@@ -127,6 +128,16 @@ const MissedCallCalculator = () => {
         transition={{ duration: 0.8 }}
         style={containerStyle}
       >
+        <Helmet>
+          <title>מחשבון שיחות שלא נענו וחישוב אובדן הכנסות | Bot 10</title>
+          <meta name="description" content="מחשבון אינטראקטיבי: בדקו כמה כסף העסק שלכם מפסיד בחודש על שיחות שלא נענו ולידים שמתקררים מחוץ לשעות הפעילות." />
+          <link rel="canonical" href="https://bot-10.com/roi-calculator" />
+          <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+          <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+          <meta property="og:title" content="מחשבון שיחות שלא נענו וחישוב אובדן הכנסות | Bot 10" />
+          <meta property="og:description" content="מחשבון אינטראקטיבי: בדקו כמה כסף העסק שלכם מפסיד בחודש על שיחות שלא נענו ולידים שמתקררים." />
+          <meta property="og:url" content="https://bot-10.com/roi-calculator" />
+        </Helmet>
         <div style={gradientBg} />
         
         {/* Header */}
@@ -134,10 +145,10 @@ const MissedCallCalculator = () => {
           <motion.h1 
             style={{ fontSize: isMobile ? '1.8rem' : '2.5rem', fontWeight: '800', color: '#fefef9', marginBottom: '10px' }}
           >
-            מחשבון אובדן הכנסות
+            מחשבון אובדן הכנסות ושיחות שלא נענו
           </motion.h1>
           <p style={{ fontSize: isMobile ? '1rem' : '1.15rem', color: '#c8d3e6', maxWidth: '600px', margin: '0 auto' }}>
-            גלה במספרים אמיתיים כמה כסף נוזל מהעסק שלך בכל חודש בגלל שיחות שלא קיבלו מענה.
+            בדקו במספרים אמיתיים כמה ערך סוכן ה-AI של Bot 10 יכול להחזיר לעסק ממענה מיידי 24/7 לכל שיחה.
           </p>
         </div>
 

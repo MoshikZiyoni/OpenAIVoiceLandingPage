@@ -10,7 +10,14 @@ export default function Contact() {
       <Helmet>
         <title>יצירת קשר ותיאום שיחת הדגמה אישית | Bot 10</title>
         <meta name="description" content="השאירו פרטים לשיחת אפיון והדגמה אישית עם צוות המייסדים של Bot 10. סוכן קולי AI מותאם אישית לעסק שלך." />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <link rel="canonical" href="https://bot-10.com/contactform" />
+        <meta property="og:title" content="יצירת קשר ותיאום שיחת הדגמה אישית | Bot 10" />
+        <meta property="og:description" content="השאירו פרטים לשיחת אפיון והדגמה אישית עם צוות המייסדים של Bot 10. סוכן קולי AI מותאם אישית לעסק שלך." />
+        <meta property="og:url" content="https://bot-10.com/contactform" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://bot-10.com/logo-og.jpg" />
       </Helmet>
 
       {/* Header */}

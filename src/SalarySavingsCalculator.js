@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, animate } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 // יצירת קומפוננטה שמשלבת בין Link ל-Motion כדי לאפשר אנימציה על הלינק
 const MotionLink = motion(Link);
@@ -171,6 +172,16 @@ const EnterpriseCostCalculator = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
             >
+                <Helmet>
+                    <title>מחשבון חיסכון בעלויות שכר ומוקד שירות | Bot 10</title>
+                    <meta name="description" content="בדקו כמה תוכלו לחסוך בהעסקת נציגי שירות ומכירות באמצעות הטמעת סוכן AI קולי שעובד 24/7 ללא הפסקה." />
+                    <link rel="canonical" href="https://bot-10.com/cost-calculator" />
+                    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+                    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+                    <meta property="og:title" content="מחשבון חיסכון בעלויות שכר ומוקד שירות | Bot 10" />
+                    <meta property="og:description" content="בדקו כמה תוכלו לחסוך בהעסקת נציגי שירות ומכירות באמצעות סוכן AI קולי." />
+                    <meta property="og:url" content="https://bot-10.com/cost-calculator" />
+                </Helmet>
                 <div style={{ textAlign: 'center', marginBottom: isMobile ? '30px' : '50px' }}>
                     <motion.h1
                         initial={{ y: -20, opacity: 0 }}

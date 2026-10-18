@@ -3862,9 +3862,23 @@ export default function LandingPage() {
       <Helmet>
         <title>Bot 10: הנציג הקולי שמדבר בקול שלך, מתקשר ללידים תוך 5 שניות וסוגר לך פגישות 24/7</title>
         <meta name="description" content="בלי תפריטי הקשות ובלי קול רובוטי. סוכן AI קולי וטקסטואלי שמאומן על העסק שלך, מסנן לידים קרים, קובע פגישות ביומן ומסתנכרן אוטומטית ל-CRM שלך." />
+        <meta name="keywords" content="סוכן קולי AI, בוט קולי לעסקים, מענה טלפוני אוטומטי, שכפול קול אישי, Voice Cloning בעברית, סינון לידים טלפוני, מענה 24/7 לעסקים, בוט שיחות יוצאות, מזכירה וירטואלית AI, סוכן AI למכירות, תיאום פגישות אוטומטי, סנכרון CRM" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <link rel="canonical" href="https://bot-10.com/" />
         <meta property="og:title" content="Bot 10: הנציג הקולי שמדבר בקול שלך וסוגר לך פגישות 24/7" />
         <meta property="og:description" content="סוכן AI קולי וטקסטואלי לעסקים בישראל עם שכפול קול אותנטי (Voice Cloning) וסנכרון מלא ל-CRM." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://bot-10.com/" />
+        <meta property="og:image" content="https://bot-10.com/logo-og.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="he_IL" />
+        <meta property="og:site_name" content="Bot 10 - סוכני AI קוליים לעסקים" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Bot 10: הנציג הקולי שמדבר בקול שלך וסוגר לך פגישות 24/7" />
+        <meta name="twitter:description" content="סוכן AI קולי וטקסטואלי לעסקים בישראל עם שכפול קול אותנטי וסנכרון מלא ל-CRM." />
+        <meta name="twitter:image" content="https://bot-10.com/logo-og.jpg" />
       </Helmet>
 
       <CustomStyles />
@@ -4781,46 +4795,128 @@ export default function LandingPage() {
       </div>
 
       {/* Footer */}
-      <footer className="footer">
+      <footer className="footer" style={{ padding: '60px 20px 40px', background: 'rgba(5, 12, 28, 0.95)', color: '#fefef9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <img src={updatedLogo} alt="לוגו Bot 10" className="footer-logo" />
-          <p style={{ fontSize: '1.1rem', opacity: '0.8', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
-            המהפכה בתקשורת עסקית מתחילה כאן. סוכן AI קולי שמבין עברית ומספק שירות ברמה אנושית מלאה
-          </p>
+          <div style={{ textAlign: 'center', marginBottom: '35px' }}>
+            <img src={updatedLogo} alt="לוגו Bot 10 - סוכני AI קוליים לעסקים" className="footer-logo" style={{ maxWidth: '180px', height: 'auto', marginBottom: '16px' }} />
+            <p style={{ fontSize: '1.05rem', opacity: '0.85', maxWidth: '650px', margin: '0 auto 24px', lineHeight: '1.6' }}>
+              המהפכה בתקשורת עסקית בישראל. סוכן AI קולי חכם שמדבר בקול שלך, מנהל שיחות נכנסות ויוצאות, מסנן לידים ומתאם פגישות ביומן 24/7.
+            </p>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '24px',
+              flexWrap: 'wrap',
+              fontSize: '0.95rem'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Mail size={18} color="#f9bb2b" />
+                <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9', opacity: 0.9 }}>
+                  bot10.info@gmail.com
+                </a>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Phone size={18} color="#f9bb2b" />
+                <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9', opacity: 0.9 }}>
+                  052-6134734
+                </a>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Linkedin size={18} color="#f9bb2b" />
+                <a href="https://www.linkedin.com/company/bot10-ai-voice-agents/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#fefef9', opacity: 0.9 }}>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
 
+          {/* SEO Internal Links Grid */}
           <div style={{
-            display: 'flex',
-            justifyContent: 'center',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: '30px',
-            marginBottom: '40px',
-            flexWrap: 'wrap'
+            borderTop: '1px solid rgba(254, 254, 249, 0.1)',
+            paddingTop: '35px',
+            marginBottom: '35px',
+            textAlign: 'right'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Mail size={20} color="#f9bb2b" />
-              <a href="mailto:bot10.info@gmail.com" style={{ textDecoration: 'none', color: '#fefef9' }}>
-                bot10.info@gmail.com
-              </a>
+            <div>
+              <h4 style={{ color: '#f9bb2b', fontSize: '1.05rem', fontWeight: '700', marginBottom: '14px' }}>פתרונות AI לפי ענף</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <li>
+                  <Link to="/virtual-secretary" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem', transition: 'color 0.2s' }}>
+                    מזכירה וירטואלית AI לעסקים
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/insurance-finance" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem', transition: 'color 0.2s' }}>
+                    סוכן AI לביטוח, משכנתאות ופיננסים
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/real-estate" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem', transition: 'color 0.2s' }}>
+                    סוכן AI לנדל״ן ותיווך נכסים
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/clinics-lawyers" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem', transition: 'color 0.2s' }}>
+                    סוכן AI למרפאות, רופאים ועו״ד
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/outbound-sales" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem', transition: 'color 0.2s' }}>
+                    מוקד מכירות ושיחות יוצאות Outbound
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Phone size={20} color="#f9bb2b" />
-              <a href="tel:+972526134734" style={{ textDecoration: 'none', color: '#fefef9' }}>
-                052-6134734
-              </a>
+
+            <div>
+              <h4 style={{ color: '#f9bb2b', fontSize: '1.05rem', fontWeight: '700', marginBottom: '14px' }}>מחשבוני ROI וחיסכון</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <li>
+                  <Link to="/roi-calculator" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem' }}>
+                    מחשבון החזר השקעה (ROI) ושיחות שלא נענו
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/cost-calculator" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem' }}>
+                    מחשבון חיסכון בעלויות שכר ומענה אנושי
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Linkedin size={20} color="#f9bb2b" />
-              <a href="https://www.linkedin.com/company/bot10-ai-voice-agents/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#fefef9' }}>
-                LinkedIn
-              </a>
+
+            <div>
+              <h4 style={{ color: '#f9bb2b', fontSize: '1.05rem', fontWeight: '700', marginBottom: '14px' }}>מרכז ידע ומידע</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <li>
+                  <Link to="/blog" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem' }}>
+                    בלוג ומאמרי בינה מלאכותית עסקית
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contactform" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem' }}>
+                    יצירת קשר ותיאום הדגמה חיה
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/accessibility" style={{ color: '#cbd5e1', textDecoration: 'none', fontSize: '0.92rem' }}>
+                    הצהרת נגישות
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
 
           <div style={{
             borderTop: '1px solid rgba(254, 254, 249, 0.1)',
-            paddingTop: '30px',
-            opacity: '0.6'
+            paddingTop: '24px',
+            textAlign: 'center',
+            fontSize: '0.85rem',
+            opacity: '0.7'
           }}>
-            <p>© 2026 Bot 10. כל הזכויות שמורות. | <Link to="/accessibility" style={{ color: '#fefef9', textDecoration: 'underline' }}>הצהרת נגישות</Link></p>
+            <p>© 2026 Bot 10 AI. כל הזכויות שמורות. | סוכני AI קוליים חכמים לעסקים בישראל</p>
           </div>
         </div>
       </footer>

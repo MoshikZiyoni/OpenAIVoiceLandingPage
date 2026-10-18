@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const CustomStyles = () => (
   <style>{`
@@ -61,6 +61,12 @@ const CustomStyles = () => (
 export default function AccessibilityPage() {
   return (
     <div>
+      <Helmet>
+        <title>הצהרת נגישות | Bot 10</title>
+        <meta name="description" content="הצהרת הנגישות של אתר Bot 10. אנו מחויבים להנגשת האתר והשירותים לכלל האוכלוסייה בהתאם לתקן הישראלי." />
+        <link rel="canonical" href="https://bot-10.com/accessibility" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
       <CustomStyles />
       <div className="container">
         <h1>הצהרת נגישות</h1>
