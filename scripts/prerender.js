@@ -122,6 +122,14 @@ PAGES.forEach((page) => {
   console.log(`✓ Pre-rendered static entry: /${page.route}/index.html`);
 });
 
-// Also ensure a 404.html fallback exists for GitHub Pages and static hosts
+// Ensure 200.html and 404.html fallback exist for Cloudflare, GitHub Pages and static hosts
+fs.writeFileSync(path.join(BUILD_DIR, '200.html'), baseIndexHtml, 'utf-8');
 fs.writeFileSync(path.join(BUILD_DIR, '404.html'), baseIndexHtml, 'utf-8');
-console.log('✓ Created 404.html fallback for static hosts');
+console.log('✓ Created 200.html & 404.html fallbacks for static hosts');
+
+// Remove conflicting _redirects file if present (Cloudflare now rejects /* /index.html 200 as infinite loop)
+const redirectsBuildFile = path.join(BUILD_DIR, '_redirects');
+if (fs.existsSync(redirectsBuildFile)) {
+  fs.unlinkSync(redirectsBuildFile);
+  console.log('✓ Cleaned up conflicting _redirects from build output');
+}
